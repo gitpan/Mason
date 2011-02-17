@@ -1,0 +1,70 @@
+{
+   "abstract" : "Powerful, high-performance templating for the web and beyond",
+   "author" : [
+      "Jonathan Swartz <swartz@pobox.com>"
+   ],
+   "dynamic_config" : 0,
+   "generated_by" : "Dist::Zilla version 4.200000, CPAN::Meta::Converter version 2.102400",
+   "license" : [
+      "perl_5"
+   ],
+   "meta-spec" : {
+      "url" : "http://search.cpan.org/perldoc?CPAN::Meta::Spec",
+      "version" : "2"
+   },
+   "name" : "Mason",
+   "no_index" : {
+      "directory" : [
+         "lib/Mason/t",
+         "lib/Mason/Test"
+      ],
+      "file" : [
+         "lib/Mason/Util.pm"
+      ]
+   },
+   "prereqs" : {
+      "configure" : {
+         "requires" : {
+            "ExtUtils::MakeMaker" : "6.31"
+         }
+      },
+      "runtime" : {
+         "requires" : {
+            "Capture::Tiny" : 0,
+            "Class::Unload" : 0,
+            "File::Temp" : 0,
+            "Guard" : 0,
+            "IPC::System::Simple" : 0,
+            "JSON" : 0,
+            "Log::Any" : 0,
+            "Memoize" : 0,
+            "Method::Signatures::Simple" : 0,
+            "Moose" : "0.95",
+            "MooseX::HasDefaults" : 0,
+            "MooseX::StrictConstructor" : 0,
+            "Scalar::Util" : "1.01",
+            "Try::Tiny" : 0
+         }
+      },
+      "test" : {
+         "requires" : {
+            "Test::Class::Most" : 0,
+            "Test::LongString" : 0
+         }
+      }
+   },
+   "release_status" : "stable",
+   "resources" : {
+      "bugtracker" : {
+         "mailto" : "bug-mason@rt.cpan.org",
+         "web" : "http://rt.cpan.org/NoAuth/Bugs.html?Dist=Mason"
+      },
+      "repository" : {
+         "type" : "git",
+         "url" : "git://github.com/jonswar/perl-mason.git",
+         "web" : "https://github.com/jonswar/perl-mason"
+      }
+   },
+   "version" : "2.00"
+}
+

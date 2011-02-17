@@ -1,0 +1,97 @@
+
+
+__END__
+=pod
+
+=head1 NAME
+
+Mason::Manual - Index of Mason documentation
+
+=head1 VERSION
+
+version 2.00
+
+=head1 MANUALS
+
+=over
+
+=item L<Mason::Manual::Tutorial>
+
+Provides a tour of Mason by showing how to build a micro-blog application. A
+good place to start.
+
+=item L<Mason::Manual::Admin>
+
+Information for Mason administrators, including how to set up Mason in various
+environments.
+
+=item L<Mason::Manual::Components>
+
+All about components, the building blocks of Mason.
+
+=item L<Mason::Manual::Syntax>
+
+A full reference of syntax that can be used in components.
+
+=item L<Mason::Manual::RequestDispatch>
+
+How request paths get mapped to page components.
+
+=item L<Mason::Manual::Cookbook>
+
+Recipes for common Mason tasks.
+
+=item L<Mason::Manual::Filters>
+
+Using and creating filters that can be applied to portions of content in a
+component.
+
+=item L<Mason::Manual::Plugins>
+
+Using and creating plugins to modify Mason behavior.
+
+=item L<Mason::Manual::UpgradingFromMason1>
+
+Summary of differences between Mason 1 and Mason 2.
+
+=back
+
+=head1 OBJECT DOCUMENTATION
+
+=over
+
+=item L<Mason::Interp>
+
+Mason::Interp is the central Mason object, returned from C<< Mason->new >>. It
+is responsible for creating new requests, compiling components, and maintaining
+the cache of loaded components.
+
+=item L<Mason::Request>
+
+Mason::Request represents a single request for a page, and is the access point
+for most Mason features not provided by syntactic tags.
+
+=item L<Mason::Component>
+
+Mason::Component is the base class from which all generated component classes
+inherit, directly or indirectly.
+
+=back
+
+=head1 SEE ALSO
+
+L<Mason|Mason>
+
+=head1 AUTHOR
+
+Jonathan Swartz <swartz@pobox.com>
+
+=head1 COPYRIGHT AND LICENSE
+
+This software is copyright (c) 2011 by Jonathan Swartz.
+
+This is free software; you can redistribute it and/or modify it under
+the same terms as the Perl 5 programming language system itself.
+
+=cut
+
