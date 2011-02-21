@@ -9,7 +9,7 @@ Mason::Manual::Syntax - Mason component syntax reference
 
 =head1 VERSION
 
-version 2.00
+version 2.01
 
 =head1 DESCRIPTION
 

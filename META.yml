@@ -16,6 +16,7 @@ meta-spec:
 name: Mason
 no_index:
   directory:
+    - eg
     - lib/Mason/t
     - lib/Mason/Test
   file:
@@ -23,6 +24,8 @@ no_index:
 requires:
   Capture::Tiny: 0
   Class::Unload: 0
+  Devel::GlobalDestruction: 0
+  File::Spec: 0
   File::Temp: 0
   Guard: 0
   IPC::System::Simple: 0
@@ -38,4 +41,4 @@ requires:
 resources:
   bugtracker: http://rt.cpan.org/NoAuth/Bugs.html?Dist=Mason
   repository: git://github.com/jonswar/perl-mason.git
-version: 2.00
+version: 2.01

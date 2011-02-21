@@ -1,6 +1,6 @@
 package Mason::Component;
 BEGIN {
-  $Mason::Component::VERSION = '2.00';
+  $Mason::Component::VERSION = '2.01';
 }
 use Mason::Component::InstanceMeta;
 use Moose;    # no Mason::Moose - don't want StrictConstructor
@@ -76,7 +76,7 @@ Mason::Component - Mason Component base class
 
 =head1 VERSION
 
-version 2.00
+version 2.01
 
 =head1 DESCRIPTION
 

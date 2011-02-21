@@ -1,6 +1,6 @@
 package Mason::PluginBundle::Default;
 BEGIN {
-  $Mason::PluginBundle::Default::VERSION = '2.00';
+  $Mason::PluginBundle::Default::VERSION = '2.01';
 }
 use Mason::PluginRole;
 with 'Mason::PluginBundle';
@@ -19,7 +19,7 @@ Mason::PluginBundle::Default - Default plugins
 
 =head1 VERSION
 
-version 2.00
+version 2.01
 
 =head1 DESCRIPTION
 

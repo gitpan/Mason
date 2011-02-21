@@ -1,6 +1,6 @@
 package Mason::Util;
 BEGIN {
-  $Mason::Util::VERSION = '2.00';
+  $Mason::Util::VERSION = '2.01';
 }
 use Carp;
 use Class::MOP;
@@ -14,7 +14,7 @@ use warnings;
 use base qw(Exporter);
 
 our @EXPORT_OK =
-  qw(can_load catdir catfile checksum dump_one_line find_wanted is_absolute mason_canon_path read_file touch_file trim write_file);
+  qw(can_load catdir catfile checksum dump_one_line find_wanted first_index is_absolute mason_canon_path read_file touch_file trim uniq write_file);
 
 my $Fetch_Flags          = O_RDONLY | O_BINARY;
 my $Store_Flags          = O_WRONLY | O_CREAT | O_BINARY;
@@ -86,6 +86,16 @@ sub find_wanted {
     return @files;
 }
 
+# From List::MoreUtils
+sub first_index (&@) {
+    my $f = shift;
+    for my $i ( 0 .. $#_ ) {
+        local *_ = \$_[$i];
+        return $i if $f->();
+    }
+    return -1;
+}
+
 sub is_absolute {
     my ($path) = @_;
 
@@ -151,6 +161,12 @@ sub trim {
         for ($str) { s/^\s+//; s/\s+$// }
     }
     return $str;
+}
+
+# From List::MoreUtils
+sub uniq (@) {
+    my %h;
+    map { $h{$_}++ == 0 ? $_ : () } @_;
 }
 
 sub write_file {

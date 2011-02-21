@@ -9,7 +9,7 @@ Mason::Manual::Cookbook - Recipes for common Mason tasks
 
 =head1 VERSION
 
-version 2.00
+version 2.01
 
 =head1 RECIPES
 

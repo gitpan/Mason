@@ -1,6 +1,6 @@
 package Mason::Component::InstanceMeta;
 BEGIN {
-  $Mason::Component::InstanceMeta::VERSION = '2.00';
+  $Mason::Component::InstanceMeta::VERSION = '2.01';
 }
 use Mason::Component::ClassMeta;
 use Mason::Moose;
@@ -25,7 +25,7 @@ instance
 
 =head1 VERSION
 
-version 2.00
+version 2.01
 
 =head1 SYNOPSIS
 

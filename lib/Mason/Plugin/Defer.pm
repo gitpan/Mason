@@ -1,6 +1,6 @@
 package Mason::Plugin::Defer;
 BEGIN {
-  $Mason::Plugin::Defer::VERSION = '2.00';
+  $Mason::Plugin::Defer::VERSION = '2.01';
 }
 use Moose;
 with 'Mason::Plugin';
@@ -18,7 +18,7 @@ request
 
 =head1 VERSION
 
-version 2.00
+version 2.01
 
 =head1 SYNOPSIS
 

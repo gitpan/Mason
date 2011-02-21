@@ -1,6 +1,6 @@
 package Mason::Request;
 BEGIN {
-  $Mason::Request::VERSION = '2.00';
+  $Mason::Request::VERSION = '2.01';
 }
 use Carp;
 use File::Basename;
@@ -424,7 +424,7 @@ Mason::Request - Mason Request Class
 
 =head1 VERSION
 
-version 2.00
+version 2.01
 
 =head1 SYNOPSIS
 

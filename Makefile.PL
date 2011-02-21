@@ -27,6 +27,8 @@ my %WriteMakefileArgs = (
   'PREREQ_PM' => {
     'Capture::Tiny' => '0',
     'Class::Unload' => '0',
+    'Devel::GlobalDestruction' => '0',
+    'File::Spec' => '0',
     'File::Temp' => '0',
     'Guard' => '0',
     'IPC::System::Simple' => '0',
@@ -40,7 +42,7 @@ my %WriteMakefileArgs = (
     'Scalar::Util' => '1.01',
     'Try::Tiny' => '0'
   },
-  'VERSION' => '2.00',
+  'VERSION' => '2.01',
   'test' => {
     'TESTS' => 't/*.t'
   }

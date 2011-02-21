@@ -9,7 +9,7 @@ Mason::Manual::Components - The building blocks of Mason
 
 =head1 VERSION
 
-version 2.00
+version 2.01
 
 =head1 DESCRIPTION
 
