@@ -1,6 +1,6 @@
 package Mason::DynamicFilter;
 BEGIN {
-  $Mason::DynamicFilter::VERSION = '2.01';
+  $Mason::DynamicFilter::VERSION = '2.02';
 }
 use Mason::Moose;
 

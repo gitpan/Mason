@@ -1,6 +1,6 @@
 package Mason::Component::Moose;
 BEGIN {
-  $Mason::Component::Moose::VERSION = '2.01';
+  $Mason::Component::Moose::VERSION = '2.02';
 }
 use Moose                      ();
 use MooseX::HasDefaults::RW    ();
@@ -34,7 +34,7 @@ Mason::Component::Moose - Moose policies and exports for Mason components
 
 =head1 VERSION
 
-version 2.01
+version 2.02
 
 =head1 DESCRIPTION
 
@@ -49,15 +49,13 @@ and is equivalent to
 =head1 OVERRIDING
 
 To override the default behavior, subclass this class and specify it as
-C<base_component_moose_class> to L<Mason::Interp/Mason::Interp>.
+C<base_component_moose_class> to L<Mason::Interp|Mason::Interp>.
 
 For example, to use L<MooseX::StrictConstructor> in every component:
 
     package My::Mason::Component::Moose;
     use Moose::Exporter;
     use MooseX::StrictConstructor ();
-    use strict;
-    use warnings;
     use base qw(Mason::Component::Moose);
 
     sub init_meta {

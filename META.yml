@@ -19,6 +19,10 @@ no_index:
     - eg
     - lib/Mason/t
     - lib/Mason/Test
+    - lib/Mason/Plugin/Defer
+    - lib/Mason/Plugin/DollarDot
+    - lib/Mason/Plugin/LvalueAttributes
+    - lib/Mason/Plugin/TidyObjectFiles
   file:
     - lib/Mason/Util.pm
 requires:
@@ -41,4 +45,4 @@ requires:
 resources:
   bugtracker: http://rt.cpan.org/NoAuth/Bugs.html?Dist=Mason
   repository: git://github.com/jonswar/perl-mason.git
-version: 2.01
+version: 2.02

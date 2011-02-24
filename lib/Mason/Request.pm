@@ -1,6 +1,6 @@
 package Mason::Request;
 BEGIN {
-  $Mason::Request::VERSION = '2.01';
+  $Mason::Request::VERSION = '2.02';
 }
 use Carp;
 use File::Basename;
@@ -13,7 +13,7 @@ use Mason::Moose;
 use Scalar::Util qw(blessed reftype);
 use Try::Tiny;
 
-my $default_out = sub { my ( $text, $self ) = @_; $self->{output} .= $text };
+my $default_out = sub { my ( $text, $self ) = @_; $self->result->_append_output($text) };
 my $next_id = 0;
 
 # Passed attributes
@@ -34,6 +34,7 @@ has 'path_info'          => ( init_arg => undef, default => '' );
 has 'request_args'       => ( init_arg => undef );
 has 'request_code_cache' => ( init_arg => undef, default => sub { {} } );
 has 'request_path'       => ( init_arg => undef );
+has 'result'             => ( init_arg => undef, lazy_build => 1 );
 has 'run_params'         => ( init_arg => undef );
 
 # Globals, localized to each request
@@ -47,6 +48,10 @@ method current_request () { $current_request }
 
 method BUILD ($params) {
     $self->{orig_request_params} = $params;
+}
+
+method _build_result () {
+    return $self->interp->result_class->new;
 }
 
 #
@@ -118,10 +123,6 @@ method construct () {
     my $compc = $self->load($path)
       or $self->_comp_not_found($path);
     return $compc->new( @_, 'm' => $self );
-}
-
-method create_result_object () {
-    return $self->interp->result_class->new(@_);
 }
 
 method current_comp_class () {
@@ -231,14 +232,6 @@ method construct_page_component ($compc, $args) {
     return $compc->new( %$args, 'm' => $self );
 }
 
-method dispatch_to_page_component ($page) {
-    $self->catch_abort(
-        sub {
-            $page->handle();
-        }
-    );
-}
-
 method catch_abort ($code) {
     my $retval;
     try {
@@ -309,15 +302,19 @@ method run () {
     $log->debugf( "starting request with component '%s'", $page_path )
       if $log->is_debug;
 
-    # Construct page component
-    #
-    my $page = $self->construct_page_component( $page_compc, $request_args );
-    $self->{page} = $page;
+    $self->catch_abort(
+        sub {
 
-    # Dispatch to page component, with 'print' tied to component output.
-    # Will catch aborts but throw other fatal errors.
-    #
-    $self->with_tied_print( sub { $self->dispatch_to_page_component($page) } );
+            # Construct page component
+            #
+            my $page = $self->construct_page_component( $page_compc, $request_args );
+            $self->{page} = $page;
+
+            # Dispatch to page component, with 'print' tied to component output.
+            #
+            $self->with_tied_print( sub { $page->handle } );
+        }
+    );
 
     # If declined, retry match
     #
@@ -335,9 +332,7 @@ method run () {
     #
     $self->flush_buffer;
 
-    # Create and return result object
-    #
-    return $self->create_result_object( output => $self->output );
+    return $self->result;
 }
 
 method request_path_not_found ($path) {
@@ -424,7 +419,7 @@ Mason::Request - Mason Request Class
 
 =head1 VERSION
 
-version 2.01
+version 2.02
 
 =head1 SYNOPSIS
 
@@ -544,7 +539,7 @@ Clears the Mason output buffer. Any output sent before this line is discarded.
 Useful for handling error conditions that can only be detected in the middle of
 a request.
 
-clear_buffer is, of course, thwarted by L</flush_buffer>.
+clear_buffer is, of course, thwarted by L<flush_buffer|/flush_buffer>.
 
 =for html <a name="comp" />
 
@@ -608,7 +603,7 @@ C</dhandler.m>, and a third would throw a "not found" error.
 =item flush_buffer ()
 
 Flushes the main output buffer. Anything currently in the buffer is sent to the
-request's L</out_method>.
+request's L<out_method|/out_method>.
 
 Note that anything output within a C<< $m->scomp >> or C<< $m->capture >> will
 not have made it to the main output buffer, and thus cannot be flushed.
@@ -624,7 +619,7 @@ done.
 The first argument may optionally be a hashref of parameters which are passed
 to the C<Mason::Request> constructor.
 
-See also L</visit>.
+See also L<visit|/visit>.
 
 =for html <a name="interp" />
 
@@ -724,7 +719,7 @@ subrequest:
 
     $m->visit({out_method => \my $buffer}, ...);
 
-See also L</go>.
+See also L<go|/go>.
 
 =back
 
@@ -742,7 +737,7 @@ as stable as possible.
 
 A place to perform cleanup duties when the request finishes or dies with an
 error, even if the request object is not immediately destroyed. Includes
-anything registered with L</add_cleanup>.
+anything registered with L<add_cleanup|/add_cleanup>.
 
 =for html <a name="construct_page_component" />
 

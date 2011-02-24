@@ -1,6 +1,6 @@
 package Mason::Component::ClassMeta;
 BEGIN {
-  $Mason::Component::ClassMeta::VERSION = '2.01';
+  $Mason::Component::ClassMeta::VERSION = '2.02';
 }
 use File::Basename;
 use Mason::Moose;
@@ -23,8 +23,6 @@ has 'id'   => ( init_arg => undef, default => sub { $next_id++ } );
 has 'log'  => ( init_arg => undef, lazy_build => 1 );
 has 'name' => ( init_arg => undef, lazy_build => 1 );
 
-__PACKAGE__->_define_instance_meta_stubs;
-
 method _build_is_dhandler () {
     return grep { $self->name eq $_ } @{ $self->interp->dhandler_names };
 }
@@ -37,19 +35,6 @@ method _build_log () {
 
 method _build_name () {
     return basename( $self->path );
-}
-
-# These only exist in InstanceMeta.
-#
-sub _define_instance_meta_stubs {
-    foreach my $method (qw(args)) {
-        __PACKAGE__->meta->add_method(
-            $method => sub {
-                my $self = shift;
-                die sprintf( "cannot call %s() from %s->cmeta", $method, $self->class );
-            }
-        );
-    }
 }
 
 __PACKAGE__->meta->make_immutable();
@@ -66,7 +51,7 @@ Mason::Component::ClassMeta - Meta-information about Mason component class
 
 =head1 VERSION
 
-version 2.01
+version 2.02
 
 =head1 SYNOPSIS
 
@@ -79,12 +64,7 @@ version 2.01
 Every L<Mason::Component|Mason::Component> class has an associated
 L<Mason::Component::ClassMeta|Mason::Component::ClassMeta> object, containing
 meta-information such as the component's path and source file. It can be
-accessed with the L<Mason::Component/cmeta> method.
-
-When called from an instance, a
-L<Mason::Component::InstanceMeta|Mason::Component::InstanceMeta> is returned,
-which supplies all the information here plus a few other things such as the
-arguments the instance was created with.
+accessed with the L<cmeta|Mason::Component/cmeta> method.
 
 =over
 

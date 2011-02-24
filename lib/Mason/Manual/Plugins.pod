@@ -9,7 +9,7 @@ Mason::Manual::Plugins - Mason plugins
 
 =head1 VERSION
 
-version 2.01
+version 2.02
 
 =head1 DESCRIPTION
 
@@ -135,7 +135,7 @@ As of this writing the following Mason classes can be modified with plugins:
     Mason::Compilation
     Mason::Component
     Mason::Component::ClassMeta
-    Mason::Component::InstanceMeta
+    Mason::Component::Import
     Mason::Request
     Mason::Result
 

@@ -10,7 +10,7 @@ components
 
 =head1 VERSION
 
-version 2.01
+version 2.02
 
 =head1 DESCRIPTION
 
@@ -41,7 +41,7 @@ path.
 
 =head2 Index
 
-An index matches only its exact directory, nothing underneath.
+An index matches its exact directory, nothing underneath.
 
     /news/sports/hockey/index.{pm,m}
 

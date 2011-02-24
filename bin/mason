@@ -1,4 +1,8 @@
-#!/usr/bin/perl
+#!/usr/local/bin/perl
+
+eval 'exec /usr/local/bin/perl -S $0 ${1+"$@"}'
+  if 0;    # not running under some shell
+
 use strict;
 use warnings;
 use Mason::App;
@@ -14,7 +18,7 @@ mason - evaluate a mason template and output the result
 
 =head1 VERSION
 
-version 2.01
+version 2.02
 
 =head1 SYNOPSIS
 

@@ -4,7 +4,7 @@
 
 package Mason::Compilation;
 BEGIN {
-  $Mason::Compilation::VERSION = '2.01';
+  $Mason::Compilation::VERSION = '2.02';
 }
 use File::Basename qw(dirname);
 use Guard;
@@ -339,7 +339,8 @@ method _output_class_footer () {
 method _output_class_header () {
     return join(
         "\n",
-        "use " . $self->interp->component_moose_class . ";",
+        "BEGIN { " . $self->interp->component_moose_class . "->import; }",
+        "BEGIN { " . $self->interp->component_import_class . "->import; }",
         "our (\$m, \$_m_buffer);",
         "*m = \\\$Mason::Request::current_request;",
         "*_m_buffer = \\\$Mason::Request::current_buffer;",
@@ -483,6 +484,7 @@ method _handle_attributes_list ($contents, $attr_type) {
             push( @attributes, $self->_attribute_declaration( $name, $params, $line_number ) );
         }
         else {
+            $self->{line_number} = $line_number;
             $self->throw_syntax_error("Invalid attribute line '$line'");
         }
     }

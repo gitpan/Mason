@@ -1,6 +1,6 @@
 package Mason::Test::Class;
 BEGIN {
-  $Mason::Test::Class::VERSION = '2.01';
+  $Mason::Test::Class::VERSION = '2.02';
 }
 use Carp;
 use File::Basename;
@@ -102,6 +102,7 @@ method test_existing_comp (%params) {
     my $desc         = $params{desc} || $path;
     my $expect       = trim( $params{expect} );
     my $expect_error = $params{expect_error};
+    my $expect_data  = $params{expect_data};
     my $verbose      = $params{v} || $params{verbose};
     my $args         = $params{args} || {};
     ( my $request_path = $path ) =~ s/\.(m|pm)$//;
@@ -113,7 +114,7 @@ method test_existing_comp (%params) {
         $desc ||= $expect_error;
         throws_ok( sub { $self->interp->run(@run_params) }, $expect_error, $desc );
     }
-    elsif ( defined($expect) ) {
+    if ( defined($expect) ) {
         $desc ||= $caller;
         my $output = trim( $self->interp->run(@run_params)->output );
         if ( ref($expect) eq 'Regexp' ) {
@@ -123,12 +124,16 @@ method test_existing_comp (%params) {
             is( $output, $expect, $desc );
         }
     }
+    if ( defined($expect_data) ) {
+        $desc ||= $caller;
+        cmp_deeply( $self->interp->run(@run_params)->data, $expect_data, $desc );
+    }
 }
 
 method run_test_in_comp (%params) {
     my $test = delete( $params{test} ) || die "must pass test";
     my $args = delete( $params{args} ) || {};
-    $self->add_comp( %params, src => '% $.cmeta->args->{_test}->($self);' );
+    $self->add_comp( %params, src => '% $.args->{_test}->($self);' );
     ( my $request_path = $params{path} ) =~ s/\.m$//;
     my @run_params = ( $request_path, %$args );
     $self->interp->run( @run_params, _test => $test );

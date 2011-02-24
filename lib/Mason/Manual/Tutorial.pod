@@ -9,7 +9,7 @@ Mason::Manual::Tutorial - Mason tutorial
 
 =head1 VERSION
 
-version 2.01
+version 2.02
 
 =head1 DESCRIPTION
 
@@ -108,7 +108,7 @@ L<Rose::DB::Object::Tutorial> for more information.
 First we install some modules.
 
     # Requires cpanm: http://search.cpan.org/perldoc?App::cpanminus
-    cpanm -S Date::Format DBD::SQLite Mason Mason::Plugin::PSGIHandler
+    cpanm -S Date::Format DBD::SQLite Mason Mason::Plugin::PSGIHandler Mason::Plugin::HTMLFilters
     cpanm -S Plack Plack::Middleware::Session Rose::DB::Object
 
 C<mason_psgi_setup>, which comes with the PSGI plugin, is the easiest way to
@@ -491,7 +491,7 @@ rather than a Mason component. >>
      5      my $session = $m->req->session;
      6      if ( !$.content || !$.title ) {
      7          $session->{message} = "Content and title required.";
-     8          $session->{form_data} = $.cmeta->args;
+     8          $session->{form_data} = $.args;
      9          $m->redirect('/new_article');
     10      }
     11      my $article = Blog::Article->new
@@ -538,9 +538,8 @@ Now, any page can place a message in the session, and it'll appear on just the
 next page.
 
 On line 8, we place the POST data in the session so that we can repopulate the
-form with it - we'll do that in the next chapter. L<C<< $.cmeta
->>|Mason::Component/cmeta> provides access to various meta-information about
-the component, such as its path and the arguments that were passed to it.
+form with it - we'll do that in the next chapter. C<< $.args >> is a special
+component attribute that contains all the arguments passed to the component.
 
 =head1 CHAPTER 8
 

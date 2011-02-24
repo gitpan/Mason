@@ -1,11 +1,9 @@
 package Mason::Test::Overrides::Component::StrictMoose;
 BEGIN {
-  $Mason::Test::Overrides::Component::StrictMoose::VERSION = '2.01';
+  $Mason::Test::Overrides::Component::StrictMoose::VERSION = '2.02';
 }
 use Moose::Exporter;
 use MooseX::StrictConstructor ();
-use strict;
-use warnings;
 use base qw(Mason::Component::Moose);
 Moose::Exporter->setup_import_methods();
 

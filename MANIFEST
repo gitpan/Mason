@@ -37,7 +37,7 @@ lib/Mason/CodeCache.pm
 lib/Mason/Compilation.pm
 lib/Mason/Component.pm
 lib/Mason/Component/ClassMeta.pm
-lib/Mason/Component/InstanceMeta.pm
+lib/Mason/Component/Import.pm
 lib/Mason/Component/Moose.pm
 lib/Mason/DynamicFilter.pm
 lib/Mason/Exceptions.pm

@@ -1,6 +1,6 @@
 package Mason::t::CompCalls;
 BEGIN {
-  $Mason::t::CompCalls::VERSION = '2.01';
+  $Mason::t::CompCalls::VERSION = '2.02';
 }
 use Test::Class::Most parent => 'Mason::Test::Class';
 
@@ -11,10 +11,10 @@ sub test_ampersand : Test(2) {
         path => '/support/amper_test.mi',
         src  => <<'EOF',
 amper_test.<p>
-% if (%{$self->cmeta->args}) {
+% if (%{$self->args}) {
 Arguments:<p>
-%   foreach my $key (sort keys %{$self->cmeta->args}) {
-<b><% $key %></b>: <% $self->cmeta->args->{$key} %><br>
+%   foreach my $key (sort keys %{$self->args}) {
+<b><% $key %></b>: <% $self->args->{$key} %><br>
 %   }
 % }
 EOF

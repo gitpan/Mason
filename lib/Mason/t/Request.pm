@@ -1,6 +1,6 @@
 package Mason::t::Request;
 BEGIN {
-  $Mason::t::Request::VERSION = '2.01';
+  $Mason::t::Request::VERSION = '2.02';
 }
 use Test::Class::Most parent => 'Mason::Test::Class';
 use Log::Any::Test;
@@ -71,6 +71,14 @@ sub test_page : Test(1) {
         path   => '/page/first.m',
         src    => '<% $m->page->cmeta->path %>; <& other.mi &>',
         expect => '/page/first.m; /page/first.m'
+    );
+}
+
+sub test_result_data : Test(1) {
+    my $self = shift;
+    $self->test_comp(
+        src         => '% $m->result->data->{color} = "red"',
+        expect_data => { color => "red" }
     );
 }
 

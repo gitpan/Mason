@@ -17,7 +17,11 @@
       "directory" : [
          "eg",
          "lib/Mason/t",
-         "lib/Mason/Test"
+         "lib/Mason/Test",
+         "lib/Mason/Plugin/Defer",
+         "lib/Mason/Plugin/DollarDot",
+         "lib/Mason/Plugin/LvalueAttributes",
+         "lib/Mason/Plugin/TidyObjectFiles"
       ],
       "file" : [
          "lib/Mason/Util.pm"
@@ -68,6 +72,6 @@
          "web" : "https://github.com/jonswar/perl-mason"
       }
    },
-   "version" : "2.01"
+   "version" : "2.02"
 }
 

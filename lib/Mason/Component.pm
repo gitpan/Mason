@@ -1,8 +1,7 @@
 package Mason::Component;
 BEGIN {
-  $Mason::Component::VERSION = '2.01';
+  $Mason::Component::VERSION = '2.02';
 }
-use Mason::Component::InstanceMeta;
 use Moose;    # no Mason::Moose - don't want StrictConstructor
 use MooseX::HasDefaults::RO;
 use Method::Signatures::Simple;
@@ -12,30 +11,20 @@ with 'Mason::Filters::Standard';
 
 # Passed attributes
 #
-has 'm' => ( required => 1, weak_ref => 1 );
+has 'args' => ( init_arg => undef, lazy_build => 1 );
+has 'm'    => ( required => 1, weak_ref => 1 );
 
 method BUILD ($params) {
     $self->{_orig_params} = $params;
 }
 
 method cmeta () {
-    if ( ref($self) ) {
-        if ( !$self->{cmeta} ) {
-            my $orig_params = $self->{_orig_params};
-            my $cmeta_args =
-              { map { /^cmeta|m$/ ? () : ( $_, $orig_params->{$_} ) } keys(%$orig_params) };
-            my $component_instance_meta_class = $self->m->interp->component_instance_meta_class;
-            $self->{cmeta} = $component_instance_meta_class->new(
-                args        => $cmeta_args,
-                class_cmeta => $self->_class_cmeta,
-                instance    => $self,
-            );
-        }
-        return $self->{cmeta};
-    }
-    else {
-        return $self->can('_class_cmeta') ? $self->_class_cmeta : undef;
-    }
+    return $self->can('_class_cmeta') ? $self->_class_cmeta : undef;
+}
+
+method _build_args () {
+    my $orig_params = $self->{_orig_params};
+    return { map { /^cmeta|m$/ ? () : ( $_, $orig_params->{$_} ) } keys(%$orig_params) };
 }
 
 # Default handle - call render
@@ -76,7 +65,7 @@ Mason::Component - Mason Component base class
 
 =head1 VERSION
 
-version 2.01
+version 2.02
 
 =head1 DESCRIPTION
 
@@ -85,7 +74,8 @@ indirectly, from this base class.
 
 A new instance of the component class is created whenever a component is called
 - whether via a top level request, C<< <& &> >> tags, or an << $m->comp >>
-call.
+call. A component instance is only valid for the Mason request in which it was
+created.
 
 We leave this class as devoid of built-in methods as possible, allowing you to
 create methods in your own components without worrying about name clashes.
@@ -129,61 +119,67 @@ render the page
 =back
 
 It should not output any content itself. By default, it simply calls
-L</render>.
+L<render|/render>.
 
 =for html <a name="render" />
 
 =item render
 
-This method is invoked from L</handle> on the page component. Its job is to
-output the full content of the page. By default, it simply calls L</wrap>.
+This method is invoked from L<handle|/handle> on the page component. Its job is
+to output the full content of the page. By default, it simply calls
+L<wrap|/wrap>.
 
 =for html <a name="wrap" />
 
 =item wrap
 
-This method is invoked from L</render> on the page component.  By convention,
-C<wrap> is an L<augmented|Moose::Manual::MethodModifiers/INNER AND AUGMENT>
-method, with each superclass calling the next subclass.  This is useful for
-cascading templates in which the top-most superclass generates the surrounding
-content.
+This method is invoked from L<render|/render> on the page component.  By
+convention, C<wrap> is an L<augmented|Moose::Manual::MethodModifiers/INNER AND
+AUGMENT> method, with each superclass calling the next subclass.  This is
+useful for cascading templates in which the top-most superclass generates the
+surrounding content.
 
 By default, C<wrap> simply calls C<< inner() >> to go to the next subclass, and
-then L</main> at the bottom subclass.
+then L<main|/main> at the bottom subclass.
 
 =for html <a name="main" />
 
 =item main
 
 This method is invoked when a non-page component is called, and from the
-default L</wrap> method as well. It consists of the code and output in the main
-part of the component that is not inside a C<< <%method> >> or C<< <%class> >>
-tag.
+default L<wrap|/wrap> method as well. It consists of the code and output in the
+main part of the component that is not inside a C<< <%method> >> or C<<
+<%class> >> tag.
 
 =back
 
 =head1 OTHER METHODS
 
-=for html <a name="m" />
+=for html <a name="args" />
 
 =over
 
-=item m
+=item args
 
-Returns the current request. This is also available via C<< $m >> inside Mason
-components.
+Returns the hashref of arguments passed to this component's constructor, e.g.
+the arguments passed in a L<component call|CALLING COMPONENTS>.
 
 =for html <a name="cmeta" />
 
 =item cmeta
 
-Returns a meta object associated with this component, containing information
-such as the component's path and source file. It will be a
-L<Mason::Component::InstanceMeta> object if called on a component instance, and
-a L<Mason::Component::ClassMeta> object if called on a component class; the
-former contains slightly more information.
+Returns the L<Mason::Component::ClassMeta> object associated with this
+component class, containing information such as the component's path and source
+file.
 
     my $path = $self->cmeta->path;
+
+=for html <a name="m" />
+
+=item m
+
+Returns the current request. This is also available via C<< $m >> inside Mason
+components.
 
 =back
 

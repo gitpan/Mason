@@ -1,6 +1,6 @@
 package Mason::Interp;
 BEGIN {
-  $Mason::Interp::VERSION = '2.01';
+  $Mason::Interp::VERSION = '2.02';
 }
 use Carp;
 use Devel::GlobalDestruction;
@@ -162,7 +162,13 @@ method _build_top_level_regex () {
         return qr/./;                     # matches everything
     }
     else {
-        my $regex = join( '|', @$extensions ) . '$';
+        my $regex = join( '|', @$extensions );
+        if ( my @other_names = grep { !/$regex/ } @{ $self->dhandler_names },
+            @{ $self->index_names } )
+        {
+            $regex .= '|(?:/(?:' . join( '|', @other_names ) . '))';
+        }
+        $regex = '(?:' . $regex . ')$';
         return qr/$regex/;
     }
 }
@@ -477,15 +483,11 @@ method _build_match_request_path ($interp:) {
     # Create a closure for efficiency - all this data is immutable for an interp.
     #
     my @dhandler_subpaths = map { "/$_" } @{ $interp->dhandler_names };
-    my $regex = '(/'
-      . join( "|",
-        @{ $interp->autobase_names },
-        @{ $interp->dhandler_names },
-        @{ $interp->index_names } )
-      . ')$';
-    my $ignore_file_regex = qr/$regex/;
-    my %is_dhandler_name  = map { ( $_, 1 ) } @{ $interp->dhandler_names };
-    my @autoextensions    = @{ $interp->autoextend_request_path };
+    my $ignore_file_regex =
+      '(/' . join( "|", @{ $interp->autobase_names }, @{ $interp->dhandler_names } ) . ')$';
+    $ignore_file_regex = qr/$ignore_file_regex/;
+    my %is_dhandler_name = map { ( $_, 1 ) } @{ $interp->dhandler_names };
+    my @autoextensions = @{ $interp->autoextend_request_path };
 
     return sub {
         my ( $request, $request_path ) = @_;
@@ -506,7 +508,7 @@ method _build_match_request_path ($interp:) {
                 next if $declined_paths->{$candidate_path};
                 if ( my $compc = $interp->load($candidate_path) ) {
                     if (
-                        ( $candidate_path =~ /$ignore_file_regex/ || $compc->cmeta->is_top_level )
+                        $compc->cmeta->is_top_level
                         && (   $path_info eq ''
                             || $compc->cmeta->is_dhandler
                             || $compc->allow_path_info )
@@ -696,16 +698,21 @@ method _source_file_for_path ($path) {
 #
 sub _define_class_override_methods {
     my %class_overrides = (
-        code_cache_class              => 'CodeCache',
-        compilation_class             => 'Compilation',
-        component_class               => 'Component',
-        component_moose_class         => 'Component::Moose',
-        component_class_meta_class    => 'Component::ClassMeta',
-        component_instance_meta_class => 'Component::InstanceMeta',
-        request_class                 => 'Request',
-        result_class                  => 'Result',
+        code_cache_class           => 'CodeCache',
+        compilation_class          => 'Compilation',
+        component_class            => 'Component',
+        component_moose_class      => 'Component::Moose',
+        component_class_meta_class => 'Component::ClassMeta',
+        component_import_class     => 'Component::Import',
+        request_class              => 'Request',
+        result_class               => 'Result',
     );
 
+    # e.g.
+    # $method_name        = component_moose_class
+    # $base_method_name   = base_component_moose_class
+    # $default_base_class = Mason::Component::Moose
+    #
     while ( my ( $method_name, $name ) = each(%class_overrides) ) {
         my $base_method_name   = "base_$method_name";
         my $default_base_class = "Mason::$name";
@@ -714,9 +721,11 @@ sub _define_class_override_methods {
         has $base_method_name => ( isa      => 'Str', default    => $default_base_class );
         __PACKAGE__->meta->add_method(
             "_build_$method_name" => sub {
-                my $self = shift;
-                return Mason::PluginManager->apply_plugins_to_class( $self->$base_method_name,
-                    $name, $self->plugins );
+                my $self       = shift;
+                my $base_class = $self->$base_method_name;
+                Class::MOP::load_class($base_class);
+                return Mason::PluginManager->apply_plugins_to_class( $base_class, $name,
+                    $self->plugins );
             }
         );
     }
@@ -736,7 +745,7 @@ Mason::Interp - Mason Interpreter
 
 =head1 VERSION
 
-version 2.01
+version 2.02
 
 =head1 SYNOPSIS
 
@@ -771,7 +780,7 @@ all) and only when other mechanisms (parameter passing, attributes, singletons)
 will not suffice. L<Catalyst::View::Mason2|Catalyst::View::Mason2>, for
 example, creates a C<< $c >> global set to the context object in each request.
 
-Set the values of globals with L</set_global> or L<Mason::Request/set_global>.
+Set the values of globals with L<set_global|/set_global>.
 
 =for html <a name="autobase_names" />
 
@@ -872,15 +881,16 @@ See L<Mason::Manual::Plugins>.
 
 =item out_method
 
-Default L<Request/out_method> passed to each new request.
+Default L<out_method|Request/out_method> passed to each new request.
 
 =for html <a name="pure_perl_extensions" />
 
 =item pure_perl_extensions
 
 A listref of file extensions of components to be considered as pure perl (see
-L<Mason::Manual::Syntax/Pure_Perl_Components>). Default is C<< ['.pm' >>. If an
-empty list is specified, then no components will be considered pure perl.
+L<Pure Perl Components|Mason::Manual::Syntax/Pure_Perl_Components>). Default is
+C<< ['.pm' >>. If an empty list is specified, then no components will be
+considered pure perl.
 
 =for html <a name="static_source" />
 
@@ -895,7 +905,7 @@ When true, Mason assumes that the component source tree is unchanging: it will
 not check component source files to determine if the memory cache or object
 file has expired.  This can save many file stats per request. However, in order
 to get Mason to recognize a component source change, you must touch the
-L</static_source_touch_file>.
+L<static_source_touch_file|/static_source_touch_file>.
 
 We recommend turning this mode on in your production sites if possible, if
 performance is of any concern.
@@ -905,9 +915,9 @@ performance is of any concern.
 =item static_source_touch_file
 
 Specifies a filename that Mason will check once at the beginning of every
-request when in L</static_source> mode. When the file timestamp changes
-(indicating that a component has changed), Mason will clear its in-memory
-component cache and recheck existing object files.
+request when in L<static_source|/static_source> mode. When the file timestamp
+changes (indicating that a component has changed), Mason will clear its
+in-memory component cache and recheck existing object files.
 
 =for html <a name="top_level_extensions" />
 
@@ -967,12 +977,11 @@ Specify alternate to L<Mason::Component::Moose|Mason::Component::Moose>
 
 Specify alternate to L<Mason::Component::ClassMeta|Mason::Component::ClassMeta>
 
-=for html <a name="base_component_instance_meta_class" />
+=for html <a name="base_component_import_class" />
 
-=item base_component_instance_meta_class
+=item base_component_import_class
 
-Specify alternate to
-L<Mason::Component::IntanceMeta|Mason::Component::IntanceMeta>
+Specify alternate to L<Mason::Component::Import|Mason::Component::Import>
 
 =for html <a name="base_request_class" />
 
@@ -1072,13 +1081,13 @@ to standard output:
 =item set_global (varname, value)
 
 Set the global I<varname> to I<value>. This will be visible in all components
-loaded by this interpreter. The variables must be on the L</allow_globals>
-list.
+loaded by this interpreter. The variables must be on the
+L<allow_globals|/allow_globals> list.
 
     $interp->set_global('$scalar', 5);
     $interp->set_global('$scalar2', $some_object);
 
-See also L<Mason::Request/set_global>.
+See also L<set_global|Mason::Request/set_global>.
 
 =back
 
@@ -1095,14 +1104,14 @@ their APIs stable.
 =item is_pure_perl_comp_path ($path)
 
 Determines whether I<$path> is a pure Perl component - by default, uses
-L</pure_perl_extensions>.
+L<pure_perl_extensions|/pure_perl_extensions>.
 
 =for html <a name="is_top_level_comp_path" />
 
 =item is_top_level_comp_path ($path)
 
 Determines whether I<$path> is a valid top-level component - by default, uses
-L</top_level_extensions>.
+L<top_level_extensions|/top_level_extensions>.
 
 =for html <a name="modify_loaded_class" />
 

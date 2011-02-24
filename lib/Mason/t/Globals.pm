@@ -1,6 +1,6 @@
 package Mason::t::Globals;
 BEGIN {
-  $Mason::t::Globals::VERSION = '2.01';
+  $Mason::t::Globals::VERSION = '2.02';
 }
 use Test::Class::Most parent => 'Mason::Test::Class';
 
