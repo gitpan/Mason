@@ -1,6 +1,6 @@
 package Mason::Interp;
 BEGIN {
-  $Mason::Interp::VERSION = '2.02';
+  $Mason::Interp::VERSION = '2.03';
 }
 use Carp;
 use Devel::GlobalDestruction;
@@ -745,7 +745,7 @@ Mason::Interp - Mason Interpreter
 
 =head1 VERSION
 
-version 2.02
+version 2.03
 
 =head1 SYNOPSIS
 

@@ -1,6 +1,6 @@
 package Mason::Plugin;
 BEGIN {
-  $Mason::Plugin::VERSION = '2.02';
+  $Mason::Plugin::VERSION = '2.03';
 }
 use Mason::PluginRole;
 use Mason::Util qw(can_load);

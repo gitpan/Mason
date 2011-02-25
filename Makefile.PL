@@ -33,7 +33,7 @@ my %WriteMakefileArgs = (
     'Guard' => '0',
     'IPC::System::Simple' => '0',
     'JSON' => '0',
-    'Log::Any' => '0',
+    'Log::Any' => '0.08',
     'Memoize' => '0',
     'Method::Signatures::Simple' => '0',
     'Moose' => '0.95',
@@ -42,7 +42,7 @@ my %WriteMakefileArgs = (
     'Scalar::Util' => '1.01',
     'Try::Tiny' => '0'
   },
-  'VERSION' => '2.02',
+  'VERSION' => '2.03',
   'test' => {
     'TESTS' => 't/*.t'
   }

@@ -1,6 +1,6 @@
 package Mason;
 BEGIN {
-  $Mason::VERSION = '2.02';
+  $Mason::VERSION = '2.03';
 }
 use Mason::Interp;
 use Mason::PluginManager;
@@ -38,7 +38,7 @@ Mason - Powerful, high-performance templating for the web and beyond
 
 =head1 VERSION
 
-version 2.02
+version 2.03
 
 =head1 SYNOPSIS
 

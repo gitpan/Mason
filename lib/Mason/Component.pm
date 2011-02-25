@@ -1,6 +1,6 @@
 package Mason::Component;
 BEGIN {
-  $Mason::Component::VERSION = '2.02';
+  $Mason::Component::VERSION = '2.03';
 }
 use Moose;    # no Mason::Moose - don't want StrictConstructor
 use MooseX::HasDefaults::RO;
@@ -65,7 +65,7 @@ Mason::Component - Mason Component base class
 
 =head1 VERSION
 
-version 2.02
+version 2.03
 
 =head1 DESCRIPTION
 

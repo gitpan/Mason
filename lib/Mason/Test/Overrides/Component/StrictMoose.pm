@@ -1,6 +1,6 @@
 package Mason::Test::Overrides::Component::StrictMoose;
 BEGIN {
-  $Mason::Test::Overrides::Component::StrictMoose::VERSION = '2.02';
+  $Mason::Test::Overrides::Component::StrictMoose::VERSION = '2.03';
 }
 use Moose::Exporter;
 use MooseX::StrictConstructor ();

@@ -43,7 +43,7 @@
             "Guard" : 0,
             "IPC::System::Simple" : 0,
             "JSON" : 0,
-            "Log::Any" : 0,
+            "Log::Any" : "0.08",
             "Memoize" : 0,
             "Method::Signatures::Simple" : 0,
             "Moose" : "0.95",
@@ -72,6 +72,6 @@
          "web" : "https://github.com/jonswar/perl-mason"
       }
    },
-   "version" : "2.02"
+   "version" : "2.03"
 }
 

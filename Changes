@@ -2,6 +2,14 @@ Revision history for Mason
 
 ** denotes an incompatible change
 
+2.03  Feb 24, 2011
+
+* Improvements
+  - Add -e option to bin/mason
+
+* Fixes
+  - Depend on Log::Any 0.08, for Log::Any::Test (David Wheeler)
+
 2.02  Feb 24, 2011
 
 * Fixes

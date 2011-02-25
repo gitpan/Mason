@@ -1,6 +1,6 @@
 package Mason::t::Request;
 BEGIN {
-  $Mason::t::Request::VERSION = '2.02';
+  $Mason::t::Request::VERSION = '2.03';
 }
 use Test::Class::Most parent => 'Mason::Test::Class';
 use Log::Any::Test;

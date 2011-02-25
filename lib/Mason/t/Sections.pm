@@ -1,6 +1,6 @@
 package Mason::t::Sections;
 BEGIN {
-  $Mason::t::Sections::VERSION = '2.02';
+  $Mason::t::Sections::VERSION = '2.03';
 }
 use Test::Class::Most parent => 'Mason::Test::Class';
 
