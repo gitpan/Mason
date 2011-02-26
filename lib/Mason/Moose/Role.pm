@@ -1,6 +1,6 @@
 package Mason::Moose::Role;
 BEGIN {
-  $Mason::Moose::Role::VERSION = '2.03';
+  $Mason::Moose::Role::VERSION = '2.04';
 }
 use Moose::Role                ();
 use Method::Signatures::Simple ();
@@ -27,7 +27,7 @@ Mason::Moose::Role - Mason Moose role policies
 
 =head1 VERSION
 
-version 2.03
+version 2.04
 
 =head1 SYNOPSIS
 

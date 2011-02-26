@@ -1,6 +1,6 @@
 package Mason::Request;
 BEGIN {
-  $Mason::Request::VERSION = '2.03';
+  $Mason::Request::VERSION = '2.04';
 }
 use Carp;
 use File::Basename;
@@ -163,10 +163,6 @@ method go () {
     $self->abort();
 }
 
-method has_path_info () {
-    return length( $self->path_info ) > 0;
-}
-
 method load ($path) {
     my $compc = $self->interp->load( $self->rel_to_abs($path) );
 }
@@ -197,7 +193,8 @@ method rel_to_abs ($path) {
 }
 
 method scomp () {
-    my $buf = $self->capture( sub { $self->comp(@_) } );
+    my @params = @_;
+    my $buf = $self->capture( sub { $self->comp(@params) } );
     return $buf;
 }
 
@@ -419,7 +416,7 @@ Mason::Request - Mason Request Class
 
 =head1 VERSION
 
-version 2.03
+version 2.04
 
 =head1 SYNOPSIS
 
@@ -676,8 +673,11 @@ Returns the page component originally called in the request.
 
 Returns the remainder of the request path beyond the path of the page
 component, with no leading slash. e.g. If a request for '/foo/bar/baz' resolves
-to "/foo.m", the path_info is "bar/baz". Will contain the empty string for an
-exact match.
+to "/foo.m", the path_info is "bar/baz". For an exact match, it will contain
+the empty string (never undef), so you can determine whether there's a
+path_info with
+
+    if ( length($m->path_info) )
 
 =for html <a name="rel_to_abs" />
 

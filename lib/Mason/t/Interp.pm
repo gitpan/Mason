@@ -1,13 +1,13 @@
 package Mason::t::Interp;
 BEGIN {
-  $Mason::t::Interp::VERSION = '2.03';
+  $Mason::t::Interp::VERSION = '2.04';
 }
 use Test::Class::Most parent => 'Mason::Test::Class';
 use Capture::Tiny qw(capture);
 
 { package MyInterp;
 BEGIN {
-  $MyInterp::VERSION = '2.03';
+  $MyInterp::VERSION = '2.04';
 } use Moose; extends 'Mason::Interp' }
 
 sub test_base_interp_class : Test(1) {
@@ -124,6 +124,14 @@ sub test_out_method : Test(15) {
     $buffer = '';
     $self->setup_interp( out_method => sub { print scalar( reverse( $_[0] ) ) } );
     $try->( undef, '', '', 'ih', 'print reverse' );
+}
+
+sub test_no_source_line_numbers : Test(2) {
+    my $self = shift;
+
+    $self->test_parse( src => "hi\n<%init>my \$d = 0</%init>", expect => [qr/\#line/] );
+    $self->setup_interp( no_source_line_numbers => 1 );
+    $self->test_parse( src => "hi\n<%init>my \$d = 0</%init>", expect => [qr/^(?!(?s:.*)\#line)/] );
 }
 
 1;

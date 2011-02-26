@@ -1,6 +1,6 @@
 package Mason::App;
 BEGIN {
-  $Mason::App::VERSION = '2.03';
+  $Mason::App::VERSION = '2.04';
 }
 use Cwd qw(realpath);
 use File::Basename;
@@ -78,7 +78,7 @@ Mason::App - Implementation of bin/mason
 
 =head1 VERSION
 
-version 2.03
+version 2.04
 
 =head1 DESCRIPTION
 

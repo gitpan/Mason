@@ -1,6 +1,6 @@
 package Mason::t::Plugins;
 BEGIN {
-  $Mason::t::Plugins::VERSION = '2.03';
+  $Mason::t::Plugins::VERSION = '2.04';
 }
 use Test::Class::Most parent => 'Mason::Test::Class';
 use Capture::Tiny qw(capture_merged);
@@ -41,28 +41,28 @@ sub test_strict_plugin : Test(2) {
 
 { package Mason::Test::Plugins::A;
 BEGIN {
-  $Mason::Test::Plugins::A::VERSION = '2.03';
+  $Mason::Test::Plugins::A::VERSION = '2.04';
 } use Moose; with 'Mason::Plugin'; }
 { package Mason::Plugin::B;
 BEGIN {
-  $Mason::Plugin::B::VERSION = '2.03';
+  $Mason::Plugin::B::VERSION = '2.04';
 }        use Moose; with 'Mason::Plugin'; }
 { package Mason::Plugin::C;
 BEGIN {
-  $Mason::Plugin::C::VERSION = '2.03';
+  $Mason::Plugin::C::VERSION = '2.04';
 }        use Moose; with 'Mason::Plugin'; }
 { package Mason::Plugin::D;
 BEGIN {
-  $Mason::Plugin::D::VERSION = '2.03';
+  $Mason::Plugin::D::VERSION = '2.04';
 }        use Moose; with 'Mason::Plugin'; }
 { package Mason::Plugin::E;
 BEGIN {
-  $Mason::Plugin::E::VERSION = '2.03';
+  $Mason::Plugin::E::VERSION = '2.04';
 }        use Moose; with 'Mason::Plugin'; }
 {
     package Mason::PluginBundle::F;
 BEGIN {
-  $Mason::PluginBundle::F::VERSION = '2.03';
+  $Mason::PluginBundle::F::VERSION = '2.04';
 }
     use Moose;
     with 'Mason::PluginBundle';
@@ -71,7 +71,7 @@ BEGIN {
 {
     package Mason::Test::PluginBundle::G;
 BEGIN {
-  $Mason::Test::PluginBundle::G::VERSION = '2.03';
+  $Mason::Test::PluginBundle::G::VERSION = '2.04';
 }
     use Moose;
     with 'Mason::PluginBundle';
@@ -80,7 +80,7 @@ BEGIN {
 {
     package Mason::Plugin::H;
 BEGIN {
-  $Mason::Plugin::H::VERSION = '2.03';
+  $Mason::Plugin::H::VERSION = '2.04';
 }
     use Moose;
     with 'Mason::Plugin';
@@ -89,7 +89,7 @@ BEGIN {
 {
     package Mason::PluginBundle::I;
 BEGIN {
-  $Mason::PluginBundle::I::VERSION = '2.03';
+  $Mason::PluginBundle::I::VERSION = '2.04';
 }
     use Moose;
     with 'Mason::PluginBundle';
@@ -102,7 +102,7 @@ BEGIN {
 {
     package Mason::PluginBundle::J;
 BEGIN {
-  $Mason::PluginBundle::J::VERSION = '2.03';
+  $Mason::PluginBundle::J::VERSION = '2.04';
 }
     use Moose;
     with 'Mason::PluginBundle';

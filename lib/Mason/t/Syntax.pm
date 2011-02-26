@@ -1,6 +1,6 @@
 package Mason::t::Syntax;
 BEGIN {
-  $Mason::t::Syntax::VERSION = '2.03';
+  $Mason::t::Syntax::VERSION = '2.04';
 }
 use Test::Class::Most parent => 'Mason::Test::Class';
 
@@ -66,6 +66,7 @@ sub test_empty_percents2 : Test(1) {
 some text,
 %
 % $m->print('foo, ');
+% $m->print(undef);
 and some more
 EOF
         expect => <<'EOF',
@@ -145,6 +146,22 @@ e = foo
 f = 7
 g = 8
 '
+    );
+}
+
+sub test_multiline_comment : Test(1) {
+    my $self = shift;
+
+    $self->test_comp(
+        src => '
+hi<%
+    # comment
+
+    # another comment
+
+%>bye
+',
+        expect => 'hibye',
     );
 }
 

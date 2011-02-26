@@ -1,6 +1,6 @@
 package Mason::Interp;
 BEGIN {
-  $Mason::Interp::VERSION = '2.03';
+  $Mason::Interp::VERSION = '2.04';
 }
 use Carp;
 use Devel::GlobalDestruction;
@@ -24,7 +24,7 @@ my $next_id = 0;
 
 # Passed attributes
 #
-has 'allow_globals'            => ( isa => 'ArrayRef[Str]', default => sub { [] } );
+has 'allow_globals'            => ( isa => 'ArrayRef[Str]', default => sub { [] }, trigger => sub { shift->allowed_globals_hash } );
 has 'autobase_names'           => ( isa => 'ArrayRef[Str]', lazy_build => 1 );
 has 'autoextend_request_path'  => ( isa => 'Mason::Types::Autoextend', coerce => 1, default => sub { [ '.pm', '.m' ] } );
 has 'comp_root'                => ( isa => 'Mason::Types::CompRoot', coerce => 1 );
@@ -44,7 +44,6 @@ has 'top_level_extensions'     => ( default => sub { ['.pm', '.m'] } );
 # Derived attributes
 #
 has 'allowed_globals_hash'  => ( init_arg => undef, lazy_build => 1 );
-has 'autobase_regex'        => ( init_arg => undef, lazy_build => 1 );
 has 'code_cache'            => ( init_arg => undef, lazy_build => 1 );
 has 'distinct_string_count' => ( init_arg => undef, default => 0 );
 has 'globals_package'       => ( init_arg => undef, lazy_build => 1 );
@@ -100,20 +99,8 @@ method _build_globals_package () {
     return "Mason::Globals" . $self->id;
 }
 
-method _build_ignore_file_regex () {
-    my $regex = '(/'
-      . join( "|", @{ $self->autobase_names }, @{ $self->dhandler_names }, @{ $self->index_names } )
-      . ')$';
-    return qr/$regex/;
-}
-
 method _build_autobase_names () {
     return [ "Base.m", "Base.pm" ];
-}
-
-method _build_autobase_regex () {
-    my $regex = '(' . join( "|", @{ $self->autobase_names } ) . ')$';
-    return qr/$regex/;
 }
 
 method _build_code_cache () {
@@ -536,7 +523,7 @@ method _parse_global_spec () {
     my $spec = shift;
     croak "only scalar globals supported at this time (not '$spec')" if $spec =~ /^[@%]/;
     $spec =~ s/^\$//;
-    die "'$spec' is not a valid global var name" unless $spec =~ qr/[[:alpha:]_]\w*/;
+    die "'$spec' is not a valid global var name" unless $spec =~ qr/^[[:alpha:]_]\w*$/;
     return ( '$', $spec );
 }
 
@@ -551,7 +538,14 @@ method _add_default_wrap_method ($compc) {
         my $code = sub {
             my $self = shift;
             if ( $self->cmeta->path eq $path ) {
-                $self->main(@_);
+                if ( $self->can('main') ) {
+                    $self->main(@_);
+                }
+                else {
+                    die sprintf(
+                        "component '%s' ('%s') was called but has no main method - did you forget to define 'main' or 'handle'?",
+                        $path, $compc->cmeta->source_file );
+                }
             }
             else {
                 $compc->_inner();
@@ -745,7 +739,7 @@ Mason::Interp - Mason Interpreter
 
 =head1 VERSION
 
-version 2.03
+version 2.04
 
 =head1 SYNOPSIS
 

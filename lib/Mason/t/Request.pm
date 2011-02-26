@@ -1,6 +1,6 @@
 package Mason::t::Request;
 BEGIN {
-  $Mason::t::Request::VERSION = '2.03';
+  $Mason::t::Request::VERSION = '2.04';
 }
 use Test::Class::Most parent => 'Mason::Test::Class';
 use Log::Any::Test;
@@ -9,6 +9,32 @@ use Log::Any qw($log);
 sub _get_current_comp_class {
     my $m = shift;
     return $m->current_comp_class;
+}
+
+sub test_add_cleanup : Test(2) {
+    my $self = shift;
+    my $foo  = 1;
+    $self->test_comp(
+        src => '
+% my $ref = $.args->{ref};
+% $m->add_cleanup(sub { $$ref++ });
+foo = <% $$ref %>
+',
+        args   => { ref => \$foo },
+        expect => 'foo = 1'
+    );
+    is( $foo, 2, "foo now 2" );
+}
+
+sub test_capture : Test(1) {
+    my $self = shift;
+    $self->run_test_in_comp(
+        test => sub {
+            my $comp = shift;
+            my $m    = $comp->m;
+            is( $m->capture( sub { print "abcde" } ), 'abcde' );
+        }
+    );
 }
 
 sub test_comp_exists : Test(1) {
@@ -64,6 +90,26 @@ sub test_log : Test(1) {
     );
 }
 
+sub test_notes : Test(1) {
+    my $self = shift;
+    $self->add_comp(
+        path => '/show',
+        src  => '
+<% $m->notes("foo") %>
+% $m->notes("foo", 3);
+',
+    );
+    $self->test_comp(
+        src => '
+% $m->notes("foo", 2);
+<% $m->notes("foo") %>
+<& /show &>
+<% $m->notes("foo") %>
+',
+        expect => "2\n\n2\n\n3\n",
+    );
+}
+
 sub test_page : Test(1) {
     my $self = shift;
     $self->add_comp( path => '/page/other.mi', src => '<% $m->page->cmeta->path %>' );
@@ -82,7 +128,20 @@ sub test_result_data : Test(1) {
     );
 }
 
-sub test_subrequest : Test(4) {
+sub test_scomp : Test(2) {
+    my $self = shift;
+    $self->add_comp( path => '/str', src => 'abcde' );
+    $self->run_test_in_comp(
+        test => sub {
+            my $comp = shift;
+            my $m    = $comp->m;
+            is( $m->scomp('/str'), 'abcde' );
+            is( $m->capture( sub { $m->scomp('/str') } ), '' );
+        }
+    );
+}
+
+sub test_subrequest : Test(6) {
     my $self = shift;
 
     my $reset_id = sub { Mason::Request->_reset_next_id };
@@ -111,6 +170,14 @@ id=1
     );
     $reset_id->();
     $self->test_comp(
+        path => '/subreq/go_with_req_params.m',
+        src  => '
+This should not get printed.
+<%perl>my $buf; $m->go({out_method => \$buf}, "/subreq/other", foo => 5)</%perl>',
+        expect => '',
+    );
+    $reset_id->();
+    $self->test_comp(
         path => '/subreq/visit.m',
         src  => '
 begin
@@ -126,6 +193,27 @@ id=1
 /subreq/other.m
 /subreq/other
 {foo => 5}
+id=0
+end
+',
+    );
+    $reset_id->();
+    $self->test_comp(
+        path => '/subreq/visit_with_req_params.m',
+        src  => '
+begin
+id=<% $m->id %>
+<%perl>my $buf; $m->visit({out_method => \$buf}, "/subreq/other", foo => 5); print uc($buf);</%perl>
+id=<% $m->id %>
+end
+',
+        expect => '
+begin
+id=0
+ID=1
+/SUBREQ/OTHER.M
+/SUBREQ/OTHER
+{FOO => 5}
 id=0
 end
 ',

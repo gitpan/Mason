@@ -9,7 +9,7 @@ Mason::Manual::Filters - Content filters in Mason
 
 =head1 VERSION
 
-version 2.03
+version 2.04
 
 =head1 DESCRIPTION
 

@@ -85,6 +85,7 @@ lib/Mason/Util.pm
 lib/Mason/t/Autobase.pm
 lib/Mason/t/Cache.pm
 lib/Mason/t/CompCalls.pm
+lib/Mason/t/Compilation.pm
 lib/Mason/t/ComponentMeta.pm
 lib/Mason/t/DollarDot.pm
 lib/Mason/t/Errors.pm
@@ -104,6 +105,7 @@ lib/Mason/t/StaticSource.pm
 lib/Mason/t/Syntax.pm
 t/Autobase.t
 t/CompCalls.t
+t/Compilation.t
 t/ComponentMeta.t
 t/Defer.t
 t/DollarDot.t

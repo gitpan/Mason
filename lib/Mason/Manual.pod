@@ -9,7 +9,7 @@ Mason::Manual - Index of Mason documentation
 
 =head1 VERSION
 
-version 2.03
+version 2.04
 
 =head1 MANUALS
 
