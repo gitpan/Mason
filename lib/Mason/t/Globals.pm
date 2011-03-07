@@ -1,10 +1,10 @@
 package Mason::t::Globals;
 BEGIN {
-  $Mason::t::Globals::VERSION = '2.04';
+  $Mason::t::Globals::VERSION = '2.05';
 }
 use Test::Class::Most parent => 'Mason::Test::Class';
 
-sub test_globals : Tests(2) {
+sub test_globals : Tests {
     my $self = shift;
     $self->setup_interp( allow_globals => [qw(scalar $scalar2)] );
     my $interp = $self->interp;

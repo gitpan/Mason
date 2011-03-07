@@ -2,11 +2,17 @@ NAME
     Mason - Powerful, high-performance templating for the web and beyond
 
 VERSION
-    version 2.04
+    version 2.05
 
 SYNOPSIS
+      foo.mc:
         % my $name = "Mason";
         Hello world! Welcome to <% $name %>.
+
+      #!/usr/local/bin/perl
+      use Mason;
+      my $mason = Mason->new(comp_root => '...');
+      print $mason->run('/foo')->output;
 
 DESCRIPTION
     Mason is a powerful Perl-based templating system, designed to generate

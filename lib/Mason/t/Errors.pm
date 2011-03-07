@@ -1,10 +1,10 @@
 package Mason::t::Errors;
 BEGIN {
-  $Mason::t::Errors::VERSION = '2.04';
+  $Mason::t::Errors::VERSION = '2.05';
 }
 use Test::Class::Most parent => 'Mason::Test::Class';
 
-sub test_comp_errors : Test(31) {
+sub test_comp_errors : Tests {
     my $self = shift;
     my $try  = sub {
         my ( $src, $expect_error, %extra ) = @_;
@@ -36,8 +36,10 @@ sub test_comp_errors : Test(31) {
     $try->( "<%\n\n5%>",                    qr/whitespace required before '%>' at .* line 3/ );
     $try->( "<%args>\n\$\$abc\n</%args>",   qr/Invalid attribute line '\$\$abc' at .* line 2/ );
     $try->( "<%args>\na\nb\n123\n</%args>", qr/Invalid attribute line '123' at .* line 4/ );
+    $try->( "<%args>\nargs\n</%args>",      qr/'args' is reserved.*attribute name/ );
     $try->( '<% $.Upper { %>Hi',       qr/<% { %> without matching <\/%>/ );
     $try->( '<%method 1a>Hi</%method>',     qr/Invalid method name '1a'/ );
+    $try->( '<%method cmeta>Hi</%method>',  qr/'cmeta' is reserved.*method name/ );
     $try->(
         "<%method a>Hi</%method>\n<%method a>Bye</%method>",
         qr/Duplicate definition of method 'a'/
@@ -58,19 +60,20 @@ sub test_comp_errors : Test(31) {
     $try->( "<%flags>\nextends => %foo\n</%flags>", qr/Global symbol/ );
     $try->( '<% $foo %>',      qr/Global symbol "\$foo" requires explicit package name/ );
     $try->( '%% die "bleah";', qr/bleah/ );
-    $try->( 'die "blargh";',   qr/blargh/, path => '/blargh.pm' );
+    $try->( 'die "blargh";',   qr/blargh/, path => '/blargh.mp' );
 }
 
-sub test_bad_allow_globals : Test(2) {
+sub test_bad_allow_globals : Tests {
     my $self = shift;
     throws_ok { $self->create_interp( allow_globals => ['@p'] ) } qr/only scalar globals supported/;
     throws_ok { $self->create_interp( allow_globals => ['i-'] ) } qr/not a valid/;
 }
 
-sub test_non_comp_errors : Test(1) {
+sub test_non_comp_errors : Tests {
     my $self = shift;
-    throws_ok( sub { $self->interp->_make_request()->current_comp_class },
-        qr/cannot determine current_comp_class/ );
+    throws_ok { $self->interp->_make_request()->current_comp_class }
+    qr/cannot determine current_comp_class/;
+    throws_ok { Mason->new() } qr/Attribute \(comp_root\) is required/;
 }
 
 1;

@@ -37,12 +37,12 @@ my %WriteMakefileArgs = (
     'Memoize' => '0',
     'Method::Signatures::Simple' => '0',
     'Moose' => '0.95',
-    'MooseX::HasDefaults' => '0',
-    'MooseX::StrictConstructor' => '0',
+    'MooseX::HasDefaults' => '0.03',
+    'MooseX::StrictConstructor' => '0.13',
     'Scalar::Util' => '1.01',
     'Try::Tiny' => '0'
   },
-  'VERSION' => '2.04',
+  'VERSION' => '2.05',
   'test' => {
     'TESTS' => 't/*.t'
   }

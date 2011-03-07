@@ -1,10 +1,10 @@
 package Mason::t::Skel;
 BEGIN {
-  $Mason::t::Skel::VERSION = '2.04';
+  $Mason::t::Skel::VERSION = '2.05';
 }
 use Test::Class::Most parent => 'Mason::Test::Class';
 
-sub test_ : Test(1) {
+sub test_ : Tests {
     my $self = shift;
     $self->test_comp(
         src => '

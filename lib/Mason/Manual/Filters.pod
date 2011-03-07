@@ -9,7 +9,7 @@ Mason::Manual::Filters - Content filters in Mason
 
 =head1 VERSION
 
-version 2.04
+version 2.05
 
 =head1 DESCRIPTION
 
@@ -60,7 +60,7 @@ be curried:
 A simple filter is just a subroutine that takes text as input and return the
 new text. Thus you can create one-off filters with anonymous subroutines:
 
-   <% sub { reverse($_[0]) } %>Hello</%>
+   <% sub { reverse($_[0]) } { %>Hello</%>
 
      ==> olleH
 
@@ -163,7 +163,7 @@ To use these in a component:
     ...
     </%>
 
-Or if you want them available to all components, put them in C<Base.pm> at the
+Or if you want them available to all components, put them in C<Base.mp> at the
 top of your component hierarchy, or in your application's C<Mason::Component>
 subclass.
 

@@ -1,6 +1,6 @@
 package Mason::t::Request;
 BEGIN {
-  $Mason::t::Request::VERSION = '2.04';
+  $Mason::t::Request::VERSION = '2.05';
 }
 use Test::Class::Most parent => 'Mason::Test::Class';
 use Log::Any::Test;
@@ -11,7 +11,7 @@ sub _get_current_comp_class {
     return $m->current_comp_class;
 }
 
-sub test_add_cleanup : Test(2) {
+sub test_add_cleanup : Tests {
     my $self = shift;
     my $foo  = 1;
     $self->test_comp(
@@ -26,7 +26,7 @@ foo = <% $$ref %>
     is( $foo, 2, "foo now 2" );
 }
 
-sub test_capture : Test(1) {
+sub test_capture : Tests {
     my $self = shift;
     $self->run_test_in_comp(
         test => sub {
@@ -37,60 +37,60 @@ sub test_capture : Test(1) {
     );
 }
 
-sub test_comp_exists : Test(1) {
+sub test_comp_exists : Tests {
     my $self = shift;
 
-    $self->add_comp( path => '/comp_exists/one.m', src => 'hi' );
+    $self->add_comp( path => '/comp_exists/one.mc', src => 'hi' );
     $self->test_comp(
-        path => '/comp_exists/two.m',
+        path => '/comp_exists/two.mc',
         src  => '
-% foreach my $path (qw(/comp_exists/one.m /comp_exists/two.m /comp_exists/three.m one.m two.m three.m)) {
+% foreach my $path (qw(/comp_exists/one.mc /comp_exists/two.mc /comp_exists/three.mc one.mc two.mc three.mc)) {
 <% $path %>: <% $m->comp_exists($path) ? "yes" : "no" %>
 % }
 ',
         expect => '
-/comp_exists/one.m: yes
-/comp_exists/two.m: yes
-/comp_exists/three.m: no
-one.m: yes
-two.m: yes
-three.m: no
+/comp_exists/one.mc: yes
+/comp_exists/two.mc: yes
+/comp_exists/three.mc: no
+one.mc: yes
+two.mc: yes
+three.mc: no
 ',
     );
 }
 
-sub test_current_comp_class : Test(1) {
+sub test_current_comp_class : Tests {
     shift->test_comp(
-        path   => '/current_comp_class.m',
+        path   => '/current_comp_class.mc',
         src    => '<% ' . __PACKAGE__ . '::_get_current_comp_class($m)->cmeta->path %>',
-        expect => '/current_comp_class.m'
+        expect => '/current_comp_class.mc'
     );
 }
 
-sub test_id : Test(3) {
+sub test_id : Tests {
     my $self = shift;
     $self->setup_dirs;
-    $self->add_comp( path => '/id.m', src => 'id=<% $m->id %>' );
+    $self->add_comp( path => '/id.mc', src => 'id=<% $m->id %>' );
     my ($id1) = ( $self->interp->run('/id')->output =~ /id=(\d+)/ );
     my ($id2) = ( $self->interp->run('/id')->output =~ /id=(\d+)/ );
     ok( $id1 != $id2 );
 }
 
-sub test_log : Test(1) {
+sub test_log : Tests {
     my $self = shift;
-    $self->add_comp( path => '/log/one.m', src => '% $m->log->info("message one")' );
+    $self->add_comp( path => '/log/one.mc', src => '% $m->log->info("message one")' );
     $self->run_test_in_comp(
-        path => '/log.m',
+        path => '/log.mc',
         test => sub {
             my $comp = shift;
             my $m    = $comp->m;
-            $m->comp('/log/one.m');
+            $m->comp('/log/one.mc');
             $log->contains_ok("message one");
         },
     );
 }
 
-sub test_notes : Test(1) {
+sub test_notes : Tests {
     my $self = shift;
     $self->add_comp(
         path => '/show',
@@ -110,17 +110,17 @@ sub test_notes : Test(1) {
     );
 }
 
-sub test_page : Test(1) {
+sub test_page : Tests {
     my $self = shift;
     $self->add_comp( path => '/page/other.mi', src => '<% $m->page->cmeta->path %>' );
     $self->test_comp(
-        path   => '/page/first.m',
+        path   => '/page/first.mc',
         src    => '<% $m->page->cmeta->path %>; <& other.mi &>',
-        expect => '/page/first.m; /page/first.m'
+        expect => '/page/first.mc; /page/first.mc'
     );
 }
 
-sub test_result_data : Test(1) {
+sub test_result_data : Tests {
     my $self = shift;
     $self->test_comp(
         src         => '% $m->result->data->{color} = "red"',
@@ -128,7 +128,7 @@ sub test_result_data : Test(1) {
     );
 }
 
-sub test_scomp : Test(2) {
+sub test_scomp : Tests {
     my $self = shift;
     $self->add_comp( path => '/str', src => 'abcde' );
     $self->run_test_in_comp(
@@ -141,14 +141,14 @@ sub test_scomp : Test(2) {
     );
 }
 
-sub test_subrequest : Test(6) {
+sub test_subrequest : Tests {
     my $self = shift;
 
     my $reset_id = sub { Mason::Request->_reset_next_id };
 
     $reset_id->();
     $self->add_comp(
-        path => '/subreq/other.m',
+        path => '/subreq/other.mc',
         src  => '
 id=<% $m->id %>
 <% $m->page->cmeta->path %>
@@ -157,20 +157,20 @@ id=<% $m->id %>
 ',
     );
     $self->test_comp(
-        path => '/subreq/go.m',
+        path => '/subreq/go.mc',
         src  => '
 This should not get printed.
 <%perl>$m->go("/subreq/other", foo => 5);</%perl>',
         expect => '
 id=1
-/subreq/other.m
+/subreq/other.mc
 /subreq/other
 {foo => 5}
 ',
     );
     $reset_id->();
     $self->test_comp(
-        path => '/subreq/go_with_req_params.m',
+        path => '/subreq/go_with_req_params.mc',
         src  => '
 This should not get printed.
 <%perl>my $buf; $m->go({out_method => \$buf}, "/subreq/other", foo => 5)</%perl>',
@@ -178,7 +178,7 @@ This should not get printed.
     );
     $reset_id->();
     $self->test_comp(
-        path => '/subreq/visit.m',
+        path => '/subreq/visit.mc',
         src  => '
 begin
 id=<% $m->id %>
@@ -190,7 +190,7 @@ end
 begin
 id=0
 id=1
-/subreq/other.m
+/subreq/other.mc
 /subreq/other
 {foo => 5}
 id=0
@@ -199,7 +199,7 @@ end
     );
     $reset_id->();
     $self->test_comp(
-        path => '/subreq/visit_with_req_params.m',
+        path => '/subreq/visit_with_req_params.mc',
         src  => '
 begin
 id=<% $m->id %>
@@ -211,7 +211,7 @@ end
 begin
 id=0
 ID=1
-/SUBREQ/OTHER.M
+/SUBREQ/OTHER.MC
 /SUBREQ/OTHER
 {FOO => 5}
 id=0
@@ -225,7 +225,7 @@ end
     is(
         $buf, '
 id=1
-/subreq/other.m
+/subreq/other.mc
 /subreq/other
 {foo => 5}
 ', 'output in buf'

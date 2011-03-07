@@ -1,10 +1,10 @@
 package Mason::t::DollarDot;
 BEGIN {
-  $Mason::t::DollarDot::VERSION = '2.04';
+  $Mason::t::DollarDot::VERSION = '2.05';
 }
 use Test::Class::Most parent => 'Mason::Test::Class';
 
-sub test_dollardot : Test(1) {
+sub test_dollardot : Tests {
     my $self = shift;
     $self->test_comp(
         src => '

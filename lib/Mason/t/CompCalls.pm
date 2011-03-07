@@ -1,10 +1,10 @@
 package Mason::t::CompCalls;
 BEGIN {
-  $Mason::t::CompCalls::VERSION = '2.04';
+  $Mason::t::CompCalls::VERSION = '2.05';
 }
 use Test::Class::Most parent => 'Mason::Test::Class';
 
-sub test_ampersand : Test(2) {
+sub test_ampersand : Tests {
     my $self = shift;
 
     $self->add_comp(
@@ -21,7 +21,7 @@ EOF
     );
 
     $self->test_comp(
-        path => '/support/amper_call.m',
+        path => '/support/amper_call.mc',
         src  => <<'EOF',
 <&/support/amper_test.mi&>
 <& amper_test.mi &>

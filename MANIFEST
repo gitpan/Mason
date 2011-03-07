@@ -48,6 +48,7 @@ lib/Mason/Manual/Admin.pod
 lib/Mason/Manual/Components.pod
 lib/Mason/Manual/Cookbook.pod
 lib/Mason/Manual/Filters.pod
+lib/Mason/Manual/Intro.pod
 lib/Mason/Manual/Plugins.pod
 lib/Mason/Manual/RequestDispatch.pod
 lib/Mason/Manual/Syntax.pod
@@ -103,6 +104,7 @@ lib/Mason/t/Sections.pm
 lib/Mason/t/Skel.pm
 lib/Mason/t/StaticSource.pm
 lib/Mason/t/Syntax.pm
+lib/Mason/t/Util.pm
 t/Autobase.t
 t/CompCalls.t
 t/Compilation.t
@@ -122,4 +124,5 @@ t/Sanity.t
 t/Sections.t
 t/StaticSource.t
 t/Syntax.t
+t/Util.t
 t/mason-app.t

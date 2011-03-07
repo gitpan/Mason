@@ -38,11 +38,11 @@ requires:
   Memoize: 0
   Method::Signatures::Simple: 0
   Moose: 0.95
-  MooseX::HasDefaults: 0
-  MooseX::StrictConstructor: 0
+  MooseX::HasDefaults: 0.03
+  MooseX::StrictConstructor: 0.13
   Scalar::Util: 1.01
   Try::Tiny: 0
 resources:
   bugtracker: http://rt.cpan.org/NoAuth/Bugs.html?Dist=Mason
   repository: git://github.com/jonswar/perl-mason.git
-version: 2.04
+version: 2.05

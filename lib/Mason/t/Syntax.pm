@@ -1,10 +1,10 @@
 package Mason::t::Syntax;
 BEGIN {
-  $Mason::t::Syntax::VERSION = '2.04';
+  $Mason::t::Syntax::VERSION = '2.05';
 }
 use Test::Class::Most parent => 'Mason::Test::Class';
 
-sub test_replace : Test(1) {
+sub test_replace : Tests {
     shift->test_comp(
         src => <<'EOF',
 <BODY>
@@ -19,7 +19,7 @@ EOF
     );
 }
 
-sub test_percent : Test(1) {
+sub test_percent : Tests {
     shift->test_comp(
         src => <<'EOF',
 <BODY>
@@ -35,7 +35,7 @@ EOF
     );
 }
 
-sub test_fake_percent : Test(1) {
+sub test_fake_percent : Tests {
     shift->test_comp(
         src => <<'EOF',
 some text, a %, and some text
@@ -46,7 +46,7 @@ EOF
     );
 }
 
-sub test_empty_percents : Test(1) {
+sub test_empty_percents : Tests {
     shift->test_comp(
         src => <<'EOF',
 some text,
@@ -60,7 +60,7 @@ EOF
     );
 }
 
-sub test_empty_percents2 : Test(1) {
+sub test_empty_percents2 : Tests {
     shift->test_comp(
         src => <<'EOF',
 some text,
@@ -76,7 +76,7 @@ EOF
     );
 }
 
-sub test_double_percent : Test(1) {
+sub test_double_percent : Tests {
     shift->test_comp(
         src => <<'EOF',
 <%class>
@@ -100,25 +100,25 @@ EOF
     );
 }
 
-sub test_pure_perl : Test(1) {
+sub test_pure_perl : Tests {
     shift->test_comp(
-        path   => '/pureperl.pm',
+        path   => '/pureperl.mp',
         src    => 'sub main { print "hello from main" }',
         expect => 'hello from main',
     );
 }
 
-sub test_attr : Test(1) {
+sub test_args : Tests {
     my $self = shift;
     $self->add_comp(
-        path => '/attr.m',
+        path => '/args.mc',
         src  => '
 <%args>
 a
 b # comment
 
 # comment
-c=>5
+ c=>5
 d => 6
 e => "foo" # comment
 
@@ -136,7 +136,7 @@ g = <% $.g %>
 ',
     );
     $self->test_comp(
-        src    => '<& /attr.m, a => 3, b => 4 &>',
+        src    => '<& /args.mc, a => 3, b => 4 &>',
         expect => '
 a = 3
 b = 4
@@ -149,7 +149,7 @@ g = 8
     );
 }
 
-sub test_multiline_comment : Test(1) {
+sub test_multiline_comment : Tests {
     my $self = shift;
 
     $self->test_comp(
@@ -165,13 +165,14 @@ hi<%
     );
 }
 
-sub test_shared : Test(3) {
+sub test_shared : Tests {
     shift->test_parse(
         src => '
 <%shared>
-$.foo
-$.bar => "something"
+$.foo  # a comment
+ $.bar => "something"
 $.baz => ( isa => "Num", default => 5 )
+# another comment
 </%shared>
 ',
         expect => [
@@ -182,7 +183,7 @@ $.baz => ( isa => "Num", default => 5 )
     );
 }
 
-sub test_dollar_dot : Test(1) {
+sub test_dollar_dot : Tests {
     shift->test_comp(
         src => '
 <%args>
@@ -211,7 +212,7 @@ bar = 6
     );
 }
 
-sub test_dollar_m : Test(1) {
+sub test_dollar_m : Tests {
     my $self = shift;
     $self->test_comp(
         src => '

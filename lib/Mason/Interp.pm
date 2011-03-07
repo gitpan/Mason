@@ -1,6 +1,6 @@
 package Mason::Interp;
 BEGIN {
-  $Mason::Interp::VERSION = '2.04';
+  $Mason::Interp::VERSION = '2.05';
 }
 use Carp;
 use Devel::GlobalDestruction;
@@ -14,7 +14,7 @@ use Mason::Request;
 use Mason::Result;
 use Mason::Types;
 use Mason::Util
-  qw(catdir catfile find_wanted first_index is_absolute mason_canon_path touch_file uniq write_file);
+  qw(catdir catfile combine_similar_paths find_wanted first_index is_absolute mason_canon_path touch_file uniq write_file);
 use Memoize;
 use Moose::Util::TypeConstraints;
 use Mason::Moose;
@@ -26,8 +26,8 @@ my $next_id = 0;
 #
 has 'allow_globals'            => ( isa => 'ArrayRef[Str]', default => sub { [] }, trigger => sub { shift->allowed_globals_hash } );
 has 'autobase_names'           => ( isa => 'ArrayRef[Str]', lazy_build => 1 );
-has 'autoextend_request_path'  => ( isa => 'Mason::Types::Autoextend', coerce => 1, default => sub { [ '.pm', '.m' ] } );
-has 'comp_root'                => ( isa => 'Mason::Types::CompRoot', coerce => 1 );
+has 'autoextend_request_path'  => ( isa => 'Bool', default => 1 );
+has 'comp_root'                => ( required => 1, isa => 'Mason::Types::CompRoot', coerce => 1 );
 has 'component_class_prefix'   => ( lazy_build => 1 );
 has 'data_dir'                 => ( lazy_build => 1 );
 has 'dhandler_names'           => ( isa => 'ArrayRef[Str]', lazy_build => 1 );
@@ -36,10 +36,10 @@ has 'mason_root_class'         => ( required => 1 );
 has 'no_source_line_numbers'   => ( default => 0 );
 has 'object_file_extension'    => ( default => '.mobj' );
 has 'plugins'                  => ( default => sub { [] } );
-has 'pure_perl_extensions'     => ( default => sub { ['.pm'] } );
+has 'pure_perl_extensions'     => ( default => sub { ['.mp'] } );
 has 'static_source' => ( );
 has 'static_source_touch_file' => ( );
-has 'top_level_extensions'     => ( default => sub { ['.pm', '.m'] } );
+has 'top_level_extensions'     => ( default => sub { ['.mc', '.mp'] } );
 
 # Derived attributes
 #
@@ -49,15 +49,9 @@ has 'distinct_string_count' => ( init_arg => undef, default => 0 );
 has 'globals_package'       => ( init_arg => undef, lazy_build => 1 );
 has 'id'                    => ( init_arg => undef, default => sub { $next_id++ } );
 has 'match_request_path'    => ( init_arg => undef, lazy_build => 1 );
-has 'named_block_regex'     => ( init_arg => undef, lazy_build => 1 );
-has 'named_block_types'     => ( init_arg => undef, lazy_build => 1 );
 has 'pure_perl_regex'       => ( lazy_build => 1 );
 has 'request_params'        => ( init_arg => undef );
 has 'top_level_regex'       => ( lazy_build => 1 );
-has 'unnamed_block_regex'   => ( init_arg => undef, lazy_build => 1 );
-has 'unnamed_block_types'   => ( init_arg => undef, lazy_build => 1 );
-has 'valid_flags'           => ( init_arg => undef, lazy_build => 1 );
-has 'valid_flags_hash'      => ( init_arg => undef, lazy_build => 1 );
 
 # Class overrides
 #
@@ -100,7 +94,7 @@ method _build_globals_package () {
 }
 
 method _build_autobase_names () {
-    return [ "Base.m", "Base.pm" ];
+    return [ map { "Base" . $_ } @{ $self->top_level_extensions } ];
 }
 
 method _build_code_cache () {
@@ -121,15 +115,6 @@ method _build_dhandler_names () {
 
 method _build_index_names () {
     return [ map { "index" . $_ } @{ $self->top_level_extensions } ];
-}
-
-method _build_named_block_regex () {
-    my $re = join '|', @{ $self->named_block_types };
-    return qr/$re/i;
-}
-
-method _build_named_block_types () {
-    return [qw(after augment around before filter method override)];
 }
 
 method _build_pure_perl_regex () {
@@ -158,23 +143,6 @@ method _build_top_level_regex () {
         $regex = '(?:' . $regex . ')$';
         return qr/$regex/;
     }
-}
-
-method _build_unnamed_block_regex () {
-    my $re = join '|', @{ $self->unnamed_block_types };
-    return qr/$re/i;
-}
-
-method _build_unnamed_block_types () {
-    return [qw(args class doc flags init perl shared text)];
-}
-
-method _build_valid_flags () {
-    return [qw(extends)];
-}
-
-method _build_valid_flags_hash () {
-    return { map { ( $_, 1 ) } @{ $self->valid_flags } };
 }
 
 #
@@ -459,11 +427,11 @@ method write_object_file ($object_file, $object_contents) {
 }
 
 # Given /foo/bar, look for (by default):
-#   /foo/bar/index.{pm,m},
-#   /foo/bar/dhandler.{pm,m},
-#   /foo/bar.{pm,m},
-#   /dhandler.{pm,m}
-#   /foo.{pm,m}
+#   /foo/bar/index.{mp,mc},
+#   /foo/bar/dhandler.{mp,mc},
+#   /foo/bar.{mp,mc},
+#   /dhandler.{mp,mc},
+#   /foo.{mp,mc}
 #
 method _build_match_request_path ($interp:) {
 
@@ -474,7 +442,7 @@ method _build_match_request_path ($interp:) {
       '(/' . join( "|", @{ $interp->autobase_names }, @{ $interp->dhandler_names } ) . ')$';
     $ignore_file_regex = qr/$ignore_file_regex/;
     my %is_dhandler_name = map { ( $_, 1 ) } @{ $interp->dhandler_names };
-    my @autoextensions = @{ $interp->autoextend_request_path };
+    my @autoextensions = $interp->autoextend_request_path ? @{ $interp->top_level_extensions } : ();
 
     return sub {
         my ( $request, $request_path ) = @_;
@@ -482,6 +450,7 @@ method _build_match_request_path ($interp:) {
         my $declined_paths = $request->declined_paths;
         my @index_subpaths = map { "/$_" } @{ $interp->index_names };
         my $path           = $request_path;
+        my @tried_paths;
 
         while (1) {
             my @candidate_paths =
@@ -491,6 +460,7 @@ method _build_match_request_path ($interp:) {
                 ( grep { !/$ignore_file_regex/ } map { $path . $_ } @autoextensions ),
                 ( map { $path . $_ } ( @index_subpaths, @dhandler_subpaths ) )
               );
+            push( @tried_paths, @candidate_paths );
             foreach my $candidate_path (@candidate_paths) {
                 next if $declined_paths->{$candidate_path};
                 if ( my $compc = $interp->load($candidate_path) ) {
@@ -506,7 +476,7 @@ method _build_match_request_path ($interp:) {
                     }
                 }
             }
-            return undef if $path eq '/';
+            $interp->_top_level_not_found( $request_path, \@tried_paths ) if $path eq '/';
             my $name = basename($path);
             $path_info = length($path_info) ? "$name/$path_info" : $name;
             $path = dirname($path);
@@ -606,9 +576,9 @@ method _construct_distinct_string_for_number ($number) {
 
 method _default_parent_compc ($orig_path) {
 
-    # Given /foo/bar.m, look for (by default):
-    #   /foo/Base.pm, /foo/Base.m,
-    #   /Base.pm, /Base.m
+    # Given /foo/bar.mc, look for (by default):
+    #   /foo/Base.mp, /foo/Base.mc,
+    #   /Base.mp, /Base.mc
     #
     # Split path into dir_path and base_name - validate that it has a
     # starting slash and ends with at least one non-slash character
@@ -686,6 +656,20 @@ method _source_file_for_path ($path) {
     return undef;
 }
 
+method _top_level_not_found ($path, $tried_paths) {
+    my @combined_paths = combine_similar_paths(@$tried_paths);
+    Mason::Exception::TopLevelNotFound->throw(
+        error => sprintf(
+            "could not resolve request path '%s'; searched for components (%s) under %s\n",
+            $path,
+            join( ", ", map { "'$_'" } @combined_paths ),
+            @{ $self->comp_root } > 1
+            ? "component roots " . join( ", ", map { "'$_'" } @{ $self->comp_root } )
+            : "component root '" . $self->comp_root->[0] . "'"
+        )
+    );
+}
+
 #
 # Class overrides. Put here at the bottom because it strangely messes up
 # Perl line numbering if at the top.
@@ -739,7 +723,7 @@ Mason::Interp - Mason Interpreter
 
 =head1 VERSION
 
-version 2.04
+version 2.05
 
 =head1 SYNOPSIS
 
@@ -782,25 +766,25 @@ Set the values of globals with L<set_global|/set_global>.
 
 Array reference of L<autobase|Mason::Manual/Autobase components> filenames to
 check in order when determining a component's superclass. Default is C<<
-["Base.pm", "Base.m"] >>.
+["Base.mp", "Base.mc"] >>.
 
 =for html <a name="autoextend_request_path" />
 
 =item autoextend_request_path
 
-Array reference of extensions to automatically add to the request path when
-searching for a matching page component. Defaults to [".pm", ".m"]. An empty
-list, or a false value, means do no autoextending.
+Whether to automatically add the L<top level extensions|/top_level_extensions>
+(by default ".mp" and ".mc") to the request path when searching for a matching
+page component. Defaults to true.
 
 =for html <a name="comp_root" />
 
 =item comp_root
 
-The component root marks the top of your component hierarchy and defines how
-component paths are translated into real file paths. For example, if your
-component root is F</usr/local/httpd/docs>, a component path of
-F</products/sales.m> translates to the file
-F</usr/local/httpd/docs/products/sales.m>.
+Required. The component root marks the top of your component hierarchy and
+defines how component paths are translated into real file paths. For example,
+if your component root is F</usr/local/httpd/docs>, a component path of
+F</products/sales.mc> translates to the file
+F</usr/local/httpd/docs/products/sales.mc>.
 
 This parameter may be either a single path or an array reference of paths. If
 it is an array reference, the paths will be searched in the provided order
@@ -830,7 +814,7 @@ will hurt performance as Mason will have to recompile components on each run.
 =item dhandler_names
 
 Array reference of dhandler file names to check in order when resolving a
-top-level path. Default is C<< ["dhandler.pm", "dhandler.m"] >>. An empty list
+top-level path. Default is C<< ["dhandler.mp", "dhandler.mc"] >>. An empty list
 disables this feature.
 
 =for html <a name="index_names" />
@@ -838,7 +822,7 @@ disables this feature.
 =item index_names
 
 Array reference of index file names to check in order when resolving a
-top-level path. Default is C<< ["index.pm", "index.m"] >>. An empty list
+top-level path. Default is C<< ["index.mp", "index.mc"] >>. An empty list
 disables this feature.
 
 =for html <a name="no_source_line_numbers" />
@@ -883,7 +867,7 @@ Default L<out_method|Request/out_method> passed to each new request.
 
 A listref of file extensions of components to be considered as pure perl (see
 L<Pure Perl Components|Mason::Manual::Syntax/Pure_Perl_Components>). Default is
-C<< ['.pm' >>. If an empty list is specified, then no components will be
+C<< ['.mp'] >>. If an empty list is specified, then no components will be
 considered pure perl.
 
 =for html <a name="static_source" />
@@ -919,18 +903,17 @@ in-memory component cache and recheck existing object files.
 
 A listref of file extensions of components to be considered "top level",
 accessible directly from C<< $interp->run >> or a web request. Default is C<<
-['.pm', '.m'] >>. If an empty list is specified, then there will be I<no>
+['.mp', '.mc'] >>. If an empty list is specified, then there will be I<no>
 restriction; that is, I<all> components will be considered top level.
 
 =back
 
 =head1 CUSTOM MASON CLASSES
 
-The Interp is responsible, directly or indirectly, for creating all other core
-Mason objects. You can specify alternate classes to use instead of the default
+These parameters specify alternate classes to use instead of the default
 Mason:: classes.
 
-For example, to specify your own Compilation base class:
+For example, to use your own Compilation base class:
 
     my $interp = Mason->new(base_compilation_class => 'MyApp::Mason::Compilation', ...);
 
@@ -1003,7 +986,7 @@ Returns a list of distinct component paths under I<dir_path>, which defaults to
 '/' if not provided.  For example,
 
    $interp->all_paths('/foo/bar')
-      => ('/foo/bar/baz.m', '/foo/bar/blargh.m')
+      => ('/foo/bar/baz.mc', '/foo/bar/blargh.mc')
 
 Note that these are all component paths, not filenames, and all component roots
 are searched if there are multiple ones.
@@ -1034,8 +1017,8 @@ Empties the component cache and removes all component classes.
 
 Returns a list of all component paths matching the glob I<pattern>. e.g.
 
-   $interp->glob_paths('/foo/b*.m')
-      => ('/foo/bar.m', '/foo/baz.m')
+   $interp->glob_paths('/foo/b*.mc')
+      => ('/foo/bar.mc', '/foo/baz.mc')
 
 Note that these are all component paths, not filenames, and all component roots
 are searched if there are multiple ones.

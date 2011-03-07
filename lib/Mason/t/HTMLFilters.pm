@@ -1,10 +1,10 @@
 package Mason::t::HTMLFilters;
 BEGIN {
-  $Mason::t::HTMLFilters::VERSION = '2.04';
+  $Mason::t::HTMLFilters::VERSION = '2.05';
 }
 use Test::Class::Most parent => 'Mason::Test::Class';
 
-sub test_html_filters : Test(4) {
+sub test_html_filters : Tests {
     my $self = shift;
     $self->setup_interp( plugins => [ '@Default', 'HTMLFilters' ] );
     $self->test_comp( src => '<% "<a>" | HTML %>',         expect => '&lt;a&gt;' );

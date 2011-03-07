@@ -9,7 +9,7 @@ Mason::Manual::Admin - Information for Mason administrators
 
 =head1 VERSION
 
-version 2.04
+version 2.05
 
 =head1 SETUP
 

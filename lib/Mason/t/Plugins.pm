@@ -1,12 +1,12 @@
 package Mason::t::Plugins;
 BEGIN {
-  $Mason::t::Plugins::VERSION = '2.04';
+  $Mason::t::Plugins::VERSION = '2.05';
 }
 use Test::Class::Most parent => 'Mason::Test::Class';
 use Capture::Tiny qw(capture_merged);
 use Mason::Util qw(dump_one_line);
 
-sub test_notify_plugin : Test(5) {
+sub test_notify_plugin : Tests {
     my $self = shift;
 
     $self->setup_interp(
@@ -16,7 +16,7 @@ sub test_notify_plugin : Test(5) {
     $self->add_comp( path => '/test_plugin_support.mi', src => 'hi' );
     my $output = capture_merged {
         $self->test_comp(
-            path   => '/test_plugin.m',
+            path   => '/test_plugin.mc',
             src    => '<& test_plugin_support.mi &>',
             expect => 'hi'
         );
@@ -26,43 +26,43 @@ sub test_notify_plugin : Test(5) {
     $like->(qr/starting interp run/);
     $like->(qr/starting request run - \/test_plugin/);
     $like->(qr/starting request comp - test_plugin_support.mi/);
-    $like->(qr/starting compilation parse - \/test_plugin.m/);
+    $like->(qr/starting compilation parse - \/test_plugin.mc/);
 }
 
-sub test_strict_plugin : Test(2) {
+sub test_strict_plugin : Tests {
     my $self = shift;
 
     $self->setup_interp(
         base_component_moose_class => 'Mason::Test::Overrides::Component::StrictMoose', );
-    $self->add_comp( path => '/test_strict_plugin.m', src => 'hi' );
+    $self->add_comp( path => '/test_strict_plugin.mc', src => 'hi' );
     lives_ok { $self->interp->run('/test_strict_plugin') };
     throws_ok { $self->interp->run( '/test_strict_plugin', foo => 5 ) } qr/Found unknown attribute/;
 }
 
 { package Mason::Test::Plugins::A;
 BEGIN {
-  $Mason::Test::Plugins::A::VERSION = '2.04';
+  $Mason::Test::Plugins::A::VERSION = '2.05';
 } use Moose; with 'Mason::Plugin'; }
 { package Mason::Plugin::B;
 BEGIN {
-  $Mason::Plugin::B::VERSION = '2.04';
+  $Mason::Plugin::B::VERSION = '2.05';
 }        use Moose; with 'Mason::Plugin'; }
 { package Mason::Plugin::C;
 BEGIN {
-  $Mason::Plugin::C::VERSION = '2.04';
+  $Mason::Plugin::C::VERSION = '2.05';
 }        use Moose; with 'Mason::Plugin'; }
 { package Mason::Plugin::D;
 BEGIN {
-  $Mason::Plugin::D::VERSION = '2.04';
+  $Mason::Plugin::D::VERSION = '2.05';
 }        use Moose; with 'Mason::Plugin'; }
 { package Mason::Plugin::E;
 BEGIN {
-  $Mason::Plugin::E::VERSION = '2.04';
+  $Mason::Plugin::E::VERSION = '2.05';
 }        use Moose; with 'Mason::Plugin'; }
 {
     package Mason::PluginBundle::F;
 BEGIN {
-  $Mason::PluginBundle::F::VERSION = '2.04';
+  $Mason::PluginBundle::F::VERSION = '2.05';
 }
     use Moose;
     with 'Mason::PluginBundle';
@@ -71,7 +71,7 @@ BEGIN {
 {
     package Mason::Test::PluginBundle::G;
 BEGIN {
-  $Mason::Test::PluginBundle::G::VERSION = '2.04';
+  $Mason::Test::PluginBundle::G::VERSION = '2.05';
 }
     use Moose;
     with 'Mason::PluginBundle';
@@ -80,7 +80,7 @@ BEGIN {
 {
     package Mason::Plugin::H;
 BEGIN {
-  $Mason::Plugin::H::VERSION = '2.04';
+  $Mason::Plugin::H::VERSION = '2.05';
 }
     use Moose;
     with 'Mason::Plugin';
@@ -89,7 +89,7 @@ BEGIN {
 {
     package Mason::PluginBundle::I;
 BEGIN {
-  $Mason::PluginBundle::I::VERSION = '2.04';
+  $Mason::PluginBundle::I::VERSION = '2.05';
 }
     use Moose;
     with 'Mason::PluginBundle';
@@ -102,7 +102,7 @@ BEGIN {
 {
     package Mason::PluginBundle::J;
 BEGIN {
-  $Mason::PluginBundle::J::VERSION = '2.04';
+  $Mason::PluginBundle::J::VERSION = '2.05';
 }
     use Moose;
     with 'Mason::PluginBundle';
@@ -112,7 +112,7 @@ BEGIN {
     }
 }
 
-sub test_plugin_specs : Test(9) {
+sub test_plugin_specs : Tests {
     my $self = shift;
 
     require Mason::PluginBundle::Default;
@@ -120,7 +120,7 @@ sub test_plugin_specs : Test(9) {
       or die "no default plugins";
     my $test = sub {
         my ( $plugin_list, $expected_plugins ) = @_;
-        my $interp = Mason->new( plugins => $plugin_list );
+        my $interp = Mason->new( comp_root => $self->comp_root, plugins => $plugin_list );
         my $got_plugins =
           [ map { /Mason::Plugin::/ ? substr( $_, 15 ) : $_ } @{ $interp->plugins } ];
         cmp_deeply(

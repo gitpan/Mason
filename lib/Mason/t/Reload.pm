@@ -1,15 +1,15 @@
 package Mason::t::Reload;
 BEGIN {
-  $Mason::t::Reload::VERSION = '2.04';
+  $Mason::t::Reload::VERSION = '2.05';
 }
 use Test::Class::Most parent => 'Mason::Test::Class';
 
-sub test_reload : Test(12) {
+sub test_reload : Tests {
     my $self = shift;
     my $class;
 
     $self->add_comp(
-        path => "/reload.m",
+        path => "/reload.mc",
         src  => <<'EOF',
 <%class>
 sub foo { 'foo' }
@@ -19,7 +19,7 @@ Foo
 EOF
     );
     is( $self->interp->run("/reload")->output, "Foo\n", "before reload" );
-    $class = $self->interp->load("/reload.m");
+    $class = $self->interp->load("/reload.mc");
     is( $class->foo(), 'foo',  "method foo" );
     is( $class->baz(), 'baz1', "method baz" );
     ok( $class->can('foo'),  "can call foo before reload" );
@@ -29,7 +29,7 @@ EOF
     sleep(1);    # so timestamp will be different
 
     $self->add_comp(
-        path => "/reload.m",
+        path => "/reload.mc",
         src  => <<'EOF',
 <%class>
 sub bar { 'bar' }
@@ -46,58 +46,58 @@ EOF
     ok( $class->can('baz'),  "can call baz after reload" );
 }
 
-sub test_reload_parent : Test(6) {
+sub test_reload_parent : Tests {
     my $self   = shift;
     my $interp = $self->interp;
 
-    $self->add_comp( path => '/foo/bar/baz.m', src => '<% $.num1 %> <% $.num2 %>' );
-    $self->add_comp( path => '/foo/Base.m',    src => '%% method num1 { 5 }' );
-    $self->add_comp( path => '/Base.m',        src => '%% method num2 { 6 }' );
+    $self->add_comp( path => '/foo/bar/baz.mc', src => '<% $.num1 %> <% $.num2 %>' );
+    $self->add_comp( path => '/foo/Base.mc',    src => '%% method num1 { 5 }' );
+    $self->add_comp( path => '/Base.mc',        src => '%% method num2 { 6 }' );
 
-    $self->test_existing_comp( path => '/foo/bar/baz.m', expect => '5 6' );
-
-    $self->interp->_flush_load_cache();
-    sleep(1);
-
-    $self->add_comp( path => '/foo/Base.m', src => "%% method num1 { 7 }" );
-    $self->add_comp( path => '/Base.m',     src => "%% method num2 { 8 }" );
-    $self->test_existing_comp( path => '/foo/bar/baz.m', expect => '7 8' );
+    $self->test_existing_comp( path => '/foo/bar/baz.mc', expect => '5 6' );
 
     $self->interp->_flush_load_cache();
     sleep(1);
 
-    $self->add_comp( path => '/Base.m', src => "%% method num1 { 10 } \n%% method num2 { 11 }\n" );
-    $self->test_existing_comp( path => '/foo/bar/baz.m', expect => '7 11' );
+    $self->add_comp( path => '/foo/Base.mc', src => "%% method num1 { 7 }" );
+    $self->add_comp( path => '/Base.mc',     src => "%% method num2 { 8 }" );
+    $self->test_existing_comp( path => '/foo/bar/baz.mc', expect => '7 8' );
 
     $self->interp->_flush_load_cache();
     sleep(1);
 
-    $self->remove_comp( path => '/foo/Base.m' );
-    $self->test_existing_comp( path => '/foo/bar/baz.m', expect => '10 11' );
+    $self->add_comp( path => '/Base.mc', src => "%% method num1 { 10 } \n%% method num2 { 11 }\n" );
+    $self->test_existing_comp( path => '/foo/bar/baz.mc', expect => '7 11' );
 
     $self->interp->_flush_load_cache();
     sleep(1);
 
-    $self->remove_comp( path => '/foo/Base.m' );
-    $self->add_comp( path => '/foo/bar/baz.m', src => 'hi' );
-    $self->add_comp( path => '/Base.pm',       src => 'method wrap { print "wrap1" }' );
-    $self->test_existing_comp( path => '/foo/bar/baz.m', expect => 'wrap1' );
+    $self->remove_comp( path => '/foo/Base.mc' );
+    $self->test_existing_comp( path => '/foo/bar/baz.mc', expect => '10 11' );
 
     $self->interp->_flush_load_cache();
     sleep(1);
 
-    $self->add_comp( path => '/Base.pm', src => 'method wrap { print "wrap2" }' );
-    $self->test_existing_comp( path => '/foo/bar/baz.m', expect => 'wrap2' );
+    $self->remove_comp( path => '/foo/Base.mc' );
+    $self->add_comp( path => '/foo/bar/baz.mc', src => 'hi' );
+    $self->add_comp( path => '/Base.mp',        src => 'method wrap { print "wrap1" }' );
+    $self->test_existing_comp( path => '/foo/bar/baz.mc', expect => 'wrap1' );
+
+    $self->interp->_flush_load_cache();
+    sleep(1);
+
+    $self->add_comp( path => '/Base.mp', src => 'method wrap { print "wrap2" }' );
+    $self->test_existing_comp( path => '/foo/bar/baz.mc', expect => 'wrap2' );
 }
 
-sub test_no_unnecessary_reload : Test(1) {
+sub test_no_unnecessary_reload : Tests {
     my $self   = shift;
     my $interp = $self->interp;
 
-    $self->add_comp( path => '/foo.m', src => ' ' );
-    my $id1 = $interp->load('/foo.m')->cmeta->id;
+    $self->add_comp( path => '/foo.mc', src => ' ' );
+    my $id1 = $interp->load('/foo.mc')->cmeta->id;
     $self->interp->_flush_load_cache();
-    my $id2 = $interp->load('/foo.m')->cmeta->id;
+    my $id2 = $interp->load('/foo.mc')->cmeta->id;
     ok( $id1 == $id2 );
 }
 

@@ -1,6 +1,6 @@
 package Mason::App;
 BEGIN {
-  $Mason::App::VERSION = '2.04';
+  $Mason::App::VERSION = '2.05';
 }
 use Cwd qw(realpath);
 use File::Basename;
@@ -35,7 +35,7 @@ sub run {
     my $tempdir = tempdir( 'mason-XXXX', TMPDIR => 1, CLEANUP => 1 );
     my $file;
     if ($source) {
-        $file = "$tempdir/source.m";
+        $file = "$tempdir/source.mc";
         open( my $fh, ">", $file );
         print $fh $source;
     }
@@ -43,7 +43,7 @@ sub run {
         $file = shift(@ARGV);
         usage() if @ARGV;
         if ( !$file ) {
-            $file = "$tempdir/stdin.m";
+            $file = "$tempdir/stdin.mc";
             open( my $fh, ">", $file );
             while (<STDIN>) { print $fh $_ }
         }
@@ -51,7 +51,7 @@ sub run {
 
     my $comp_root = dirname($file);
     my $path      = "/" . basename($file);
-    my $interp    = Mason->new( comp_root => $comp_root, autoextend_request_path => [], %params );
+    my $interp    = Mason->new( comp_root => $comp_root, autoextend_request_path => 0, %params );
     print $interp->run( $path, %run_args )->output . "\n";
 }
 
@@ -78,7 +78,7 @@ Mason::App - Implementation of bin/mason
 
 =head1 VERSION
 
-version 2.04
+version 2.05
 
 =head1 DESCRIPTION
 

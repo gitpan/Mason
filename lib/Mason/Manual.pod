@@ -9,16 +9,20 @@ Mason::Manual - Index of Mason documentation
 
 =head1 VERSION
 
-version 2.04
+version 2.05
 
 =head1 MANUALS
 
 =over
 
+=item L<Mason::Manual::Intro>
+
+Getting a "hello world" Mason template working on the command-line and from a
+script.
+
 =item L<Mason::Manual::Tutorial>
 
-Provides a tour of Mason by showing how to build a micro-blog application. A
-good place to start.
+Provides a tour of Mason by showing how to build a micro-blog application.
 
 =item L<Mason::Manual::Admin>
 

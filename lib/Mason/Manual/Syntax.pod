@@ -9,7 +9,7 @@ Mason::Manual::Syntax - Mason component syntax reference
 
 =head1 VERSION
 
-version 2.04
+version 2.05
 
 =head1 DESCRIPTION
 
@@ -92,12 +92,15 @@ Blocks that do not take a name argument.
 Contains one or more attribute declarations, one per line. Each line starts
 with the attribute name, followed optionally by a comma operator (C<< => >>)
 and either a scalar value (which becomes the default) or a list (which becomes
-the Moose attribute properties). e.g. this block
+the Moose attribute properties). The line may be prefixed with whitespace and
+followed with a comment; you can also have comments on their own lines. e.g.
+this block
 
     <%args>
     a
-    b => 'default value'
+    b => 'default value'   # a comment
     c => (isa => 'Str', default => 'something')
+    # another comment
     </%args>
 
 is equivalent to
@@ -131,7 +134,7 @@ modules, declare attributes, and do other things on a class level.
 Text in this section is treated as a comment and ignored.
 
     <%doc>
-    Name: foo.m
+    Name: foo.mc
     Purpose: ...
     </%doc>
 

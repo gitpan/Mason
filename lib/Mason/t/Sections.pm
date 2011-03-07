@@ -1,10 +1,10 @@
 package Mason::t::Sections;
 BEGIN {
-  $Mason::t::Sections::VERSION = '2.04';
+  $Mason::t::Sections::VERSION = '2.05';
 }
 use Test::Class::Most parent => 'Mason::Test::Class';
 
-sub test_sections : Test(1) {
+sub test_sections : Tests {
     my $self = shift;
     $self->test_comp(
         src => <<'EOF',
@@ -77,7 +77,7 @@ EOF
     );
 }
 
-sub test_perl_section_newlines : Test(1) {
+sub test_perl_section_newlines : Tests {
     my $self = shift;
     $self->test_comp(
         src => <<'EOF',
@@ -113,7 +113,7 @@ EOF
     );
 }
 
-sub test_text_section : Test(1) {
+sub test_text_section : Tests {
     my $self = shift;
     $self->test_comp(
         src => <<'EOF',
@@ -134,7 +134,7 @@ EOF
     );
 }
 
-sub test_empty_sections : Test(1) {
+sub test_empty_sections : Tests {
     my $self = shift;
     $self->test_comp(
         src => '

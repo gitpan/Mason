@@ -1,12 +1,12 @@
 package Mason::t::LvalueAttributes;
 BEGIN {
-  $Mason::t::LvalueAttributes::VERSION = '2.04';
+  $Mason::t::LvalueAttributes::VERSION = '2.05';
 }
 use Test::Class::Most parent => 'Mason::Test::Class';
 
 __PACKAGE__->default_plugins( [ '@Default', 'LvalueAttributes' ] );
 
-sub test_lvalue : Test(1) {
+sub test_lvalue : Tests {
     my $self = shift;
     $self->test_comp(
         src => '
