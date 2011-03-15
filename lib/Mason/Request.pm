@@ -1,6 +1,6 @@
 package Mason::Request;
 BEGIN {
-  $Mason::Request::VERSION = '2.05';
+  $Mason::Request::VERSION = '2.06';
 }
 use Carp;
 use File::Basename;
@@ -407,7 +407,7 @@ Mason::Request - Mason Request Class
 
 =head1 VERSION
 
-version 2.05
+version 2.06
 
 =head1 SYNOPSIS
 
@@ -743,7 +743,7 @@ arguments I<$args>.
 
 Given a top level I<$request_path>, return a corresponding component path or
 undef if none was found. Search includes dhandlers and index files. See
-L<Mason::Manual::PageResolution>.
+L<Mason::Manual::RequestDispatch>.
 
 =for html <a name="run" />
 

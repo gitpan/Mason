@@ -1,6 +1,6 @@
 package Mason::Component::ClassMeta;
 BEGIN {
-  $Mason::Component::ClassMeta::VERSION = '2.05';
+  $Mason::Component::ClassMeta::VERSION = '2.06';
 }
 use File::Basename;
 use Mason::Moose;
@@ -51,7 +51,7 @@ Mason::Component::ClassMeta - Meta-information about Mason component class
 
 =head1 VERSION
 
-version 2.05
+version 2.06
 
 =head1 SYNOPSIS
 

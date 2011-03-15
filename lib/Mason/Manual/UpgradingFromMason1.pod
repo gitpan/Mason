@@ -10,7 +10,7 @@ Mason 2
 
 =head1 VERSION
 
-version 2.05
+version 2.06
 
 =head1 DESCRIPTION
 

@@ -4,7 +4,7 @@
 
 package Mason::Compilation;
 BEGIN {
-  $Mason::Compilation::VERSION = '2.05';
+  $Mason::Compilation::VERSION = '2.06';
 }
 use File::Basename qw(dirname);
 use Guard;
@@ -841,7 +841,7 @@ Mason::Compilation - Performs compilation of a single component
 
 =head1 VERSION
 
-version 2.05
+version 2.06
 
 =head1 DESCRIPTION
 

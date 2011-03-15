@@ -1,6 +1,6 @@
 package Mason::Interp;
 BEGIN {
-  $Mason::Interp::VERSION = '2.05';
+  $Mason::Interp::VERSION = '2.06';
 }
 use Carp;
 use Devel::GlobalDestruction;
@@ -37,8 +37,8 @@ has 'no_source_line_numbers'   => ( default => 0 );
 has 'object_file_extension'    => ( default => '.mobj' );
 has 'plugins'                  => ( default => sub { [] } );
 has 'pure_perl_extensions'     => ( default => sub { ['.mp'] } );
-has 'static_source' => ( );
-has 'static_source_touch_file' => ( );
+has 'static_source'            => ();
+has 'static_source_touch_file' => ();
 has 'top_level_extensions'     => ( default => sub { ['.mc', '.mp'] } );
 
 # Derived attributes
@@ -723,7 +723,7 @@ Mason::Interp - Mason Interpreter
 
 =head1 VERSION
 
-version 2.05
+version 2.06
 
 =head1 SYNOPSIS
 

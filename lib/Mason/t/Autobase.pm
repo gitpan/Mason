@@ -1,6 +1,6 @@
 package Mason::t::Autobase;
 BEGIN {
-  $Mason::t::Autobase::VERSION = '2.05';
+  $Mason::t::Autobase::VERSION = '2.06';
 }
 use Test::Class::Most parent => 'Mason::Test::Class';
 

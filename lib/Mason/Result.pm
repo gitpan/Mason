@@ -1,6 +1,6 @@
 package Mason::Result;
 BEGIN {
-  $Mason::Result::VERSION = '2.05';
+  $Mason::Result::VERSION = '2.06';
 }
 use Mason::Moose;
 
@@ -26,7 +26,7 @@ Mason::Result - Result returned from Mason request
 
 =head1 VERSION
 
-version 2.05
+version 2.06
 
 =head1 SYNOPSIS
 

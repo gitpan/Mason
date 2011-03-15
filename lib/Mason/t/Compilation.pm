@@ -1,6 +1,6 @@
 package Mason::t::Compilation;
 BEGIN {
-  $Mason::t::Compilation::VERSION = '2.05';
+  $Mason::t::Compilation::VERSION = '2.06';
 }
 use Test::Class::Most parent => 'Mason::Test::Class';
 

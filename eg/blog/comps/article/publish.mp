@@ -5,7 +5,7 @@ method handle () {
     my $session = $m->req->session;
     if ( !$.content || !$.title ) {
         $session->{message} = "Content and title required.";
-        $session->{form_data} = $.cmeta->args;
+        $session->{form_data} = $.args;
         $m->redirect('/new_article');
     }
     my $article =
