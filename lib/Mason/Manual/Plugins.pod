@@ -7,10 +7,6 @@ __END__
 
 Mason::Manual::Plugins - Mason plugins
 
-=head1 VERSION
-
-version 2.06
-
 =head1 DESCRIPTION
 
 A Mason plugin modifies behavior in one or more of Mason's main classes

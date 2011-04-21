@@ -1,6 +1,6 @@
 package Mason::Moose;
 BEGIN {
-  $Mason::Moose::VERSION = '2.06';
+  $Mason::Moose::VERSION = '2.07';
 }
 use Moose                      ();
 use MooseX::HasDefaults::RO    ();
@@ -34,10 +34,6 @@ sub init_meta {
 =head1 NAME
 
 Mason::Moose - Mason Moose policies
-
-=head1 VERSION
-
-version 2.06
 
 =head1 SYNOPSIS
 

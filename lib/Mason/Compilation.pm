@@ -4,15 +4,13 @@
 
 package Mason::Compilation;
 BEGIN {
-  $Mason::Compilation::VERSION = '2.06';
+  $Mason::Compilation::VERSION = '2.07';
 }
 use File::Basename qw(dirname);
 use Guard;
-use JSON;
 use Mason::Component::ClassMeta;
-use Mason::Util qw(dump_one_line read_file);
+use Mason::Util qw(dump_one_line json_encode read_file trim);
 use Mason::Moose;
-use Mason::Util qw(trim);
 
 # Passed attributes
 has 'interp'      => ( required => 1, weak_ref => 1 );
@@ -103,24 +101,25 @@ method output_class_header () {
 }
 
 method parse () {
-    $self->{last_code_type} = '';
-
     if ( $self->{is_pure_perl} ) {
         $self->{source} = "<%class> " . $self->{source} . " </%class>";
         delete( $self->{methods}->{main} );
     }
 
+    my $lm = '';
     while (1) {
+        $self->{last_match} = $lm;
         $self->_match_end              && last;
         $self->_match_apply_filter_end && last;
-        $self->_match_unnamed_block    && next;
-        $self->_match_named_block      && next;
-        $self->_match_unknown_block    && next;
-        $self->_match_apply_filter     && next;
-        $self->_match_substitution     && next;
-        $self->_match_component_call   && next;
-        $self->_match_perl_line        && next;
-        $self->_match_plain_text       && next;
+        $self->_match_unnamed_block    && ( $lm = 'unnamed_block' ) && next;
+        $self->_match_named_block      && ( $lm = 'named_block' ) && next;
+        $self->_match_unknown_block    && ( $lm = 'unknown_block' ) && next;
+        $self->_match_apply_filter     && ( $lm = 'apply_filter' ) && next;
+        $self->_match_substitution     && ( $lm = 'substitution' ) && next;
+        $self->_match_component_call   && ( $lm = 'component_call' ) && next;
+        $self->_match_perl_line        && ( $lm = 'perl_line' ) && next;
+        $self->_match_bad_close_tag    && ( $lm = 'bad_close_tag' ) && next;
+        $self->_match_plain_text       && ( $lm = 'plain_text' ) && next;
 
         $self->_throw_syntax_error(
             "could not parse next element at position " . pos( $self->{source} ) );
@@ -151,14 +150,14 @@ method _add_to_class_block ($text) {
     # a series has a line number comment before it.  Adding a comment
     # can break certain constructs like qw() list that spans multiple
     # perl-lines.
-    if ( $self->{last_code_type} ne 'perl_line' ) {
+    if ( $self->{last_match} ne 'perl_line' ) {
         $text = $self->_output_line_number_comment . $text;
     }
     $self->{blocks}->{class} .= $text;
 }
 
 method _add_to_current_method ($text) {
-    if ( $self->{last_code_type} ne 'perl_line' ) {
+    if ( $self->{last_match} ne 'perl_line' ) {
         $text = $self->_output_line_number_comment . $text;
     }
 
@@ -293,8 +292,6 @@ method _handle_component_call ($contents) {
     my $code = "\$m->comp( $prespace $call $postspace \n); ";
 
     $self->_add_to_current_method($code);
-
-    $self->{last_code_type} = 'component_call';
 }
 
 method _handle_doc_block () {
@@ -379,8 +376,6 @@ method _handle_method_block ( $contents, $name, $arglist ) {
 
 method _handle_perl_block ($contents) {
     $self->_add_to_current_method( $self->_processed_perl_code($contents) );
-
-    $self->{last_code_type} = 'perl_block';
 }
 
 method _handle_perl_line ($type, $contents) {
@@ -392,8 +387,6 @@ method _handle_perl_line ($type, $contents) {
     else {
         $self->_add_to_class_block($code);
     }
-
-    $self->{last_code_type} = 'perl_line';
 }
 
 method _handle_plain_text ($text) {
@@ -422,7 +415,6 @@ method _handle_substitution ( $text, $filter_list ) {
     #
     my @lines = split( /\n/, $text );
     unless ( grep { /^\s*[^\s\#]/ } @lines ) {
-        $self->{last_code_type} = 'substitution';
         return;
     }
 
@@ -439,8 +431,6 @@ method _handle_substitution ( $text, $filter_list ) {
     my $code = "for (scalar($text)) { \$\$_m_buffer .= \$_ if defined }\n";
 
     $self->_add_to_current_method($code);
-
-    $self->{last_code_type} = 'substitution';
 }
 
 method _handle_text_block ($contents) {
@@ -448,8 +438,6 @@ method _handle_text_block ($contents) {
     $contents =~ s,([\'\\]),\\$1,g;
 
     $self->_add_to_current_method("\$\$_m_buffer .= '$contents';\n");
-
-    $self->{last_code_type} = 'text';
 }
 
 method _match_apply_filter () {
@@ -571,6 +559,7 @@ method _match_perl_line () {
 
         return 1;
     }
+    return 0;
 }
 
 method _match_plain_text () {
@@ -588,6 +577,8 @@ method _match_plain_text () {
                                  (?<=\n)(?=%) # an eval line - consume the \n
                                  |
                                  (?=<%\s)     # a substitution tag
+                                 |
+                                 (?=[%&]>)    # an end substitution or component call
                                  |
                                  (?=</?[%&])  # a block or call start or end
                                               # - don't consume
@@ -668,6 +659,13 @@ method _match_unnamed_block () {
     $self->_match_block( $self->unnamed_block_regex, 0 );
 }
 
+method _match_bad_close_tag () {
+    if ( my ($end_tag) = ( $self->{source} =~ /\G\s*(%>|&>)/gc ) ) {
+        ( my $begin_tag = reverse($end_tag) ) =~ s/>/</;
+        $self->_throw_syntax_error("'$end_tag' without matching '$begin_tag'");
+    }
+}
+
 method _new_method_hash () {
     return { body => '', init => '', type => 'method', @_ };
 }
@@ -683,9 +681,12 @@ method _output_class_block () {
 method _output_class_initialization () {
     return join(
         "\n",
-        "BEGIN { " . $self->interp->component_moose_class . "->import; }",
-        "BEGIN { " . $self->interp->component_import_class . "->import; }",
-        "our (\$m, \$_m_buffer);",
+        "our (\$m, \$_m_buffer, \$_interp);",
+        "BEGIN { ",
+        "\$_interp = Mason::Interp->current_load_interp;",
+        "\$_interp->component_moose_class->import;",
+        "\$_interp->component_import_class->import;",
+        "}",
         "*m = \\\$Mason::Request::current_request;",
         "*_m_buffer = \\\$Mason::Request::current_buffer;",
 
@@ -731,8 +732,8 @@ method _output_compiled_component () {
 method _output_flag_comment () {
     if ( my $flags = $self->{blocks}->{flags} ) {
         if (%$flags) {
-            my $json = JSON->new->indent(0);
-            return "# FLAGS: " . $json->encode($flags) . "\n\n";
+            ( my $json = json_encode($flags) ) =~ s/\n//g;
+            return "# FLAGS: $json\n\n";
         }
     }
 }
@@ -819,6 +820,7 @@ method _recursive_parse ($block_type, $contents, $method) {
     {
         local $self->{source}         = $contents;
         local $self->{current_method} = $method;
+        local $self->{line_number}    = $self->{line_number};
         $self->parse();
     }
 }
@@ -838,10 +840,6 @@ __PACKAGE__->meta->make_immutable();
 =head1 NAME
 
 Mason::Compilation - Performs compilation of a single component
-
-=head1 VERSION
-
-version 2.06
 
 =head1 DESCRIPTION
 
@@ -890,6 +888,14 @@ Perl code to be added at the bottom of the class. Empty by default.
 
 Perl code to be added at the top of the class, just after initialization of
 Moose, C<$m> and other required pieces. Empty by default.
+
+    # Add to the top of every component class:
+    #   use Foo;
+    #   use Bar qw(baz);
+    #
+    override 'output_class_header' => sub {
+        return join("\n", super(), 'use Foo;', 'use Bar qw(baz);');
+    };
 
 =item process_perl_code ($coderef)
 

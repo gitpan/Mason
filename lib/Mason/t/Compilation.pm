@@ -1,7 +1,4 @@
 package Mason::t::Compilation;
-BEGIN {
-  $Mason::t::Compilation::VERSION = '2.06';
-}
 use Test::Class::Most parent => 'Mason::Test::Class';
 
 sub test_pure_perl : Tests {

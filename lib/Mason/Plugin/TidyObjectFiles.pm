@@ -1,6 +1,6 @@
 package Mason::Plugin::TidyObjectFiles;
 BEGIN {
-  $Mason::Plugin::TidyObjectFiles::VERSION = '2.06';
+  $Mason::Plugin::TidyObjectFiles::VERSION = '2.07';
 }
 use Moose;
 with 'Mason::Plugin';
@@ -14,10 +14,6 @@ with 'Mason::Plugin';
 =head1 NAME
 
 Mason::Plugin::TidyObjectFiles - Tidy object files
-
-=head1 VERSION
-
-version 2.06
 
 =head1 DESCRIPTION
 

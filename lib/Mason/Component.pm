@@ -1,6 +1,6 @@
 package Mason::Component;
 BEGIN {
-  $Mason::Component::VERSION = '2.06';
+  $Mason::Component::VERSION = '2.07';
 }
 use Moose;    # no Mason::Moose - don't want StrictConstructor
 use MooseX::HasDefaults::RO;
@@ -62,10 +62,6 @@ __PACKAGE__->meta->make_immutable();
 =head1 NAME
 
 Mason::Component - Mason Component base class
-
-=head1 VERSION
-
-version 2.06
 
 =head1 DESCRIPTION
 

@@ -1,6 +1,6 @@
 package Mason::CodeCache;
 BEGIN {
-  $Mason::CodeCache::VERSION = '2.06';
+  $Mason::CodeCache::VERSION = '2.07';
 }
 use Devel::GlobalDestruction;
 use Mason::Moose;
@@ -42,10 +42,6 @@ __PACKAGE__->meta->make_immutable();
 =head1 NAME
 
 Mason::CodeCache - Result returned from Mason request
-
-=head1 VERSION
-
-version 2.06
 
 =head1 DESCRIPTION
 

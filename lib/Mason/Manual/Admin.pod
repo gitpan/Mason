@@ -7,10 +7,6 @@ __END__
 
 Mason::Manual::Admin - Information for Mason administrators
 
-=head1 VERSION
-
-version 2.06
-
 =head1 SETUP
 
 To serve web requests directly with Mason, use the L<PSGI

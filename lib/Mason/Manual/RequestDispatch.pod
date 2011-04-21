@@ -8,10 +8,6 @@ __END__
 Mason::Manual::RequestDispatch - How request paths get mapped to page
 components
 
-=head1 VERSION
-
-version 2.06
-
 =head1 DESCRIPTION
 
 Given the request path

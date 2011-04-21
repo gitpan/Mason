@@ -1,13 +1,13 @@
 package Mason::App;
 BEGIN {
-  $Mason::App::VERSION = '2.06';
+  $Mason::App::VERSION = '2.07';
 }
 use Cwd qw(realpath);
 use File::Basename;
 use File::Temp qw(tempdir);
 use Getopt::Long;
 use Mason;
-use JSON;
+use Mason::Util qw(json_decode);
 use strict;
 use warnings;
 
@@ -30,7 +30,7 @@ sub run {
     if ( $params{plugins} ) {
         $params{plugins} = [ split( /\s*,\s*/, $params{plugins} ) ];
     }
-    my %run_args = defined($args) ? %{ decode_json($args) } : ();
+    my %run_args = defined($args) ? %{ json_decode($args) } : ();
 
     my $tempdir = tempdir( 'mason-XXXX', TMPDIR => 1, CLEANUP => 1 );
     my $file;
@@ -75,10 +75,6 @@ sub dashify {
 =head1 NAME
 
 Mason::App - Implementation of bin/mason
-
-=head1 VERSION
-
-version 2.06
 
 =head1 DESCRIPTION
 

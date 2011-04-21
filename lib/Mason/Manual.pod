@@ -7,10 +7,6 @@ __END__
 
 Mason::Manual - Index of Mason documentation
 
-=head1 VERSION
-
-version 2.06
-
 =head1 MANUALS
 
 =over

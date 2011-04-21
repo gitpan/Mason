@@ -7,10 +7,6 @@ __END__
 
 Mason::Manual::Filters - Content filters in Mason
 
-=head1 VERSION
-
-version 2.06
-
 =head1 DESCRIPTION
 
 Filters can be used to process portions of content in a component.

@@ -1,7 +1,4 @@
 package Mason::t::Errors;
-BEGIN {
-  $Mason::t::Errors::VERSION = '2.06';
-}
 use Test::Class::Most parent => 'Mason::Test::Class';
 
 sub test_comp_errors : Tests {
@@ -28,7 +25,9 @@ sub test_comp_errors : Tests {
     $try->( '<%blah>',                      qr/unknown block '<%blah>'/ );
     $try->( '<%init foo>',                  qr/<%init> block does not take a name/ );
     $try->( '<%',                           qr/'<%' without matching '%>'/ );
+    $try->( 'foo %>',                       qr/'%>' without matching '<%'/ );
     $try->( '<& foo',                       qr/'<&' without matching '&>'/ );
+    $try->( 'foo &>',                       qr/'&>' without matching '<&'/ );
     $try->( '%my $i = 1;',                  qr/% must be followed by whitespace/ );
     $try->( '%%my $i = 1;',                 qr/%% must be followed by whitespace/ );
     $try->( "%% if (1) {\nhi\n%% }",        qr/%%-lines cannot be used to surround content/ );
@@ -61,6 +60,11 @@ sub test_comp_errors : Tests {
     $try->( '<% $foo %>',      qr/Global symbol "\$foo" requires explicit package name/ );
     $try->( '%% die "bleah";', qr/bleah/ );
     $try->( 'die "blargh";',   qr/blargh/, path => '/blargh.mp' );
+
+    # Error line numbers
+    #
+    $try->( "%\nb\n% die;",                               qr/Died at .* line 3/ );
+    $try->( "<%method foo>\n1\n2\n3\n</%method>\n% die;", qr/Died at .* line 6/ );
 }
 
 sub test_bad_allow_globals : Tests {

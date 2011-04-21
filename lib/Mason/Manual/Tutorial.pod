@@ -7,10 +7,6 @@ __END__
 
 Mason::Manual::Tutorial - Mason tutorial
 
-=head1 VERSION
-
-version 2.06
-
 =head1 DESCRIPTION
 
 This tutorial provides a tour of Mason by showing how to build a sample

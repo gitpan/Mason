@@ -1,6 +1,6 @@
 package Mason::Plugin::Defer;
 BEGIN {
-  $Mason::Plugin::Defer::VERSION = '2.06';
+  $Mason::Plugin::Defer::VERSION = '2.07';
 }
 use Moose;
 with 'Mason::Plugin';
@@ -15,10 +15,6 @@ with 'Mason::Plugin';
 
 Mason::Plugin::Defer - Defer computing parts of output until the end of the
 request
-
-=head1 VERSION
-
-version 2.06
 
 =head1 SYNOPSIS
 

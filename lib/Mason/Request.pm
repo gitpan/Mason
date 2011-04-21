@@ -1,6 +1,6 @@
 package Mason::Request;
 BEGIN {
-  $Mason::Request::VERSION = '2.06';
+  $Mason::Request::VERSION = '2.07';
 }
 use Carp;
 use File::Basename;
@@ -357,7 +357,8 @@ method _apply_filters ($filters, $yield) {
 
 method _apply_filters_to_output ($filters, $output_method) {
     my $yield = sub {
-        $self->capture( sub { $output_method->() } );
+        my @args = @_;
+        $self->capture( sub { $output_method->(@args) } );
     };
     my $filtered_output = $self->_apply_filters( $filters, $yield );
     $self->print($filtered_output);
@@ -404,10 +405,6 @@ __PACKAGE__->meta->make_immutable();
 =head1 NAME
 
 Mason::Request - Mason Request Class
-
-=head1 VERSION
-
-version 2.06
 
 =head1 SYNOPSIS
 

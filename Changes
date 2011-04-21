@@ -2,6 +2,20 @@ Revision history for Mason
 
 ** marks an incompatible change
 
+2.07  Apr 21, 2011
+
+* Improvements
+  - Allow arguments to be passed to the content sub from a dynamic filter (e.g. CompCall)
+  - Throw error on unmatched %> or &>
+  - Fix error line numbers after method sections and multiple text sections
+
+* Fixes
+  - Prevent false inheritance loops when component overrides its default parent (Jozef Mojzis)
+  - Fix compatibility with JSON version 1.x
+
+* Other
+  - Only generate version numbers for .pm files with documentation, to reduce inter-version churn
+
 2.06  Mar 14, 2011
 
 * Fixes

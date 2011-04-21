@@ -8,10 +8,6 @@ __END__
 Mason::Manual::UpgradingFromMason1 - Summary of differences between Mason 1 and
 Mason 2
 
-=head1 VERSION
-
-version 2.06
-
 =head1 DESCRIPTION
 
 Mason 2.x comes ten years after Mason 1.0 (known as L<HTML::Mason>) and twelve
@@ -140,8 +136,8 @@ automatically applying a filter to the current component.
 
 =item *
 
-C<< Components with content >> has been eliminated; use
-L<filters|Mason::Manual::Filters> instead.
+C<< Components with content >> syntax has been eliminated; use the
+L<CompCall|Mason::Filters::Standard/CompCall> filter instead.
 
 =item *
 

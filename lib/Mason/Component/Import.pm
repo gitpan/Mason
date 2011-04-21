@@ -1,6 +1,6 @@
 package Mason::Component::Import;
 BEGIN {
-  $Mason::Component::Import::VERSION = '2.06';
+  $Mason::Component::Import::VERSION = '2.07';
 }
 use strict;
 use warnings;
@@ -26,10 +26,6 @@ sub import_into {
 =head1 NAME
 
 Mason::Component::Import - Extra component imports
-
-=head1 VERSION
-
-version 2.06
 
 =head1 DESCRIPTION
 

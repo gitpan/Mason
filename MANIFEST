@@ -67,6 +67,7 @@ lib/Mason/Test/Plugins/Notify/Compilation.pm
 lib/Mason/Test/Plugins/Notify/Component.pm
 lib/Mason/Test/Plugins/Notify/Interp.pm
 lib/Mason/Test/Plugins/Notify/Request.pm
+lib/Mason/Tidy.pm
 lib/Mason/TieHandle.pm
 lib/Mason/Types.pm
 lib/Mason/Util.pm

@@ -1,6 +1,6 @@
 package Mason::Moose::Role;
 BEGIN {
-  $Mason::Moose::Role::VERSION = '2.06';
+  $Mason::Moose::Role::VERSION = '2.07';
 }
 use Moose::Role                ();
 use Method::Signatures::Simple ();
@@ -24,10 +24,6 @@ sub init_meta {
 =head1 NAME
 
 Mason::Moose::Role - Mason Moose role policies
-
-=head1 VERSION
-
-version 2.06
 
 =head1 SYNOPSIS
 

@@ -1,9 +1,6 @@
 NAME
     Mason - Powerful, high-performance templating for the web and beyond
 
-VERSION
-    version 2.06
-
 SYNOPSIS
       foo.mc:
         % my $name = "Mason";

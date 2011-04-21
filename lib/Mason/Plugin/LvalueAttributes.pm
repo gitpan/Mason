@@ -1,6 +1,6 @@
 package Mason::Plugin::LvalueAttributes;
 BEGIN {
-  $Mason::Plugin::LvalueAttributes::VERSION = '2.06';
+  $Mason::Plugin::LvalueAttributes::VERSION = '2.07';
 }
 use Moose;
 with 'Mason::Plugin';
@@ -15,10 +15,6 @@ with 'Mason::Plugin';
 
 Mason::Plugin::LvalueAttributes - Create lvalue accessors for all rw component
 attributes
-
-=head1 VERSION
-
-version 2.06
 
 =head1 SYNOPSIS
 
