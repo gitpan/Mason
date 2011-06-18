@@ -1,6 +1,6 @@
 package Mason;
 BEGIN {
-  $Mason::VERSION = '2.07';
+  $Mason::VERSION = '2.08';
 }
 use Mason::Interp;
 use Mason::PluginManager;

@@ -4,12 +4,12 @@
 
 package Mason::Compilation;
 BEGIN {
-  $Mason::Compilation::VERSION = '2.07';
+  $Mason::Compilation::VERSION = '2.08';
 }
 use File::Basename qw(dirname);
 use Guard;
 use Mason::Component::ClassMeta;
-use Mason::Util qw(dump_one_line json_encode read_file trim);
+use Mason::Util qw(dump_one_line json_encode read_file taint_is_on trim);
 use Mason::Moose;
 
 # Passed attributes
@@ -101,13 +101,22 @@ method output_class_header () {
 }
 
 method parse () {
+
+    # We need to untaint the component source or else the regexes may fail.
+    #
+    ( $self->{source} ) = ( ( delete $self->{source} ) =~ /(.*)/s )
+      if taint_is_on();
+
     if ( $self->{is_pure_perl} ) {
         $self->{source} = "<%class> " . $self->{source} . " </%class>";
         delete( $self->{methods}->{main} );
     }
 
-    my $lm = '';
+    my $lm   = '';
+    my $iter = 0;
     while (1) {
+        $self->_throw_syntax_error("parse loop iterated >1000 times - infinite loop?")
+          if ++$iter > 1000;
         $self->{last_match} = $lm;
         $self->_match_end              && last;
         $self->_match_apply_filter_end && last;
@@ -217,10 +226,10 @@ method _handle_apply_filter ($filter_expr) {
         pos( $self->{source} ) += $incr;
     }
     else {
-        $self->_throw_syntax_error("<% { %> without matching </%>");
+        $self->_throw_syntax_error("'{{' without matching '}}'");
     }
     my $code = sprintf(
-        "\$self->m->_apply_filters_to_output([%s], %s);\n",
+        "\$self->m->_apply_filters_to_output(%s, %s);\n",
         $self->_processed_perl_code($filter_expr),
         $self->_output_method($method)
     );
@@ -289,6 +298,7 @@ method _handle_component_call ($contents) {
         ( my $comp = substr( $call, 0, $comma ) ) =~ s/\s+$//;
         $call = "'$comp'" . substr( $call, $comma );
     }
+    $call = $self->_processed_perl_code($call);
     my $code = "\$m->comp( $prespace $call $postspace \n); ";
 
     $self->_add_to_current_method($code);
@@ -443,6 +453,14 @@ method _handle_text_block ($contents) {
 method _match_apply_filter () {
     my $pos = pos( $self->{source} );
 
+    # Match % ... {{ at beginning of line
+    if ( $self->{source} =~ / \G (?<=^) % ([^\n]*) \{\{ \n /gcmx ) {
+        my ($filter_expr) = ($1);
+        $self->_handle_apply_filter($filter_expr);
+        return 1;
+    }
+
+    # Old syntax, for backward compatibility
     # Match <% ... { %>
     if ( $self->{source} =~ /\G(\n)? <% (.+?) (\s*\{\s*) %>(\n)?/xcgs ) {
         my ( $preceding_newline, $filter_expr, $opening_brace, $following_newline ) =
@@ -461,16 +479,29 @@ method _match_apply_filter () {
             pos( $self->{source} ) = $pos;
         }
     }
+
     return 0;
 }
 
 method _match_apply_filter_end () {
+    if ( $self->{source} =~ / \G (?<=^) % [ \t]+ \}\} (?:\n\n?|\z) /gmcx ) {
+        if ( $self->{current_method}->{type} eq 'apply_filter' ) {
+            $self->{end_parse} = pos( $self->{source} );
+            return 1;
+        }
+        else {
+            $self->_throw_syntax_error("'}}' without matching '{{'");
+        }
+    }
+
+    # Old syntax - <% } %> and </%> - for backward compatibility
     if (   $self->{current_method}->{type} eq 'apply_filter'
         && $self->{source} =~ /\G (?: (?: <% [ \t]* \} [ \t]* %> ) | (?: <\/%> ) ) (\n?\n?)/gcx )
     {
         $self->{end_parse} = pos( $self->{source} );
         return 1;
     }
+
     return 0;
 }
 

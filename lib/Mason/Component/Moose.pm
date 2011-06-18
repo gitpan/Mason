@@ -1,6 +1,6 @@
 package Mason::Component::Moose;
 BEGIN {
-  $Mason::Component::Moose::VERSION = '2.07';
+  $Mason::Component::Moose::VERSION = '2.08';
 }
 use Moose                      ();
 use MooseX::HasDefaults::RW    ();
@@ -19,6 +19,7 @@ sub init_meta {
     {
         no strict 'refs';
         *{ $for_class . '::CLASS' } = sub () { $for_class };    # like CLASS.pm
+        *{ $for_class . '::CLASS' } = \$for_class;
     }
 }
 

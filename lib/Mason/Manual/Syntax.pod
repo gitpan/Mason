@@ -289,7 +289,9 @@ generate the original content. e.g.
     </tr>
     </%filter>
 
-    <% $.Row('std') { %> First Second Third </%>
+    % $.Row('std') {{
+    First Second Third
+    % }}
 
 generates
 

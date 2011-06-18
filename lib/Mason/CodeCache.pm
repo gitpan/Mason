@@ -1,6 +1,6 @@
 package Mason::CodeCache;
 BEGIN {
-  $Mason::CodeCache::VERSION = '2.07';
+  $Mason::CodeCache::VERSION = '2.08';
 }
 use Devel::GlobalDestruction;
 use Mason::Moose;

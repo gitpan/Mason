@@ -34,6 +34,7 @@ lib/Mason/Manual.pod
 lib/Mason/Manual/Admin.pod
 lib/Mason/Manual/Components.pod
 lib/Mason/Manual/Cookbook.pod
+lib/Mason/Manual/FAQ.pod
 lib/Mason/Manual/Filters.pod
 lib/Mason/Manual/Intro.pod
 lib/Mason/Manual/Plugins.pod
@@ -47,7 +48,6 @@ lib/Mason/Plugin.pm
 lib/Mason/Plugin/Defer.pm
 lib/Mason/Plugin/Defer/Filters.pm
 lib/Mason/Plugin/Defer/Request.pm
-lib/Mason/Plugin/Defer/t/Defer.pm
 lib/Mason/Plugin/DollarDot.pm
 lib/Mason/Plugin/DollarDot/Compilation.pm
 lib/Mason/Plugin/LvalueAttributes.pm
@@ -76,6 +76,7 @@ lib/Mason/t/Cache.pm
 lib/Mason/t/CompCalls.pm
 lib/Mason/t/Compilation.pm
 lib/Mason/t/ComponentMeta.pm
+lib/Mason/t/Defer.pm
 lib/Mason/t/DollarDot.pm
 lib/Mason/t/Errors.pm
 lib/Mason/t/Filters.pm

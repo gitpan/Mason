@@ -36,13 +36,13 @@ my %WriteMakefileArgs = (
     'Log::Any' => '0.08',
     'Memoize' => '0',
     'Method::Signatures::Simple' => '0',
-    'Moose' => '0.95',
+    'Moose' => '1.15',
     'MooseX::HasDefaults' => '0.03',
     'MooseX::StrictConstructor' => '0.13',
     'Scalar::Util' => '1.01',
     'Try::Tiny' => '0'
   },
-  'VERSION' => '2.07',
+  'VERSION' => '2.08',
   'test' => {
     'TESTS' => 't/*.t'
   }

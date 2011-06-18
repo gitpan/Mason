@@ -12,11 +12,16 @@ use warnings;
 use base qw(Exporter);
 
 our @EXPORT_OK =
-  qw(can_load catdir catfile checksum combine_similar_paths dump_one_line find_wanted first_index is_absolute json_encode json_decode mason_canon_path read_file touch_file trim uniq write_file);
+  qw(can_load catdir catfile checksum combine_similar_paths dump_one_line find_wanted first_index is_absolute json_encode json_decode mason_canon_path read_file taint_is_on touch_file trim uniq write_file);
 
 my $Fetch_Flags          = O_RDONLY | O_BINARY;
 my $Store_Flags          = O_WRONLY | O_CREAT | O_BINARY;
 my $File_Spec_Using_Unix = $File::Spec::ISA[0] eq 'File::Spec::Unix';
+
+# Map null, true and false to real Perl values
+if ( JSON->VERSION < 2 ) {
+    $JSON::UnMapping = 1;
+}
 
 sub can_load {
 
@@ -198,6 +203,10 @@ sub read_file {
     return $buf;
 }
 
+sub taint_is_on {
+    return ${^TAINT} ? 1 : 0;
+}
+
 sub touch_file {
     my ($file) = @_;
     if ( -f $file ) {
@@ -225,6 +234,8 @@ sub uniq (@) {
 
 sub write_file {
     my ( $file, $data, $file_create_mode ) = @_;
+
+    ($file) = $file =~ /^(.*)/s if taint_is_on();    # Untaint blindly
     $file_create_mode = oct(666) if !defined($file_create_mode);
 
     # Fast spew, adapted from File::Slurp::write, with unnecessary options removed

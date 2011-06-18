@@ -1,6 +1,6 @@
 package Mason::Filters::Standard;
 BEGIN {
-  $Mason::Filters::Standard::VERSION = '2.07';
+  $Mason::Filters::Standard::VERSION = '2.08';
 }
 use Mason::DynamicFilter;
 use Mason::Util;
@@ -66,9 +66,9 @@ L<Mason::Component|Mason::Component>.
 
 Uses C<< $m->capture >> to capture the content in I<$ref>.
 
-    <% $.Capture(\my $content) { %>
+    % $.Capture(\my $content) {{
       <!-- this will end up in $content -->
-    </%>
+    % }}
 
     ... do something with $content
 
@@ -81,9 +81,9 @@ via C<@_>. This is the replacement for Mason 1's L<Components With
 Content|http://search.cpan.org/perldoc?HTML::Mason::Devel#Component_Calls_with_Content>.
 
   In index.mc:
-    <% $.CompCall ('list_items.mi', items => \@items) { %>
+    % $.CompCall ('list_items.mi', items => \@items) {{
     <li><% $_[0] %></li>
-    <% } %>
+    % }}
 
   In list_items.mi:
     <%args>
@@ -106,9 +106,9 @@ each time, which may result in different content.
 
     <!-- Prints 1 to 5 -->
     % my $i = 1;
-    <% $.Repeat(5) { %>
+    % $.Repeat(5) {{
        <% $i++ %><br>
-    </%>
+    % }}
 
 =item Trim
 
@@ -118,7 +118,7 @@ Remove whitespace from the beginning and end of the content.
 
 =head1 SEE ALSO
 
-L<Mason|Mason>
+L<Mason::Manual::Filters|Mason::Manual::Filters>, L<Mason|Mason>
 
 =head1 AUTHOR
 

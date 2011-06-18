@@ -1,6 +1,6 @@
 package Mason::Plugin::Defer;
 BEGIN {
-  $Mason::Plugin::Defer::VERSION = '2.07';
+  $Mason::Plugin::Defer::VERSION = '2.08';
 }
 use Moose;
 with 'Mason::Plugin';
@@ -21,10 +21,10 @@ request
     <head>
     <title><% $m->defer(sub { $m->page->title }) %></title>
 
-    <% $.Defer { %>
-    % my $content = join(", ", @{ $m->page->meta_content });
+    % $.Defer {{
+    %   my $content = join(", ", @{ $m->page->meta_content });
     <meta name="description" content="<% $content %>">
-    </%>
+    % }}
 
     <body>
     ...
@@ -57,16 +57,12 @@ associated code. e.g.
 
 Applies C<< $m->defer >> to the content block. e.g.
 
-    <% $.Defer { %>
-    % my $content = join(", ", @{ $m->page->meta_content });
+    % $.Defer {{
+    %   my $content = join(", ", @{ $m->page->meta_content });
     <meta name="description" content="<% $content %>">
-    </%>
+    % }}
 
 =back
-
-=head1 AUTHORS
-
-Jonathan Swartz <swartz@pobox.com>
 
 =head1 SEE ALSO
 
