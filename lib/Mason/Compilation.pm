@@ -4,7 +4,7 @@
 
 package Mason::Compilation;
 BEGIN {
-  $Mason::Compilation::VERSION = '2.09';
+  $Mason::Compilation::VERSION = '2.10';
 }
 use File::Basename qw(dirname);
 use Guard;
@@ -433,8 +433,7 @@ method _handle_substitution ( $text, $filter_list ) {
     if ($filter_list) {
         if ( my @filters = grep { /\S/ } split( /\s*,\s*/, $filter_list ) ) {
             my $filter_call_list = join( ", ", map { "\$self->$_()" } @filters );
-            $text =
-              sprintf( '$self->m->_apply_filters([%s], sub { %s })', $filter_call_list, $text );
+            $text = sprintf( '$self->m->_apply_filters(%s, sub { %s })', $filter_call_list, $text );
         }
     }
 

@@ -1,4 +1,7 @@
 package Mason::t::CompCalls;
+BEGIN {
+  $Mason::t::CompCalls::VERSION = '2.10';
+}
 use Test::Class::Most parent => 'Mason::Test::Class';
 
 sub test_ampersand : Tests {

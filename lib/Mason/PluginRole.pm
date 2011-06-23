@@ -1,6 +1,6 @@
 package Mason::PluginRole;
 BEGIN {
-  $Mason::PluginRole::VERSION = '2.09';
+  $Mason::PluginRole::VERSION = '2.10';
 }
 use Moose::Role                ();
 use Method::Signatures::Simple ();

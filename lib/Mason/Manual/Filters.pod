@@ -122,6 +122,9 @@ define local filter methods to get around this, e.g.
     ...
     <% $message_body | Repeat3 %>
 
+For consistency with other syntax, multiple names are applied in reverse order
+with the rightmost applied first.
+
 One common use of this form is to escape HTML strings in web content, using the
 C<HTML> filter in L<Mason::Plugin::HTMLFilters|Mason::Plugin::HTMLFilters>:
 

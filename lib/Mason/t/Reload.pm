@@ -1,4 +1,7 @@
 package Mason::t::Reload;
+BEGIN {
+  $Mason::t::Reload::VERSION = '2.10';
+}
 use Test::Class::Most parent => 'Mason::Test::Class';
 
 sub test_reload : Tests {

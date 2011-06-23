@@ -1,4 +1,7 @@
 package Mason::t::Filters;
+BEGIN {
+  $Mason::t::Filters::VERSION = '2.10';
+}
 use Test::Class::Most parent => 'Mason::Test::Class';
 
 sub test_basic : Tests {
@@ -39,6 +42,34 @@ Hello World!
 HELLO WORLD.
 Hello world?
 hello world!
+',
+    );
+}
+
+sub test_filter_pipe : Tests {
+    my $self = shift;
+    $self->test_comp(
+        src => '
+<%class>
+method Upper () { sub { uc(shift) } }
+method Lower () { sub { lc(shift) } }
+method UpFirst () { sub { ucfirst(shift) } }
+</%class>
+
+<% "HELLO" | Lower %>
+<% "hello" | UpFirst %>
+<% "HELLO" | UpFirst,Lower %>
+<% "hello" | Lower,   UpFirst %>
+<% "HeLlO" | Lower, Upper %>
+<% "HeLlO" | Upper, Lower %>
+',
+        expect => '
+hello
+Hello
+Hello
+hello
+hello
+HELLO
 ',
     );
 }

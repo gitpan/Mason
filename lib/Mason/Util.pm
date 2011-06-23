@@ -1,4 +1,7 @@
 package Mason::Util;
+BEGIN {
+  $Mason::Util::VERSION = '2.10';
+}
 use Carp;
 use Class::MOP;
 use Class::Unload;

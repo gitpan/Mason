@@ -1,4 +1,7 @@
 package Mason::Test::Class;
+BEGIN {
+  $Mason::Test::Class::VERSION = '2.10';
+}
 use Carp;
 use File::Basename;
 use File::Path;

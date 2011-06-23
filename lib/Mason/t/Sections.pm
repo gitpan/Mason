@@ -1,4 +1,7 @@
 package Mason::t::Sections;
+BEGIN {
+  $Mason::t::Sections::VERSION = '2.10';
+}
 use Test::Class::Most parent => 'Mason::Test::Class';
 
 sub test_sections : Tests {

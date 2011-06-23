@@ -1,4 +1,7 @@
 package Mason::Test::Plugins::Notify::Compilation;
+BEGIN {
+  $Mason::Test::Plugins::Notify::Compilation::VERSION = '2.10';
+}
 use Mason::PluginRole;
 
 before 'parse' => sub {

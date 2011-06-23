@@ -1,4 +1,7 @@
 package Mason::t::Autobase;
+BEGIN {
+  $Mason::t::Autobase::VERSION = '2.10';
+}
 use Test::Class::Most parent => 'Mason::Test::Class';
 
 sub test_autobase : Tests {

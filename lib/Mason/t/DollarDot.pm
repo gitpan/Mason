@@ -1,4 +1,7 @@
 package Mason::t::DollarDot;
+BEGIN {
+  $Mason::t::DollarDot::VERSION = '2.10';
+}
 use Test::Class::Most parent => 'Mason::Test::Class';
 
 sub test_dollardot : Tests {

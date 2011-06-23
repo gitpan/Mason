@@ -1,4 +1,7 @@
 package Mason::Types;
+BEGIN {
+  $Mason::Types::VERSION = '2.10';
+}
 use Moose::Util::TypeConstraints;
 use strict;
 use warnings;
