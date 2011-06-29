@@ -1,6 +1,6 @@
 package Mason::Tidy;
 BEGIN {
-  $Mason::Tidy::VERSION = '2.10';
+  $Mason::Tidy::VERSION = '2.11';
 }
 use File::Slurp;
 use IO::Scalar;

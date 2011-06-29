@@ -1,6 +1,6 @@
 package Mason::Test::Plugins::Notify::Request;
 BEGIN {
-  $Mason::Test::Plugins::Notify::Request::VERSION = '2.10';
+  $Mason::Test::Plugins::Notify::Request::VERSION = '2.11';
 }
 use Mason::PluginRole;
 

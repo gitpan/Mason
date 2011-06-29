@@ -1,6 +1,6 @@
 package Mason::Interp;
 BEGIN {
-  $Mason::Interp::VERSION = '2.10';
+  $Mason::Interp::VERSION = '2.11';
 }
 use Carp;
 use Devel::GlobalDestruction;
@@ -466,12 +466,15 @@ method _build_match_request_path ($interp:) {
     $ignore_file_regex = qr/$ignore_file_regex/;
     my %is_dhandler_name = map { ( $_, 1 ) } @{ $interp->dhandler_names };
     my @autoextensions = $interp->autoextend_request_path ? @{ $interp->top_level_extensions } : ();
+    my @index_names = @{ $interp->index_names };
+    undef $interp;    # So this doesn't end up in closure and cause cycle
 
     return sub {
         my ( $request, $request_path ) = @_;
+        my $interp         = $request->interp;
         my $path_info      = '';
         my $declined_paths = $request->declined_paths;
-        my @index_subpaths = map { "/$_" } @{ $interp->index_names };
+        my @index_subpaths = map { "/$_" } @index_names;
         my $path           = $request_path;
         my @tried_paths;
 

@@ -83,6 +83,7 @@ lib/Mason/t/Filters.pm
 lib/Mason/t/Globals.pm
 lib/Mason/t/HTMLFilters.pm
 lib/Mason/t/Interp.pm
+lib/Mason/t/Leaks.pm
 lib/Mason/t/LvalueAttributes.pm
 lib/Mason/t/Plugins.pm
 lib/Mason/t/Reload.pm
@@ -114,4 +115,5 @@ t/Sections.t
 t/StaticSource.t
 t/Syntax.t
 t/Util.t
+t/author-leaks.t
 t/mason-app.t

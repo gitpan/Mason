@@ -1,6 +1,6 @@
 package Mason::t::Skel;
 BEGIN {
-  $Mason::t::Skel::VERSION = '2.10';
+  $Mason::t::Skel::VERSION = '2.11';
 }
 use Test::Class::Most parent => 'Mason::Test::Class';
 

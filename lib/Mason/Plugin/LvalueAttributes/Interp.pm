@@ -1,6 +1,6 @@
 package Mason::Plugin::LvalueAttributes::Interp;
 BEGIN {
-  $Mason::Plugin::LvalueAttributes::Interp::VERSION = '2.10';
+  $Mason::Plugin::LvalueAttributes::Interp::VERSION = '2.11';
 }
 use Mason::PluginRole;
 

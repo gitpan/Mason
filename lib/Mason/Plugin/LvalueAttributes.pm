@@ -1,6 +1,6 @@
 package Mason::Plugin::LvalueAttributes;
 BEGIN {
-  $Mason::Plugin::LvalueAttributes::VERSION = '2.10';
+  $Mason::Plugin::LvalueAttributes::VERSION = '2.11';
 }
 use Moose;
 with 'Mason::Plugin';

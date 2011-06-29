@@ -1,6 +1,6 @@
 package Mason::Request;
 BEGIN {
-  $Mason::Request::VERSION = '2.10';
+  $Mason::Request::VERSION = '2.11';
 }
 use Carp;
 use File::Basename;
@@ -10,7 +10,7 @@ use Mason::Exceptions;
 use Mason::TieHandle;
 use Mason::Types;
 use Mason::Moose;
-use Scalar::Util qw(blessed reftype);
+use Scalar::Util qw(blessed reftype weaken);
 use Try::Tiny;
 
 my $default_out = sub { my ( $text, $self ) = @_; $self->result->_append_output($text) };
@@ -47,7 +47,10 @@ method current_request () { $current_request }
 #
 
 method BUILD ($params) {
+                                               # Make a copy of params and re-weaken interp
+                                               #
     $self->{orig_request_params} = $params;
+    weaken $self->{orig_request_params}->{interp};
 }
 
 method _build_result () {
