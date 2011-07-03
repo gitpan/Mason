@@ -1,6 +1,6 @@
 package Mason::Component::Import;
 BEGIN {
-  $Mason::Component::Import::VERSION = '2.11';
+  $Mason::Component::Import::VERSION = '2.12';
 }
 use strict;
 use warnings;

@@ -7,7 +7,6 @@ BEGIN {
   }
 }
 
-use d;
 use Devel::LeakGuard::Object qw(leakguard);
 use File::Path qw(mkpath);
 use File::Temp qw(tempdir);

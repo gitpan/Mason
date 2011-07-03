@@ -1,6 +1,6 @@
 package Mason::Interp;
 BEGIN {
-  $Mason::Interp::VERSION = '2.11';
+  $Mason::Interp::VERSION = '2.12';
 }
 use Carp;
 use Devel::GlobalDestruction;
@@ -357,8 +357,8 @@ method object_dir () {
 
 method run () {
     my %request_params;
-    while ( ref( $_[0] ) eq 'HASH' ) {
-        %request_params = ( %request_params, %{ shift(@_) } );
+    if ( ref( $_[0] ) eq 'HASH' ) {
+        %request_params = %{ shift(@_) };
     }
     my $path    = shift;
     my $request = $self->_make_request(%request_params);

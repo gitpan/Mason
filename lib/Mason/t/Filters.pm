@@ -1,6 +1,6 @@
 package Mason::t::Filters;
 BEGIN {
-  $Mason::t::Filters::VERSION = '2.11';
+  $Mason::t::Filters::VERSION = '2.12';
 }
 use Test::Class::Most parent => 'Mason::Test::Class';
 

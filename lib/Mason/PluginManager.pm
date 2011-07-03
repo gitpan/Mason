@@ -1,6 +1,6 @@
 package Mason::PluginManager;
 BEGIN {
-  $Mason::PluginManager::VERSION = '2.11';
+  $Mason::PluginManager::VERSION = '2.12';
 }
 use Carp;
 use Log::Any qw($log);
