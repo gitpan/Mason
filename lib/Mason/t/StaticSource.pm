@@ -1,6 +1,6 @@
 package Mason::t::StaticSource;
 BEGIN {
-  $Mason::t::StaticSource::VERSION = '2.12';
+  $Mason::t::StaticSource::VERSION = '2.13';
 }
 use Test::Class::Most parent => 'Mason::Test::Class';
 use Mason::Util qw(write_file touch_file);

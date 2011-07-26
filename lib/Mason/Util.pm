@@ -1,6 +1,6 @@
 package Mason::Util;
 BEGIN {
-  $Mason::Util::VERSION = '2.12';
+  $Mason::Util::VERSION = '2.13';
 }
 use Carp;
 use Class::MOP;

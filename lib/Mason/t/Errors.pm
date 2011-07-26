@@ -1,6 +1,6 @@
 package Mason::t::Errors;
 BEGIN {
-  $Mason::t::Errors::VERSION = '2.12';
+  $Mason::t::Errors::VERSION = '2.13';
 }
 use Test::Class::Most parent => 'Mason::Test::Class';
 

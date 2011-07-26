@@ -1,6 +1,6 @@
 package Mason::Filters::Standard;
 BEGIN {
-  $Mason::Filters::Standard::VERSION = '2.12';
+  $Mason::Filters::Standard::VERSION = '2.13';
 }
 use Mason::DynamicFilter;
 use Mason::Util;

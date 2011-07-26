@@ -1,6 +1,6 @@
 package Mason::Interp;
 BEGIN {
-  $Mason::Interp::VERSION = '2.12';
+  $Mason::Interp::VERSION = '2.13';
 }
 use Carp;
 use Devel::GlobalDestruction;
