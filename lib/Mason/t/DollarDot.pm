@@ -1,6 +1,6 @@
 package Mason::t::DollarDot;
 BEGIN {
-  $Mason::t::DollarDot::VERSION = '2.13';
+  $Mason::t::DollarDot::VERSION = '2.14';
 }
 use Test::Class::Most parent => 'Mason::Test::Class';
 
@@ -8,20 +8,21 @@ sub test_dollardot : Tests {
     my $self = shift;
     $self->add_comp(
         path => '/helper.mi',
-        src  => '%% has "foo";
+        src  => '<%class>has "foo";</%class>
 Helper: <% $.foo %>
 ',
     );
     $self->test_comp(
         src => '
-<%args>
-$.name => "Joe"
-</%args>
+<%class>
+has "name" => ( default => "Joe" );
 
-<%shared>
-$.compname
-$.date
-</%shared>
+</%class>
+
+<%class>
+has "compname";
+has "date";
+</%class>
 
 <%method greet>
 Hello, <% $.name %>. Today is <% $.date %>.

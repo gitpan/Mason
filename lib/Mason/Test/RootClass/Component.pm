@@ -1,8 +1,9 @@
-package Mason::Test::Plugins::Notify::Component;
+package Mason::Test::RootClass::Component;
 BEGIN {
-  $Mason::Test::Plugins::Notify::Component::VERSION = '2.14';
+  $Mason::Test::RootClass::Component::VERSION = '2.14';
 }
-use Mason::PluginRole;
+use Moose;
+extends 'Mason::Component';
 
 # This doesn't work - it interrupts the inner() chain. Investigate later.
 #

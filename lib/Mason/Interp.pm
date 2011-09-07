@@ -1,6 +1,6 @@
 package Mason::Interp;
 BEGIN {
-  $Mason::Interp::VERSION = '2.13';
+  $Mason::Interp::VERSION = '2.14';
 }
 use Carp;
 use Devel::GlobalDestruction;
@@ -13,7 +13,7 @@ use Mason::Request;
 use Mason::Result;
 use Mason::Types;
 use Mason::Util
-  qw(catdir catfile combine_similar_paths find_wanted first_index is_absolute json_decode mason_canon_path read_file taint_is_on touch_file uniq write_file);
+  qw(can_load catdir catfile combine_similar_paths find_wanted first_index is_absolute json_decode mason_canon_path read_file taint_is_on touch_file uniq write_file);
 use Memoize;
 use Moose::Util::TypeConstraints;
 use Mason::Moose;
@@ -24,7 +24,7 @@ my $max_depth   = 16;
 
 # Passed attributes
 #
-has 'allow_globals'            => ( isa => 'ArrayRef[Str]', default => sub { [] }, trigger => sub { shift->allowed_globals_hash } );
+has 'allow_globals'            => ( isa => 'ArrayRef[Str]', default => sub { [] }, trigger => sub { shift->_validate_allow_globals } );
 has 'autobase_names'           => ( isa => 'ArrayRef[Str]', lazy_build => 1 );
 has 'autoextend_request_path'  => ( isa => 'Bool', default => 1 );
 has 'comp_root'                => ( required => 1, isa => 'Mason::Types::CompRoot', coerce => 1 );
@@ -103,7 +103,7 @@ method _build_autobase_names () {
 }
 
 method _build_code_cache () {
-    return Mason::CodeCache->new();
+    return $self->code_cache_class->new();
 }
 
 method _build_component_class_prefix () {
@@ -384,7 +384,11 @@ method set_global () {
 
 method DEMOLISH () {
     return if in_global_destruction;
-    $self->flush_code_cache();
+
+    # We have to check for code_cache slot directly, in case the object gets
+    # destroyed before it has been fully formed (e.g. missing required attr).
+    #
+    $self->flush_code_cache() if defined( $self->{code_cache} );
 }
 
 method _compile ( $source_file, $path ) {
@@ -697,6 +701,13 @@ method _top_level_not_found ($path, $tried_paths) {
     );
 }
 
+method _validate_allow_globals () {
+
+    # Will build allowed_globals_hash and also validate the param
+    #
+    $self->allowed_globals_hash;
+}
+
 #
 # Class overrides. Put here at the bottom because it strangely messes up
 # Perl line numbering if at the top.
@@ -706,9 +717,9 @@ sub _define_class_override_methods {
         code_cache_class           => 'CodeCache',
         compilation_class          => 'Compilation',
         component_class            => 'Component',
-        component_moose_class      => 'Component::Moose',
         component_class_meta_class => 'Component::ClassMeta',
         component_import_class     => 'Component::Import',
+        component_moose_class      => 'Component::Moose',
         request_class              => 'Request',
         result_class               => 'Result',
     );
@@ -716,14 +727,13 @@ sub _define_class_override_methods {
     # e.g.
     # $method_name        = component_moose_class
     # $base_method_name   = base_component_moose_class
+    # $name               = Component::Moose
     # $default_base_class = Mason::Component::Moose
     #
     while ( my ( $method_name, $name ) = each(%class_overrides) ) {
-        my $base_method_name   = "base_$method_name";
-        my $default_base_class = "Mason::$name";
-        Class::MOP::load_class($default_base_class);
+        my $base_method_name = "base_$method_name";
         has $method_name      => ( init_arg => undef, lazy_build => 1 );
-        has $base_method_name => ( isa      => 'Str', default    => $default_base_class );
+        has $base_method_name => ( isa      => 'Str', lazy_build => 1 );
         __PACKAGE__->meta->add_method(
             "_build_$method_name" => sub {
                 my $self       = shift;
@@ -731,6 +741,17 @@ sub _define_class_override_methods {
                 Class::MOP::load_class($base_class);
                 return Mason::PluginManager->apply_plugins_to_class( $base_class, $name,
                     $self->plugins );
+            }
+        );
+        __PACKAGE__->meta->add_method(
+            "_build_$base_method_name" => sub {
+                my $self = shift;
+                my @candidates =
+                  map { join( '::', $_, $name ) } ( uniq( $self->mason_root_class, 'Mason' ) );
+                my ($base_class) = grep { can_load($_) } @candidates
+                  or die
+                  sprintf( "cannot load %s for %s", join( ', ', @candidates ), $base_method_name );
+                return $base_class;
             }
         );
     }
@@ -1094,8 +1115,9 @@ See also L<set_global|Mason::Request/set_global>.
 =head1 MODIFIABLE METHODS
 
 These methods are not intended to be called externally, but may be useful to
-modify with method modifiers in plugins and subclasses. We will attempt to keep
-their APIs stable.
+modify with method modifiers in L<plugins|Mason::Manual::Plugins> and
+L<subclasses|<Mason::Manual::Subclasses>. Their APIs will be kept as stable as
+possible.
 
 =for html <a name="is_pure_perl_comp_path" />
 

@@ -2,10 +2,25 @@ Revision history for Mason
 
 ** marks an incompatible change
 
+2.14  Sep 6, 2011
+
+** Incompatible changes
+  - Deprecate %%-lines, <%args> section and <%shared> section, which IMO add
+    unnecessary TMTOWTDI. Standardize on the <%class> section and Moose 'has'
+    declarations. These alternate syntaxes may make it into a plugin.
+
+* Improvements
+  - Allow applications to specify Mason subclasses by naming convention.
+  - Document use of Mason subclasses in Mason::Manual::Subclasses.
+
+* Fixes
+  - Respect Mason::CodeCache plugins (bokutin)
+  - Allow comments after filter markers {{ and }}
+
 2.13  Jul 26, 2011
 
 * Improvements
-  - Add process_output, an easy way to modify all Mason output in a plugin
+  - Add process_output, an easy way to modify all Mason output in a plugin or subclass
 
 2.12  Jul 3, 2011
 

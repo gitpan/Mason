@@ -39,6 +39,7 @@ lib/Mason/Manual/Filters.pod
 lib/Mason/Manual/Intro.pod
 lib/Mason/Manual/Plugins.pod
 lib/Mason/Manual/RequestDispatch.pod
+lib/Mason/Manual/Subclasses.pod
 lib/Mason/Manual/Syntax.pod
 lib/Mason/Manual/Tutorial.pod
 lib/Mason/Manual/UpgradingFromMason1.pod
@@ -67,6 +68,12 @@ lib/Mason/Test/Plugins/Notify/Compilation.pm
 lib/Mason/Test/Plugins/Notify/Component.pm
 lib/Mason/Test/Plugins/Notify/Interp.pm
 lib/Mason/Test/Plugins/Notify/Request.pm
+lib/Mason/Test/RootClass.pm
+lib/Mason/Test/RootClass/Compilation.pm
+lib/Mason/Test/RootClass/Component.pm
+lib/Mason/Test/RootClass/Interp.pm
+lib/Mason/Test/RootClass/Request.pm
+lib/Mason/Tidy.pm
 lib/Mason/TieHandle.pm
 lib/Mason/Types.pm
 lib/Mason/Util.pm

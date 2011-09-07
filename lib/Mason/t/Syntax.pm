@@ -1,6 +1,6 @@
 package Mason::t::Syntax;
 BEGIN {
-  $Mason::t::Syntax::VERSION = '2.13';
+  $Mason::t::Syntax::VERSION = '2.14';
 }
 use Test::Class::Most parent => 'Mason::Test::Class';
 
@@ -76,6 +76,8 @@ EOF
     );
 }
 
+# Deprecated syntax
+#
 sub test_double_percent : Tests {
     shift->test_comp(
         src => <<'EOF',
@@ -108,6 +110,8 @@ sub test_pure_perl : Tests {
     );
 }
 
+# Deprecated syntax
+#
 sub test_args : Tests {
     my $self = shift;
     $self->add_comp(
@@ -165,6 +169,8 @@ hi<%
     );
 }
 
+# Deprecated syntax
+#
 sub test_shared : Tests {
     shift->test_parse(
         src => '
@@ -186,12 +192,11 @@ $.baz => ( isa => "Num", default => 5 )
 sub test_dollar_dot : Tests {
     shift->test_comp(
         src => '
-<%args>
-foo => 3
-</%args>
-<%shared>
-bar => 4
-</%shared>
+<%class>
+has "bar" => (default => 4);
+has "foo" => (default => 3);
+
+</%class>
 
 <% $self->show %>
 

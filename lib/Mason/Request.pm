@@ -1,6 +1,6 @@
 package Mason::Request;
 BEGIN {
-  $Mason::Request::VERSION = '2.13';
+  $Mason::Request::VERSION = '2.14';
 }
 use Carp;
 use File::Basename;
@@ -245,7 +245,8 @@ method match_request_path ($request_path) {
 }
 
 method process_output ($outref) {
-                                            # No-op by default
+
+    # No-op by default
 }
 
 method run () {
@@ -752,8 +753,9 @@ See also L<go|/go>.
 =head1 MODIFIABLE METHODS
 
 These methods are not intended to be called externally, but may be useful to
-modify with method modifiers in plugins and subclasses. Their APIs will be kept
-as stable as possible.
+modify with method modifiers in L<plugins|Mason::Manual::Plugins> and
+L<subclasses|<Mason::Manual::Subclasses>. Their APIs will be kept as stable as
+possible.
 
 =for html <a name="cleanup_request" />
 

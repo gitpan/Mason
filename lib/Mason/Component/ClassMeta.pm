@@ -1,6 +1,6 @@
 package Mason::Component::ClassMeta;
 BEGIN {
-  $Mason::Component::ClassMeta::VERSION = '2.13';
+  $Mason::Component::ClassMeta::VERSION = '2.14';
 }
 use File::Basename;
 use Mason::Moose;

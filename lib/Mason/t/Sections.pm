@@ -1,6 +1,6 @@
 package Mason::t::Sections;
 BEGIN {
-  $Mason::t::Sections::VERSION = '2.13';
+  $Mason::t::Sections::VERSION = '2.14';
 }
 use Test::Class::Most parent => 'Mason::Test::Class';
 
@@ -145,13 +145,11 @@ hi
 <%method foo></%method>
 <%filter bar></%filter>
 <%override allow_path_info></%override>
-<%args></%args>
 <%class></%class>
 <%doc></%doc>
 <%flags></%flags>
 <%init></%init>
 <%perl></%perl>
-<%shared></%shared>
 <%text></%text>
 bye
 ',

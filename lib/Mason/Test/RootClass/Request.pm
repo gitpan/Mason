@@ -1,8 +1,9 @@
-package Mason::Test::Plugins::Notify::Request;
+package Mason::Test::RootClass::Request;
 BEGIN {
-  $Mason::Test::Plugins::Notify::Request::VERSION = '2.14';
+  $Mason::Test::RootClass::Request::VERSION = '2.14';
 }
-use Mason::PluginRole;
+use Moose;
+extends 'Mason::Request';
 
 before 'run' => sub {
     my ( $self, $path ) = @_;

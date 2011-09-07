@@ -1,6 +1,6 @@
 package Mason::t::LvalueAttributes;
 BEGIN {
-  $Mason::t::LvalueAttributes::VERSION = '2.13';
+  $Mason::t::LvalueAttributes::VERSION = '2.14';
 }
 use Test::Class::Most parent => 'Mason::Test::Class';
 
@@ -10,10 +10,11 @@ sub test_lvalue : Tests {
     my $self = shift;
     $self->test_comp(
         src => '
-<%shared>
-$.a => (is => "rw")
-$.b => (is => "ro")
-</%shared>
+<%class>
+has "a" => (is => "rw");
+has "b" => (is => "ro");
+
+</%class>
 
 <%init>
 $.a = 5;

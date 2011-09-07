@@ -1,6 +1,6 @@
 package Mason::Plugin::LvalueAttributes;
 BEGIN {
-  $Mason::Plugin::LvalueAttributes::VERSION = '2.13';
+  $Mason::Plugin::LvalueAttributes::VERSION = '2.14';
 }
 use Moose;
 with 'Mason::Plugin';
@@ -18,10 +18,10 @@ attributes
 
 =head1 SYNOPSIS
 
-    <%shared>
-    $.a => (is => "rw")
-    $.b => (is => "ro")
-    </%shared>
+    <%class>
+    has 'a' => (is => "rw")
+    has 'b' => (is => "ro")
+    </%class>
 
     <%init>
     # set a to 5

@@ -1,6 +1,6 @@
 package Mason::t::Plugins;
 BEGIN {
-  $Mason::t::Plugins::VERSION = '2.13';
+  $Mason::t::Plugins::VERSION = '2.14';
 }
 use Test::Class::Most parent => 'Mason::Test::Class';
 use Capture::Tiny qw(capture_merged);
@@ -29,6 +29,36 @@ sub test_notify_plugin : Tests {
     $like->(qr/starting compilation parse - \/test_plugin.mc/);
 }
 
+# Call Mason::Test::RootClass->new, then make base classes like
+# Mason::Test::RootClass::Interp are used automatically
+#
+sub test_notify_root_class : Tests {
+    my $self = shift;
+    my $mrc  = 'Mason::Test::RootClass';
+    $self->setup_interp( mason_root_class => $mrc );
+    is( $self->interp->mason_root_class,       $mrc,                  "mason_root_class" );
+    is( $self->interp->base_compilation_class, "${mrc}::Compilation", "base_compilation_class" );
+    is( $self->interp->base_component_class,   "${mrc}::Component",   "base_component_class" );
+    is( $self->interp->base_request_class,     "${mrc}::Request",     "base_request_class" );
+    is( $self->interp->base_result_class,      "Mason::Result",       "base_result_class" );
+    isa_ok( $self->interp, "${mrc}::Interp", "base_interp_class" );
+
+    $self->add_comp( path => '/test_plugin_support.mi', src => 'hi' );
+    my $output = capture_merged {
+        $self->test_comp(
+            path   => '/test_plugin.mc',
+            src    => '<& test_plugin_support.mi &>',
+            expect => 'hi'
+        );
+    };
+
+    my $like = sub { my $regex = shift; like( $output, $regex, $regex ) };
+    $like->(qr/starting interp run/);
+    $like->(qr/starting request run - \/test_plugin/);
+    $like->(qr/starting request comp - test_plugin_support.mi/);
+    $like->(qr/starting compilation parse - \/test_plugin.mc/);
+}
+
 sub test_strict_plugin : Tests {
     my $self = shift;
 
@@ -41,28 +71,28 @@ sub test_strict_plugin : Tests {
 
 { package Mason::Test::Plugins::A;
 BEGIN {
-  $Mason::Test::Plugins::A::VERSION = '2.13';
+  $Mason::Test::Plugins::A::VERSION = '2.14';
 } use Moose; with 'Mason::Plugin'; }
 { package Mason::Plugin::B;
 BEGIN {
-  $Mason::Plugin::B::VERSION = '2.13';
+  $Mason::Plugin::B::VERSION = '2.14';
 }        use Moose; with 'Mason::Plugin'; }
 { package Mason::Plugin::C;
 BEGIN {
-  $Mason::Plugin::C::VERSION = '2.13';
+  $Mason::Plugin::C::VERSION = '2.14';
 }        use Moose; with 'Mason::Plugin'; }
 { package Mason::Plugin::D;
 BEGIN {
-  $Mason::Plugin::D::VERSION = '2.13';
+  $Mason::Plugin::D::VERSION = '2.14';
 }        use Moose; with 'Mason::Plugin'; }
 { package Mason::Plugin::E;
 BEGIN {
-  $Mason::Plugin::E::VERSION = '2.13';
+  $Mason::Plugin::E::VERSION = '2.14';
 }        use Moose; with 'Mason::Plugin'; }
 {
     package Mason::PluginBundle::F;
 BEGIN {
-  $Mason::PluginBundle::F::VERSION = '2.13';
+  $Mason::PluginBundle::F::VERSION = '2.14';
 }
     use Moose;
     with 'Mason::PluginBundle';
@@ -71,7 +101,7 @@ BEGIN {
 {
     package Mason::Test::PluginBundle::G;
 BEGIN {
-  $Mason::Test::PluginBundle::G::VERSION = '2.13';
+  $Mason::Test::PluginBundle::G::VERSION = '2.14';
 }
     use Moose;
     with 'Mason::PluginBundle';
@@ -80,7 +110,7 @@ BEGIN {
 {
     package Mason::Plugin::H;
 BEGIN {
-  $Mason::Plugin::H::VERSION = '2.13';
+  $Mason::Plugin::H::VERSION = '2.14';
 }
     use Moose;
     with 'Mason::Plugin';
@@ -89,7 +119,7 @@ BEGIN {
 {
     package Mason::PluginBundle::I;
 BEGIN {
-  $Mason::PluginBundle::I::VERSION = '2.13';
+  $Mason::PluginBundle::I::VERSION = '2.14';
 }
     use Moose;
     with 'Mason::PluginBundle';
@@ -102,7 +132,7 @@ BEGIN {
 {
     package Mason::PluginBundle::J;
 BEGIN {
-  $Mason::PluginBundle::J::VERSION = '2.13';
+  $Mason::PluginBundle::J::VERSION = '2.14';
 }
     use Moose;
     with 'Mason::PluginBundle';
@@ -142,12 +172,12 @@ sub test_plugin_specs : Tests {
 
 { package Mason::Test::Plugins::Upper;
 BEGIN {
-  $Mason::Test::Plugins::Upper::VERSION = '2.13';
+  $Mason::Test::Plugins::Upper::VERSION = '2.14';
 } use Moose; with 'Mason::Plugin' }
 {
     package Mason::Test::Plugins::Upper::Request;
 BEGIN {
-  $Mason::Test::Plugins::Upper::Request::VERSION = '2.13';
+  $Mason::Test::Plugins::Upper::Request::VERSION = '2.14';
 }
     use Mason::PluginRole;
     after 'process_output' => sub {

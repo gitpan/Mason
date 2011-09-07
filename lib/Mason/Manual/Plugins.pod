@@ -76,6 +76,9 @@ or the whole list:
 
 =head1 CREATING PLUGINS
 
+Note: If you want to modify behavior for a particular application only, it
+might be more convenient to create L<subclasses|Mason::Manual::Subclasses>.
+
 A plugin consists of the main plugin class and one or more roles. The main
 class currently looks like this:
 
@@ -128,10 +131,13 @@ will be applied to Mason::Interp and Mason::Compilation respectively.
 
 As of this writing the following Mason classes can be modified with plugins:
 
+    Mason::CodeCache
     Mason::Compilation
     Mason::Component
     Mason::Component::ClassMeta
     Mason::Component::Import
+    Mason::Component::Moose
+    Mason::Interp
     Mason::Request
     Mason::Result
 
@@ -195,7 +201,7 @@ as the C<plugins> parameter to C<Mason->new>.
 
 =head1 ACKNOWLEDGEMENTS
 
-Thanks to Ricardo SIGNES <rjbs@cpan.org> for L<Dist::Zilla|Dist::Zilla> and
+Thanks to Ricardo Signes <rjbs@cpan.org> for L<Dist::Zilla|Dist::Zilla> and
 L<Pod::Weaver|Pod::Weaver>, which got me thinking in plugins and lent the
 plugin and bundle name syntax.
 
