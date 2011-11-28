@@ -4,7 +4,7 @@
 
 package Mason::Compilation;
 BEGIN {
-  $Mason::Compilation::VERSION = '2.14';
+  $Mason::Compilation::VERSION = '2.15';
 }
 use File::Basename qw(dirname);
 use Guard;
@@ -453,7 +453,7 @@ method _match_apply_filter () {
     my $pos = pos( $self->{source} );
 
     # Match % ... {{ at beginning of line
-    if ( $self->{source} =~ / \G (?<=^) % ([^\n]*) \{\{ \s* (?:\#.*)? \n /gcmx ) {
+    if ( $self->{source} =~ / \G (?<=^) % ([^\n]*) \{\{ [^\S\n]* (?:\#.*)? \n /gcmx ) {
         my ($filter_expr) = ($1);
         $self->_handle_apply_filter($filter_expr);
         return 1;
@@ -483,7 +483,7 @@ method _match_apply_filter () {
 }
 
 method _match_apply_filter_end () {
-    if ( $self->{source} =~ / \G (?<=^) % [ \t]+ \}\} \s* (?:\#.*)? (?:\n\n?|\z) /gmcx ) {
+    if ( $self->{source} =~ / \G (?<=^) % [ \t]+ \}\} [^\S\n]* (?:\#.*)? (?:\n\n?|\z) /gmcx ) {
         if ( $self->{current_method}->{type} eq 'apply_filter' ) {
             $self->{end_parse} = pos( $self->{source} );
             return 1;
@@ -943,6 +943,8 @@ to this list if you want to create your own unnamed blocks.
 
 An arrayref of valid flags: contains only C<extends> at time of writing. Add to
 this list if you want to create your own flags.
+
+=back
 
 =head1 SEE ALSO
 

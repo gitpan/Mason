@@ -20,7 +20,7 @@ my %WriteMakefileArgs = (
   },
   'DISTNAME' => 'Mason',
   'EXE_FILES' => [
-    'bin/mason'
+    'bin/mason.pl'
   ],
   'LICENSE' => 'perl',
   'NAME' => 'Mason',
@@ -42,7 +42,7 @@ my %WriteMakefileArgs = (
     'Scalar::Util' => '1.01',
     'Try::Tiny' => '0'
   },
-  'VERSION' => '2.14',
+  'VERSION' => '2.15',
   'test' => {
     'TESTS' => 't/*.t'
   }

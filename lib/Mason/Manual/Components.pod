@@ -247,7 +247,7 @@ which would (undesirably) print the return value if it existed.
 
 Each component class naturally inherits from (or 'extends') a superclass. The
 default superclass for components is L<Mason::Component|Mason::Component>, but
-this may be overriden in two ways: the I<extends flag> and I<autobase
+this may be overridden in two ways: the I<extends flag> and I<autobase
 components>.
 
 =head2 Extends flag

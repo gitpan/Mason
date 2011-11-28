@@ -5,7 +5,7 @@ MANIFEST
 META.json
 META.yml
 Makefile.PL
-bin/mason
+bin/mason.pl
 eg/blog/README
 eg/blog/app.psgi
 eg/blog/blog.sql

@@ -1,6 +1,6 @@
 package Mason::t::Syntax;
 BEGIN {
-  $Mason::t::Syntax::VERSION = '2.14';
+  $Mason::t::Syntax::VERSION = '2.15';
 }
 use Test::Class::Most parent => 'Mason::Test::Class';
 

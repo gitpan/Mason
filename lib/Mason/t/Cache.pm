@@ -1,6 +1,6 @@
 package Mason::t::Cache;
 BEGIN {
-  $Mason::t::Cache::VERSION = '2.14';
+  $Mason::t::Cache::VERSION = '2.15';
 }
 use Test::Class::Most parent => 'Mason::Test::Class';
 
@@ -24,7 +24,7 @@ sub test_cache_method : Tests {
         path => '/cache.mc',
         src  => '
 <%class>
-has ' count ' => ( default => 0 );
+has "count" => ( default => 0 );
 
 </%class>
 

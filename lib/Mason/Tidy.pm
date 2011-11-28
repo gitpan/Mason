@@ -1,6 +1,6 @@
 package Mason::Tidy;
 BEGIN {
-  $Mason::Tidy::VERSION = '2.14';
+  $Mason::Tidy::VERSION = '2.15';
 }
 use File::Slurp;
 use HTML::PullParser;
@@ -8,7 +8,6 @@ use IO::Scalar;
 use IPC::Run;
 use Method::Signatures::Simple;
 use Perl::Tidy qw();
-use d;
 
 my $marker_count  = 0;
 my $marker_prefix = '__masontidy__';

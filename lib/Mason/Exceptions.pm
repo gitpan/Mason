@@ -1,6 +1,6 @@
 package Mason::Exceptions;
 BEGIN {
-  $Mason::Exceptions::VERSION = '2.14';
+  $Mason::Exceptions::VERSION = '2.15';
 }
 use strict;
 use warnings;

@@ -1,6 +1,6 @@
 package Mason::t::Filters;
 BEGIN {
-  $Mason::t::Filters::VERSION = '2.14';
+  $Mason::t::Filters::VERSION = '2.15';
 }
 use Test::Class::Most parent => 'Mason::Test::Class';
 
@@ -278,6 +278,33 @@ Hello World!
 HELLO WORLD.
 Hello world?
 hello world!
+',
+    );
+}
+
+sub test_filter_comment : Tests {
+    my $self = shift;
+    $self->test_comp(
+        src => '
+<%class>
+method LESSp () { sub { uc(shift) } }
+</%class>
+% $.LESSp {{
+#header {
+    text-align: left;
+}
+% }}
+#footer {
+    text-align: right;
+}
+',
+        expect => '
+#HEADER {
+    TEXT-ALIGN: LEFT;
+}
+#footer {
+    text-align: right;
+}
 ',
     );
 }

@@ -1,6 +1,6 @@
 package Mason::Request;
 BEGIN {
-  $Mason::Request::VERSION = '2.14';
+  $Mason::Request::VERSION = '2.15';
 }
 use Carp;
 use File::Basename;
