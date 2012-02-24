@@ -1,13 +1,13 @@
 package Mason::t::Interp;
 BEGIN {
-  $Mason::t::Interp::VERSION = '2.15';
+  $Mason::t::Interp::VERSION = '2.16';
 }
 use Test::Class::Most parent => 'Mason::Test::Class';
 use Capture::Tiny qw(capture);
 
 { package MyInterp;
 BEGIN {
-  $MyInterp::VERSION = '2.15';
+  $MyInterp::VERSION = '2.16';
 } use Moose; extends 'Mason::Interp' }
 
 sub test_base_interp_class : Tests {

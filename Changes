@@ -2,10 +2,19 @@ Revision history for Mason
 
 ** marks an incompatible change
 
+2.16  Feb 24, 2012
+
+* Documentation
+  - Add Mason::Manual::FAQ, and various documentation improvements/fixes
+
+* Fixes
+  - Add prereq Exception::Class
+  - Use Data::Dumper in Mason::Util
+
 2.15  Nov 27, 2011
 
 ** Incompatible changes
-  - Rename bin/mason to bin/mason.pl, to avoid conflict with the Mason firewall tool.
+  - Rename bin/mason to bin/mason.pl, to avoid conflict with the Mason firewall tool - RT #72497 (Florian)
 
 * Fixes
   - Fix parser bug with filters and comment characters (Tomohiro Hosaka)

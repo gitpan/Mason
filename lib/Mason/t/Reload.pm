@@ -1,6 +1,6 @@
 package Mason::t::Reload;
 BEGIN {
-  $Mason::t::Reload::VERSION = '2.15';
+  $Mason::t::Reload::VERSION = '2.16';
 }
 use Test::Class::Most parent => 'Mason::Test::Class';
 

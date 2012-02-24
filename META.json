@@ -4,7 +4,7 @@
       "Jonathan Swartz <swartz@pobox.com>"
    ],
    "dynamic_config" : 0,
-   "generated_by" : "Dist::Zilla version 4.200008, CPAN::Meta::Converter version 2.102400",
+   "generated_by" : "Dist::Zilla version 4.200008, CPAN::Meta::Converter version 2.113640",
    "license" : [
       "perl_5"
    ],
@@ -38,6 +38,7 @@
             "Capture::Tiny" : 0,
             "Class::Unload" : 0,
             "Devel::GlobalDestruction" : 0,
+            "Exception::Class" : 0,
             "File::Spec" : 0,
             "File::Temp" : 0,
             "Guard" : 0,
@@ -72,6 +73,6 @@
          "web" : "https://github.com/jonswar/perl-mason"
       }
    },
-   "version" : "2.15"
+   "version" : "2.16"
 }
 

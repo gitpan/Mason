@@ -28,6 +28,7 @@ my %WriteMakefileArgs = (
     'Capture::Tiny' => '0',
     'Class::Unload' => '0',
     'Devel::GlobalDestruction' => '0',
+    'Exception::Class' => '0',
     'File::Spec' => '0',
     'File::Temp' => '0',
     'Guard' => '0',
@@ -42,7 +43,7 @@ my %WriteMakefileArgs = (
     'Scalar::Util' => '1.01',
     'Try::Tiny' => '0'
   },
-  'VERSION' => '2.15',
+  'VERSION' => '2.16',
   'test' => {
     'TESTS' => 't/*.t'
   }

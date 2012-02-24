@@ -1,6 +1,6 @@
 package Mason::Test::Plugins::Notify;
 BEGIN {
-  $Mason::Test::Plugins::Notify::VERSION = '2.15';
+  $Mason::Test::Plugins::Notify::VERSION = '2.16';
 }
 use strict;
 use warnings;

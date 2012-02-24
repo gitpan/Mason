@@ -1,10 +1,11 @@
 package Mason::Util;
 BEGIN {
-  $Mason::Util::VERSION = '2.15';
+  $Mason::Util::VERSION = '2.16';
 }
 use Carp;
 use Class::MOP;
 use Class::Unload;
+use Data::Dumper;
 use Fcntl qw( :DEFAULT :seek );
 use File::Find;
 use File::Spec::Functions ();

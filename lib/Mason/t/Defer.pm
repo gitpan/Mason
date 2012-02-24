@@ -1,6 +1,6 @@
 package Mason::t::Defer;
 BEGIN {
-  $Mason::t::Defer::VERSION = '2.15';
+  $Mason::t::Defer::VERSION = '2.16';
 }
 use Test::More;
 use strict;

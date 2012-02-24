@@ -73,7 +73,6 @@ lib/Mason/Test/RootClass/Compilation.pm
 lib/Mason/Test/RootClass/Component.pm
 lib/Mason/Test/RootClass/Interp.pm
 lib/Mason/Test/RootClass/Request.pm
-lib/Mason/Tidy.pm
 lib/Mason/TieHandle.pm
 lib/Mason/Types.pm
 lib/Mason/Util.pm

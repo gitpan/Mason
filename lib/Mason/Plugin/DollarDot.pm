@@ -1,6 +1,6 @@
 package Mason::Plugin::DollarDot;
 BEGIN {
-  $Mason::Plugin::DollarDot::VERSION = '2.15';
+  $Mason::Plugin::DollarDot::VERSION = '2.16';
 }
 use Moose;
 with 'Mason::Plugin';

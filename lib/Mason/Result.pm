@@ -1,6 +1,6 @@
 package Mason::Result;
 BEGIN {
-  $Mason::Result::VERSION = '2.15';
+  $Mason::Result::VERSION = '2.16';
 }
 use Mason::Moose;
 

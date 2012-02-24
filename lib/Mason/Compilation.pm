@@ -4,7 +4,7 @@
 
 package Mason::Compilation;
 BEGIN {
-  $Mason::Compilation::VERSION = '2.15';
+  $Mason::Compilation::VERSION = '2.16';
 }
 use File::Basename qw(dirname);
 use Guard;
@@ -898,7 +898,7 @@ etc.
 A list of method names that should not be used because they are reserved for
 built-in attributes: C<args>, C<m>, C<cmeta>, etc. Not as extensive as
 bad_attribute_names above because methods like C<render> and C<main> can be
-overriden but make no sense as attributes.
+overridden but make no sense as attributes.
 
 =item compile ()
 

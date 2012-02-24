@@ -1,6 +1,6 @@
 package Mason::t::ComponentMeta;
 BEGIN {
-  $Mason::t::ComponentMeta::VERSION = '2.15';
+  $Mason::t::ComponentMeta::VERSION = '2.16';
 }
 use Test::Class::Most parent => 'Mason::Test::Class';
 
