@@ -1,6 +1,6 @@
 package Mason::PluginManager;
 BEGIN {
-  $Mason::PluginManager::VERSION = '2.16';
+  $Mason::PluginManager::VERSION = '2.17';
 }
 use Carp;
 use Log::Any qw($log);
@@ -81,6 +81,8 @@ method apply_plugins_to_class ($class: $base_subclass, $name, $plugins) {
     $log->debugf( "apply_plugins - base_subclass=%s, name=%s, plugins=%s, roles=%s - %s",
         $base_subclass, $name, $plugins, \@roles, $final_subclass )
       if $log->is_debug;
+
+    $final_subclass->meta->make_immutable if $final_subclass->can('meta');
 
     $apply_plugins_cache{$key} = $final_subclass;
     return $final_subclass;

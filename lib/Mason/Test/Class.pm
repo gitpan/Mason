@@ -1,6 +1,6 @@
 package Mason::Test::Class;
 BEGIN {
-  $Mason::Test::Class::VERSION = '2.16';
+  $Mason::Test::Class::VERSION = '2.17';
 }
 use Carp;
 use File::Basename;

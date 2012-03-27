@@ -1,6 +1,6 @@
 package Mason::Plugin::DollarDot::Compilation;
 BEGIN {
-  $Mason::Plugin::DollarDot::Compilation::VERSION = '2.16';
+  $Mason::Plugin::DollarDot::Compilation::VERSION = '2.17';
 }
 use Mason::PluginRole;
 

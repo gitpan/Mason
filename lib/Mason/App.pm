@@ -1,6 +1,6 @@
 package Mason::App;
 BEGIN {
-  $Mason::App::VERSION = '2.16';
+  $Mason::App::VERSION = '2.17';
 }
 use Cwd qw(realpath);
 use File::Basename;

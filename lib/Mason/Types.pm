@@ -1,6 +1,6 @@
 package Mason::Types;
 BEGIN {
-  $Mason::Types::VERSION = '2.16';
+  $Mason::Types::VERSION = '2.17';
 }
 use Moose::Util::TypeConstraints;
 use strict;

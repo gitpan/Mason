@@ -1,6 +1,6 @@
 package Mason::PluginBundle::Default;
 BEGIN {
-  $Mason::PluginBundle::Default::VERSION = '2.16';
+  $Mason::PluginBundle::Default::VERSION = '2.17';
 }
 use Mason::PluginRole;
 with 'Mason::PluginBundle';

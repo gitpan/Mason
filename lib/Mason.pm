@@ -1,15 +1,15 @@
 package Mason;
 BEGIN {
-  $Mason::VERSION = '2.16';
+  $Mason::VERSION = '2.17';
 }
 use Mason::Interp;
 use Mason::PluginManager;
 use Mason::Util qw(can_load uniq);
+use Method::Signatures::Simple;
 use strict;
 use warnings;
 
-sub new {
-    my ( $class, %params ) = @_;
+method new ($class: %params) {
 
     # Extract plugins and base_interp_class
     #
@@ -29,9 +29,7 @@ sub new {
     return $interp_class->new( mason_root_class => $class, plugins => \@plugins, %params );
 }
 
-sub default_base_interp_class {
-    my ($class) = @_;
-
+method default_base_interp_class ($class:) {
     my @candidates =
       map { join( '::', $_, 'Interp' ) } ( uniq( $class, 'Mason' ) );
     my ($base_class) = grep { can_load($_) } @candidates

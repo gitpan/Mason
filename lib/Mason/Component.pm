@@ -1,6 +1,6 @@
 package Mason::Component;
 BEGIN {
-  $Mason::Component::VERSION = '2.16';
+  $Mason::Component::VERSION = '2.17';
 }
 use Moose;    # no Mason::Moose - don't want StrictConstructor
 use MooseX::HasDefaults::RO;

@@ -1,6 +1,6 @@
 package Mason::t::CompCalls;
 BEGIN {
-  $Mason::t::CompCalls::VERSION = '2.16';
+  $Mason::t::CompCalls::VERSION = '2.17';
 }
 use Test::Class::Most parent => 'Mason::Test::Class';
 

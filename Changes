@@ -2,6 +2,15 @@ Revision history for Mason
 
 ** marks an incompatible change
 
+2.17  Mar 27, 2012
+
+* Documentation
+  - Move FAQ pod sections up one level
+
+* Fixes
+  - Use make_immutable on generated Mason subclasses (Tomohiro Hosaka)
+  - Properly quote paths when generating component class (Peter Franke)
+
 2.16  Feb 24, 2012
 
 * Documentation

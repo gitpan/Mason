@@ -1,6 +1,6 @@
 package Mason::t::Sanity;
 BEGIN {
-  $Mason::t::Sanity::VERSION = '2.16';
+  $Mason::t::Sanity::VERSION = '2.17';
 }
 use Test::Class::Most parent => 'Mason::Test::Class';
 
