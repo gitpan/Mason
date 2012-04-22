@@ -1,6 +1,6 @@
 package Mason::t::ResolveURI;
 BEGIN {
-  $Mason::t::ResolveURI::VERSION = '2.17';
+  $Mason::t::ResolveURI::VERSION = '2.18';
 }
 use Test::Class::Most parent => 'Mason::Test::Class';
 

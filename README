@@ -20,9 +20,10 @@ DESCRIPTION
     and features specific to template creation, but underneath it is still
     clearly and proudly recognizable as Perl.
 
-    Mason is most often used for generating web pages. It can handle web
-    requests directly via PSGI, or act as the view layer for a web framework
-    such as Catalyst or Dancer.
+    Mason is most often used for generating web pages. It has a companion
+    web framework, Poet, designed to take maximum advantage of its routing
+    and content generation features. It can also be used as the templating
+    layer for web frameworks such as Catalyst and Dancer.
 
     All documentation is indexed at Mason::Manual.
 
@@ -30,7 +31,7 @@ DESCRIPTION
     HTML::Mason.
 
 SUPPORT
-    The mailing list is mason-users@lists.sourceforge.net. You must be
+    The mailing list is `mason-users@lists.sourceforge.net'. You must be
     subscribed to send a message. To subscribe, visit
     https://lists.sourceforge.net/lists/listinfo/mason-users.
 

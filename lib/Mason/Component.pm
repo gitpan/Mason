@@ -1,6 +1,6 @@
 package Mason::Component;
 BEGIN {
-  $Mason::Component::VERSION = '2.17';
+  $Mason::Component::VERSION = '2.18';
 }
 use Moose;    # no Mason::Moose - don't want StrictConstructor
 use MooseX::HasDefaults::RO;
@@ -113,11 +113,11 @@ throw an error (e.g. permission denied)
 
 =item *
 
-defer to another component via C<< $m->go >>
+take some action and redirect (e.g. if handling a form in a web environment)
 
 =item *
 
-redirect to another URL (if in a web environment)
+defer to another component via C<< $m->go >>
 
 =item *
 
@@ -164,7 +164,7 @@ C<wrap> using C<method> instead of C<augment>:
       <% inner() %>
     </%method>
 
-To do no wrapping at all, call the component class method L<no_wrap>:
+To do no wrapping at all, call the component class method L</no_wrap>:
 
     <%class>
     CLASS->no_wrap;
@@ -216,7 +216,7 @@ L<Mason::Manual::RequestDispatch/Partial Paths|Mason::Manual::RequestDispatch>.
 =item args
 
 Returns the hashref of arguments passed to this component's constructor, e.g.
-the arguments passed in a L<component call|CALLING COMPONENTS>.
+the arguments passed in a L<component call|/CALLING COMPONENTS>.
 
 =for html <a name="cmeta" />
 

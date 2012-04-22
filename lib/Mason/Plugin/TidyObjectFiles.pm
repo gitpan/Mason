@@ -1,6 +1,6 @@
 package Mason::Plugin::TidyObjectFiles;
 BEGIN {
-  $Mason::Plugin::TidyObjectFiles::VERSION = '2.17';
+  $Mason::Plugin::TidyObjectFiles::VERSION = '2.18';
 }
 use Moose;
 with 'Mason::Plugin';

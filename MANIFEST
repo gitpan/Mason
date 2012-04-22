@@ -31,7 +31,6 @@ lib/Mason/Exceptions.pm
 lib/Mason/Filters/Standard.pm
 lib/Mason/Interp.pm
 lib/Mason/Manual.pod
-lib/Mason/Manual/Admin.pod
 lib/Mason/Manual/Components.pod
 lib/Mason/Manual/Cookbook.pod
 lib/Mason/Manual/FAQ.pod
@@ -39,6 +38,7 @@ lib/Mason/Manual/Filters.pod
 lib/Mason/Manual/Intro.pod
 lib/Mason/Manual/Plugins.pod
 lib/Mason/Manual/RequestDispatch.pod
+lib/Mason/Manual/Setup.pod
 lib/Mason/Manual/Subclasses.pod
 lib/Mason/Manual/Syntax.pod
 lib/Mason/Manual/Tutorial.pod

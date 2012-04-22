@@ -1,6 +1,6 @@
 package Mason::Moose;
 BEGIN {
-  $Mason::Moose::VERSION = '2.17';
+  $Mason::Moose::VERSION = '2.18';
 }
 use Moose                      ();
 use MooseX::HasDefaults::RO    ();

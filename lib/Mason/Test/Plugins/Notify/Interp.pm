@@ -1,6 +1,6 @@
 package Mason::Test::Plugins::Notify::Interp;
 BEGIN {
-  $Mason::Test::Plugins::Notify::Interp::VERSION = '2.17';
+  $Mason::Test::Plugins::Notify::Interp::VERSION = '2.18';
 }
 use Mason::PluginRole;
 

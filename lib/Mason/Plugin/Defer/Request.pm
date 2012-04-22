@@ -1,6 +1,6 @@
 package Mason::Plugin::Defer::Request;
 BEGIN {
-  $Mason::Plugin::Defer::Request::VERSION = '2.17';
+  $Mason::Plugin::Defer::Request::VERSION = '2.18';
 }
 use Mason::PluginRole;
 

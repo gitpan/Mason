@@ -4,7 +4,7 @@
 
 package Mason::Compilation;
 BEGIN {
-  $Mason::Compilation::VERSION = '2.17';
+  $Mason::Compilation::VERSION = '2.18';
 }
 use File::Basename qw(dirname);
 use Guard;
@@ -882,7 +882,7 @@ This class has no public API at this time.
 
 These methods are not intended to be called externally, but may be useful to
 modify with method modifiers in L<plugins|Mason::Manual::Plugins> and
-L<subclasses|<Mason::Manual::Subclasses>. Their APIs will be kept as stable as
+L<subclasses|Mason::Manual::Subclasses>. Their APIs will be kept as stable as
 possible.
 
 =over
