@@ -1,6 +1,6 @@
 package Mason::t::DollarDot;
 BEGIN {
-  $Mason::t::DollarDot::VERSION = '2.18';
+  $Mason::t::DollarDot::VERSION = '2.19';
 }
 use Test::Class::Most parent => 'Mason::Test::Class';
 

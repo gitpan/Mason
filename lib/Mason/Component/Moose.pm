@@ -1,6 +1,6 @@
 package Mason::Component::Moose;
 BEGIN {
-  $Mason::Component::Moose::VERSION = '2.18';
+  $Mason::Component::Moose::VERSION = '2.19';
 }
 use Moose                      ();
 use MooseX::HasDefaults::RW    ();
@@ -15,7 +15,7 @@ sub init_meta {
     my %params    = @_;
     my $for_class = $params{for_class};
     Method::Signatures::Simple->import( into => $for_class );
-    MooseX::HasDefaults::RW->init_meta(@_);
+    MooseX::HasDefaults::RW->import( { into => $for_class } );
     {
         no strict 'refs';
         *{ $for_class . '::CLASS' } = sub () { $for_class };    # like CLASS.pm

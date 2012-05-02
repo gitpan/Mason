@@ -1,6 +1,6 @@
 package Mason::t::Filters;
 BEGIN {
-  $Mason::t::Filters::VERSION = '2.18';
+  $Mason::t::Filters::VERSION = '2.19';
 }
 use Test::Class::Most parent => 'Mason::Test::Class';
 
@@ -176,6 +176,11 @@ sub test_misc_standard_filters : Tests {
 % }}
 <% reverse($buf) %>
 
+% $.Tee(\my $buf2) {{
+3 + 3 = <% 3+3 %>
+% }}
+<% reverse($buf2) %>
+
 ---
 % $.NoBlankLines {{
 
@@ -191,6 +196,10 @@ two
 ',
         expect => '
 4 = 2 + 2
+
+3 + 3 = 6
+
+6 = 3 + 3
 
 ---
 one

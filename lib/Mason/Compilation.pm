@@ -4,7 +4,7 @@
 
 package Mason::Compilation;
 BEGIN {
-  $Mason::Compilation::VERSION = '2.18';
+  $Mason::Compilation::VERSION = '2.19';
 }
 use File::Basename qw(dirname);
 use Guard;

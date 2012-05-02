@@ -1,6 +1,6 @@
 package Mason::Plugin::Defer;
 BEGIN {
-  $Mason::Plugin::Defer::VERSION = '2.18';
+  $Mason::Plugin::Defer::VERSION = '2.19';
 }
 use Moose;
 with 'Mason::Plugin';

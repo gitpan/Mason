@@ -1,6 +1,6 @@
 package Mason::t::Cache;
 BEGIN {
-  $Mason::t::Cache::VERSION = '2.18';
+  $Mason::t::Cache::VERSION = '2.19';
 }
 use Test::Class::Most parent => 'Mason::Test::Class';
 

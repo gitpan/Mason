@@ -1,6 +1,6 @@
 package Mason::Test::RootClass::Request;
 BEGIN {
-  $Mason::Test::RootClass::Request::VERSION = '2.18';
+  $Mason::Test::RootClass::Request::VERSION = '2.19';
 }
 use Moose;
 extends 'Mason::Request';

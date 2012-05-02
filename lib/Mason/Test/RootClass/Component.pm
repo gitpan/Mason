@@ -1,6 +1,6 @@
 package Mason::Test::RootClass::Component;
 BEGIN {
-  $Mason::Test::RootClass::Component::VERSION = '2.18';
+  $Mason::Test::RootClass::Component::VERSION = '2.19';
 }
 use Moose;
 extends 'Mason::Component';

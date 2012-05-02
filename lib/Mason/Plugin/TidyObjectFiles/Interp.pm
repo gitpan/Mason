@@ -1,6 +1,6 @@
 package Mason::Plugin::TidyObjectFiles::Interp;
 BEGIN {
-  $Mason::Plugin::TidyObjectFiles::Interp::VERSION = '2.18';
+  $Mason::Plugin::TidyObjectFiles::Interp::VERSION = '2.19';
 }
 use Mason::PluginRole;
 use Perl::Tidy;
