@@ -1,5 +1,5 @@
-The micro-blog demo built in Mason::Manual::Tutorial.
+Moved to eg/blog in Poet.
 
-Run install.sh to install CPAN modules and the database.
+   http://search.cpan.org/perldoc?Poet
+   https://github.com/jonswar/perl-poet/tree/master/eg/blog
 
-Run plackup to start the server.

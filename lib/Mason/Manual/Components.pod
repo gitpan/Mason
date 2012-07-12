@@ -146,8 +146,8 @@ which is transformed by L<DollarDot|Mason::Plugin::DollarDot> to
 
     $self->foo
 
-In the rest of this documentation we will use C<$.> notation, but feel free to
-substitute C<< $self-> >> conceptually and/or in reality.
+In the rest of this documentation we will use C<$.> notation, but feel
+free to substitute C<< $self-> >> conceptually and/or in reality.
 
 To set the attribute, you must use:
 
@@ -417,7 +417,7 @@ Jonathan Swartz <swartz@pobox.com>
 
 =head1 COPYRIGHT AND LICENSE
 
-This software is copyright (c) 2011 by Jonathan Swartz.
+This software is copyright (c) 2012 by Jonathan Swartz.
 
 This is free software; you can redistribute it and/or modify it under
 the same terms as the Perl 5 programming language system itself.

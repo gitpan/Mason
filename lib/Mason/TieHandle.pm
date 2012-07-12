@@ -1,6 +1,6 @@
 package Mason::TieHandle;
 BEGIN {
-  $Mason::TieHandle::VERSION = '2.19';
+  $Mason::TieHandle::VERSION = '2.20';
 }
 use strict;
 use warnings;

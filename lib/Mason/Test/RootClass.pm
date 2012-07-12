@@ -1,6 +1,6 @@
 package Mason::Test::RootClass;
 BEGIN {
-  $Mason::Test::RootClass::VERSION = '2.19';
+  $Mason::Test::RootClass::VERSION = '2.20';
 }
 use strict;
 use warnings;

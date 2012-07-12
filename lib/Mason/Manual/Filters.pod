@@ -29,9 +29,9 @@ A double open brace (C<< {{ >>) at the end of a C<< %-line >> denotes a filter
 call.  The filtered content begins just afterwards and ends at the C<< }} >>.
 Both C<< {{ >> and C<< }} >> may be followed by a comment.
 
-The expression C<< $.Trim >>, aka C<< $self->Trim >>, is a method call on the
-component object which returns a filter. In general everything before the C<<
-{{ >> is evaluated and is expected to return a filter or list of filters.
+The expression C<< $.Trim >>, aka C<< $self->Trim >>, is a method call on
+the component object which returns a filter. In general everything before the
+C<< {{ >> is evaluated and is expected to return a filter or list of filters.
 
 By convention, and to avoid name clashes with other component methods, filters
 use CamelCase rather than traditional underscore names.
@@ -46,7 +46,8 @@ Filters can take arguments:
           There's no place like home.
           There's no place like home.
 
-Since the expression C<< $.Repeat(3) >> returns a filter, it can be curried:
+Since the expression C<< $.Repeat(3) >> returns a filter, it can be
+curried:
 
    % my $repeat_three = $.Repeat(3);
    % $repeat_three {{
@@ -199,12 +200,14 @@ subclass.
 A I<simple filter> is a code ref which takes a string (via either $_[0] and $_)
 and returns the output.  Your filter method should return this code ref. e.g.
 
+    # Uses $_[0]
+    method Upper () {
+        return sub { uc($_[0]) };
+    }
+
+    # Uses $_
     method Rot13 () {
-        return sub {
-            my $text = $_[0];
-            $text =~ tr/a-zA-Z/n-za-mN-ZA-M/;
-            return $text;
-        }
+        return sub { tr/a-zA-Z/n-za-mN-ZA-M/; $_ };
     }
 
 A I<dynamic filter> is an object of class C<Mason::DynamicFilter>. It contains
@@ -287,7 +290,7 @@ Jonathan Swartz <swartz@pobox.com>
 
 =head1 COPYRIGHT AND LICENSE
 
-This software is copyright (c) 2011 by Jonathan Swartz.
+This software is copyright (c) 2012 by Jonathan Swartz.
 
 This is free software; you can redistribute it and/or modify it under
 the same terms as the Perl 5 programming language system itself.

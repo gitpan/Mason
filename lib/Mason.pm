@@ -1,6 +1,6 @@
 package Mason;
 BEGIN {
-  $Mason::VERSION = '2.19';
+  $Mason::VERSION = '2.20';
 }
 use Mason::Interp;
 use Mason::PluginManager;
@@ -25,8 +25,13 @@ method new ($class: %params) {
 
     # Create and return interp
     #
-    die "cannot pass mason_root_class directly" if exists( $params{mason_root_class} );
-    return $interp_class->new( mason_root_class => $class, plugins => \@plugins, %params );
+    die "cannot pass mason_root_class directly"
+      if exists( $params{mason_root_class} );
+    return $interp_class->new(
+        mason_root_class => $class,
+        plugins          => \@plugins,
+        %params
+    );
 }
 
 method default_base_interp_class ($class:) {
@@ -120,7 +125,7 @@ Jonathan Swartz <swartz@pobox.com>
 
 =head1 COPYRIGHT AND LICENSE
 
-This software is copyright (c) 2011 by Jonathan Swartz.
+This software is copyright (c) 2012 by Jonathan Swartz.
 
 This is free software; you can redistribute it and/or modify it under
 the same terms as the Perl 5 programming language system itself.

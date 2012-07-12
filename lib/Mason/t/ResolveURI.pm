@@ -1,6 +1,6 @@
 package Mason::t::ResolveURI;
 BEGIN {
-  $Mason::t::ResolveURI::VERSION = '2.19';
+  $Mason::t::ResolveURI::VERSION = '2.20';
 }
 use Test::Class::Most parent => 'Mason::Test::Class';
 
@@ -28,13 +28,13 @@ sub test_resolve : Tests {
         }
         my $desc = sprintf( "run %s against %s", $run_path, join( ",", @$existing_paths ) );
         if ( defined($resolve_path) ) {
-            is( $self->interp->run($run_path)->output,
-                "path: $resolve_path; path_info: $path_info", $desc );
+            my $good = "path: $resolve_path; path_info: $path_info";
+            is( $self->interp->run($run_path)->output, $good, "$desc = matched $good" );
         }
         else {
             throws_ok { $self->interp->run($run_path)->output }
             qr/could not resolve request path/,
-              $desc;
+              "$desc = failed to match";
         }
     };
 
@@ -89,6 +89,23 @@ sub test_resolve : Tests {
     $try->( $run_path, ['/foo/bar/baz/index'],    '/foo/bar/baz/index', '' );
     $try->( $run_path, ['/foo/bar/baz/index2'],   '/foo/bar/baz/index2', '' );
     $try->( $run_path, [ '/foo/bar/baz/index2', '/foo/bar/baz/index' ], '/foo/bar/baz/index', '' );
+
+    # trailing slashes
+    $try->( '/foo',      ['/foo.mc=1'], '/foo.mc', '' );
+    $try->( '/foo/',     ['/foo.mc=1'], '/foo.mc', '/' );
+    $try->( '/foo/bar',  ['/foo.mc=1'], '/foo.mc', 'bar' );
+    $try->( '/foo/bar/', ['/foo.mc=1'], '/foo.mc', 'bar/' );
+    $try->( '/foo/',     ['/foo.mc'],   undef );
+    @interp_params = ( dhandler_names => ['dhandler'] );
+    $try->( '/foo/',     ['/foo/dhandler'], '/foo/dhandler', '/' );
+    $try->( '/foo/bar',  ['/foo/dhandler'], '/foo/dhandler', 'bar' );
+    $try->( '/foo/bar/', ['/foo/dhandler'], '/foo/dhandler', 'bar/' );
+    @interp_params = ( index_names => ['index'] );
+    $try->( '/foo/', ['/foo/index'], undef );
+    $try->( '/foo/', ['/foo/index=1'], '/foo/index', '/' );
+    @interp_params = ( dhandler_names => ['dhandler'], index_names => ['index'] );
+    $try->( '/foo/', [ '/foo/dhandler', '/foo/index' ],   '/foo/dhandler', '/' );
+    $try->( '/foo/', [ '/foo/dhandler', '/foo/index=1' ], '/foo/index',    '/' );
 }
 
 sub test_decline : Tests {

@@ -1,6 +1,6 @@
 package Mason::Test::RootClass::Component;
 BEGIN {
-  $Mason::Test::RootClass::Component::VERSION = '2.19';
+  $Mason::Test::RootClass::Component::VERSION = '2.20';
 }
 use Moose;
 extends 'Mason::Component';
@@ -11,5 +11,7 @@ extends 'Mason::Component';
 #      my ($self) = @_;
 #      print STDERR "starting component render - " . $self->cmeta->path . "\n";
 #  };
+
+__PACKAGE__->meta->make_immutable();
 
 1;

@@ -1,7 +1,7 @@
 package Mason::Moose;
 BEGIN {
-  $Mason::Moose::VERSION = '2.19';
-}
+  $Mason::Moose::VERSION = '2.20';
+}    ## no critic (Moose::RequireMakeImmutable)
 use Moose                      ();
 use MooseX::HasDefaults::RO    ();
 use MooseX::StrictConstructor  ();
@@ -61,7 +61,7 @@ Jonathan Swartz <swartz@pobox.com>
 
 =head1 COPYRIGHT AND LICENSE
 
-This software is copyright (c) 2011 by Jonathan Swartz.
+This software is copyright (c) 2012 by Jonathan Swartz.
 
 This is free software; you can redistribute it and/or modify it under
 the same terms as the Perl 5 programming language system itself.
