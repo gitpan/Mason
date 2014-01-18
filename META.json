@@ -4,7 +4,7 @@
       "Jonathan Swartz <swartz@pobox.com>"
    ],
    "dynamic_config" : 0,
-   "generated_by" : "Dist::Zilla version 4.200008, CPAN::Meta::Converter version 2.113640",
+   "generated_by" : "Dist::Zilla version 4.300034, CPAN::Meta::Converter version 2.131560",
    "license" : [
       "perl_5"
    ],
@@ -35,29 +35,30 @@
       },
       "runtime" : {
          "requires" : {
-            "Capture::Tiny" : 0,
-            "Class::Unload" : 0,
-            "Devel::GlobalDestruction" : 0,
-            "Exception::Class" : 0,
-            "File::Spec" : 0,
-            "File::Temp" : 0,
-            "Guard" : 0,
-            "IPC::System::Simple" : 0,
-            "JSON" : 0,
+            "Capture::Tiny" : "0",
+            "Class::Load" : "0",
+            "Class::Unload" : "0",
+            "Devel::GlobalDestruction" : "0",
+            "Exception::Class" : "0",
+            "File::Spec" : "0",
+            "File::Temp" : "0",
+            "Guard" : "0",
+            "IPC::System::Simple" : "0",
+            "JSON" : "0",
             "Log::Any" : "0.08",
-            "Memoize" : 0,
-            "Method::Signatures::Simple" : 0,
+            "Memoize" : "0",
+            "Method::Signatures::Simple" : "0",
             "Moose" : "1.15",
             "MooseX::HasDefaults" : "0.03",
             "MooseX::StrictConstructor" : "0.13",
             "Scalar::Util" : "1.01",
-            "Try::Tiny" : 0
+            "Try::Tiny" : "0"
          }
       },
       "test" : {
          "requires" : {
-            "Test::Class::Most" : 0,
-            "Test::LongString" : 0
+            "Test::Class::Most" : "0",
+            "Test::LongString" : "0"
          }
       }
    },
@@ -73,6 +74,6 @@
          "web" : "https://github.com/jonswar/perl-mason"
       }
    },
-   "version" : "2.20"
+   "version" : "2.21"
 }
 

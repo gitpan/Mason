@@ -1,6 +1,6 @@
 package Mason::t::Filters;
-BEGIN {
-  $Mason::t::Filters::VERSION = '2.20';
+{
+  $Mason::t::Filters::VERSION = '2.21';
 }
 use Test::Warn;
 use Test::Class::Most parent => 'Mason::Test::Class';

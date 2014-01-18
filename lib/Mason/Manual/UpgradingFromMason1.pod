@@ -1,6 +1,7 @@
 
 
 __END__
+
 =pod
 
 =head1 NAME
@@ -121,6 +122,11 @@ additional syntax.
 =item *
 
 C<< <%args> >> and C<< <%shared> >> are gone. Use Moose attributes instead.
+
+=item *
+
+The C<< <%ARGS> >> hash is gone, you can instead use C<< $.args >> or C<<
+$self->args >> to get all the parameters passed to a component.
 
 =item *
 
@@ -279,4 +285,3 @@ This is free software; you can redistribute it and/or modify it under
 the same terms as the Perl 5 programming language system itself.
 
 =cut
-

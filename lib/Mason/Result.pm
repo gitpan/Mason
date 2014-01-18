@@ -1,6 +1,6 @@
 package Mason::Result;
-BEGIN {
-  $Mason::Result::VERSION = '2.20';
+{
+  $Mason::Result::VERSION = '2.21';
 }
 use Mason::Moose;
 
@@ -16,7 +16,7 @@ __PACKAGE__->meta->make_immutable();
 
 1;
 
-
+__END__
 
 =pod
 
@@ -69,7 +69,3 @@ This is free software; you can redistribute it and/or modify it under
 the same terms as the Perl 5 programming language system itself.
 
 =cut
-
-
-__END__
-

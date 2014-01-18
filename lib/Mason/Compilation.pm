@@ -3,8 +3,8 @@
 # under the same terms as Perl itself.
 
 package Mason::Compilation;
-BEGIN {
-  $Mason::Compilation::VERSION = '2.20';
+{
+  $Mason::Compilation::VERSION = '2.21';
 }
 use File::Basename qw(dirname);
 use Guard;
@@ -97,7 +97,7 @@ method output_class_footer () {
 }
 
 method output_class_header () {
-    return "";
+    return $self->interp->class_header;
 }
 
 method parse () {
@@ -191,13 +191,16 @@ method _attribute_declaration ($name, $params, $line_number) {
     );
 }
 
-method _handle_after_block ()    { $self->_handle_method_modifier_block( 'after',    @_ ) }
-method _handle_around_block ()   { $self->_handle_method_modifier_block( 'around',   @_ ) }
-method _handle_augment_block ()  { $self->_handle_method_modifier_block( 'augment',  @_ ) }
-method _handle_before_block ()   { $self->_handle_method_modifier_block( 'before',   @_ ) }
-method _handle_override_block () { $self->_handle_method_modifier_block( 'override', @_ ) }
+method _handle_after_block () { $self->_handle_method_modifier_block( 'after',   @_ ) }
+method _handle_around_block () { $self->_handle_method_modifier_block( 'around',  @_ ) }
+method _handle_augment_block () { $self->_handle_method_modifier_block( 'augment', @_ ) }
+method _handle_before_block () { $self->_handle_method_modifier_block( 'before',  @_ ) }
 
-method _handle_method_modifier_block ( $block_type, $contents, $name ) {
+method _handle_override_block () {
+    $self->_handle_method_modifier_block( 'override', @_ );
+}
+
+method _handle_method_modifier_block ($block_type, $contents, $name) {
     my $modifier = $block_type;
 
     $self->_throw_syntax_error("Invalid method modifier name '$name'")
@@ -366,7 +369,7 @@ method _handle_init_block ($contents) {
       $self->_output_line_number_comment . $self->_processed_perl_code($contents);
 }
 
-method _handle_method_block ( $contents, $name, $arglist ) {
+method _handle_method_block ($contents, $name, $arglist) {
     $self->_throw_syntax_error("Invalid method name '$name'")
       if $name !~ /^$identifier$/;
 
@@ -413,7 +416,7 @@ method _handle_shared_block ($contents) {
     $self->_handle_attributes_list( $contents, 'shared' );
 }
 
-method _handle_substitution ( $text, $filter_list ) {
+method _handle_substitution ($text, $filter_list) {
 
     # This is a comment tag if all lines of text contain only whitespace
     # or start with whitespace and a comment marker, e.g.
@@ -808,7 +811,7 @@ method _output_method ($method) {
     my $start =
         $type eq 'apply_filter' ? "sub {"
       : $modifier eq 'around'   ? "around '$name' => sub {\nmy \$orig = shift; my \$self = shift;"
-      : $type     eq 'modifier' ? "$modifier '$name' => sub {\nmy \$self = shift;"
+      : $type eq 'modifier'     ? "$modifier '$name' => sub {\nmy \$self = shift;"
       :                           "method $name $arglist {";
     my $end = $modifier ? "};" : "}";
 
@@ -869,7 +872,7 @@ __PACKAGE__->meta->make_immutable();
 
 1;
 
-
+__END__
 
 =pod
 
@@ -924,14 +927,18 @@ Perl code to be added at the bottom of the class. Empty by default.
 =item output_class_header ()
 
 Perl code to be added at the top of the class, just after initialization of
-Moose, C<$m> and other required pieces. Empty by default.
+Moose, C<$m> and other required pieces. By default it consults the
+L<class_header parameter|Mason::Interp/class_header>.
 
     # Add to the top of every component class:
-    #   use Foo;
-    #   use Bar qw(baz);
+    #   use Modern::Perl;
+    #   use JSON::XS qw(encode_json decode_json);
     #
     override 'output_class_header' => sub {
-        return join("\n", super(), 'use Foo;', 'use Bar qw(baz);');
+        return join( "\n",
+            super(),
+            'use Modern::Perl;',
+            'use JSON::XS qw(encode_json decode_json);' );
     };
 
 =item process_perl_code ($coderef)
@@ -968,7 +975,3 @@ This is free software; you can redistribute it and/or modify it under
 the same terms as the Perl 5 programming language system itself.
 
 =cut
-
-
-__END__
-

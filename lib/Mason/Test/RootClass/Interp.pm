@@ -1,6 +1,6 @@
 package Mason::Test::RootClass::Interp;
-BEGIN {
-  $Mason::Test::RootClass::Interp::VERSION = '2.20';
+{
+  $Mason::Test::RootClass::Interp::VERSION = '2.21';
 }
 use Moose;
 extends 'Mason::Interp';

@@ -1,6 +1,6 @@
 package Mason::Plugin::Defer::Filters;
-BEGIN {
-  $Mason::Plugin::Defer::Filters::VERSION = '2.20';
+{
+  $Mason::Plugin::Defer::Filters::VERSION = '2.21';
 }
 use Mason::PluginRole;
 

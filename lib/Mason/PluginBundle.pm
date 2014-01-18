@@ -1,6 +1,6 @@
 package Mason::PluginBundle;
-BEGIN {
-  $Mason::PluginBundle::VERSION = '2.20';
+{
+  $Mason::PluginBundle::VERSION = '2.21';
 }
 use Mason::PluginRole;
 

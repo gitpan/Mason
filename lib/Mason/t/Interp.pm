@@ -1,13 +1,13 @@
 package Mason::t::Interp;
-BEGIN {
-  $Mason::t::Interp::VERSION = '2.20';
+{
+  $Mason::t::Interp::VERSION = '2.21';
 }
 use Test::Class::Most parent => 'Mason::Test::Class';
 use Capture::Tiny qw(capture);
 
 { package MyInterp;
-BEGIN {
-  $MyInterp::VERSION = '2.20';
+{
+  $MyInterp::VERSION = '2.21';
 } use Moose; extends 'Mason::Interp'; __PACKAGE__->meta->make_immutable() }
 
 sub test_base_interp_class : Tests {
@@ -133,6 +133,13 @@ sub test_no_source_line_numbers : Tests {
     $self->test_parse( src => "hi\n<%init>my \$d = 0</%init>", expect => [qr/\#line/] );
     $self->setup_interp( no_source_line_numbers => 1 );
     $self->test_parse( src => "hi\n<%init>my \$d = 0</%init>", expect => [qr/^(?!(?s:.*)\#line)/] );
+}
+
+sub test_class_header : Tests {
+    my $self = shift;
+
+    $self->setup_interp( class_header => '# header' );
+    $self->test_parse( src => "hi", expect => [qr/\# header/] );
 }
 
 1;

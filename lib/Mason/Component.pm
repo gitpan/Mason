@@ -1,6 +1,6 @@
 package Mason::Component;
-BEGIN {
-  $Mason::Component::VERSION = '2.20';
+{
+  $Mason::Component::VERSION = '2.21';
 }
 use Moose;    # no Mason::Moose - don't want StrictConstructor
 use MooseX::HasDefaults::RO;
@@ -69,7 +69,7 @@ method no_wrap ($class:) {
 
 1;
 
-
+__END__
 
 =pod
 
@@ -197,7 +197,7 @@ determine whether the path_info is allowed. Default is false. See
 L<Mason::Manual::RequestDispatch/Partial Paths|Mason::Manual::RequestDispatch>.
 
     <%class>
-    CLASS->allow_path_info(1);
+    method allow_path_info { 1 }
     </%class>
 
 =back
@@ -242,7 +242,3 @@ This is free software; you can redistribute it and/or modify it under
 the same terms as the Perl 5 programming language system itself.
 
 =cut
-
-
-__END__
-

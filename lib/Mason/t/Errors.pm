@@ -1,6 +1,6 @@
 package Mason::t::Errors;
-BEGIN {
-  $Mason::t::Errors::VERSION = '2.20';
+{
+  $Mason::t::Errors::VERSION = '2.21';
 }
 use Test::Class::Most parent => 'Mason::Test::Class';
 
@@ -34,7 +34,7 @@ sub test_comp_errors : Tests {
     $try->( '%my $i = 1;',                 qr/% must be followed by whitespace/ );
     $try->( "<%5\n\n%>",                   qr/whitespace required after '<%' at .* line 1/ );
     $try->( "<%\n\n5%>",                   qr/whitespace required before '%>' at .* line 3/ );
-    $try->( "% \$.Upper {{\nHi",      qr/'{{' without matching '}}'/ );
+    $try->( "% \$.Upper {{\nHi",           qr/'{{' without matching '}}'/ );
     $try->( "Hi\n% }}",                    qr/'}}' without matching '{{'/ );
     $try->( '<%method 1a>Hi</%method>',    qr/Invalid method name '1a'/ );
     $try->( '<%method cmeta>Hi</%method>', qr/'cmeta' is reserved.*method name/ );

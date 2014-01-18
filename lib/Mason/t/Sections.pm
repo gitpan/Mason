@@ -1,6 +1,6 @@
 package Mason::t::Sections;
-BEGIN {
-  $Mason::t::Sections::VERSION = '2.20';
+{
+  $Mason::t::Sections::VERSION = '2.21';
 }
 use Test::Class::Most parent => 'Mason::Test::Class';
 
@@ -18,7 +18,7 @@ my $init_message = $self->init_message();
 
 <%class>
 my $class_message = "class message";
-method init_message  () { "init message" }
+method init_message () { "init message" }
 </%class>
 
 <BODY>
@@ -34,7 +34,7 @@ print "$init_message\n";
 <% $message %>
 
 <%init>
-my $message = "method call";
+my $message = "message";
 </%init>
 </%method>
 
@@ -64,7 +64,7 @@ class message
 
 before method call
 
-method call
+message
 
 after method call
 

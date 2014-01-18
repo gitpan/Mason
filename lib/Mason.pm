@@ -1,6 +1,6 @@
 package Mason;
-BEGIN {
-  $Mason::VERSION = '2.20';
+{
+  $Mason::VERSION = '2.21';
 }
 use Mason::Interp;
 use Mason::PluginManager;
@@ -44,7 +44,7 @@ method default_base_interp_class ($class:) {
 
 1;
 
-
+__END__
 
 =pod
 
@@ -131,7 +131,3 @@ This is free software; you can redistribute it and/or modify it under
 the same terms as the Perl 5 programming language system itself.
 
 =cut
-
-
-__END__
-

@@ -1,6 +1,6 @@
 package Mason::PluginRole;
-BEGIN {
-  $Mason::PluginRole::VERSION = '2.20';
+{
+  $Mason::PluginRole::VERSION = '2.21';
 }
 use Moose::Role                ();
 use Method::Signatures::Simple ();
@@ -17,7 +17,7 @@ sub init_meta {
 
 1;
 
-
+__END__
 
 =pod
 
@@ -54,7 +54,3 @@ This is free software; you can redistribute it and/or modify it under
 the same terms as the Perl 5 programming language system itself.
 
 =cut
-
-
-__END__
-

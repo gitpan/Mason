@@ -1,6 +1,6 @@
 package Mason::Interp;
-BEGIN {
-  $Mason::Interp::VERSION = '2.20';
+{
+  $Mason::Interp::VERSION = '2.21';
 }
 use Carp;
 use Devel::GlobalDestruction;
@@ -14,6 +14,7 @@ use Mason::Result;
 use Mason::Types;
 use Mason::Util
   qw(can_load catdir catfile combine_similar_paths find_wanted first_index is_absolute json_decode mason_canon_path read_file taint_is_on touch_file uniq write_file);
+use Class::Load;
 use Memoize;
 use Moose::Util::TypeConstraints;
 use Mason::Moose;
@@ -27,6 +28,7 @@ my $max_depth   = 16;
 has 'allow_globals'            => ( isa => 'ArrayRef[Str]', default => sub { [] }, trigger => sub { shift->_validate_allow_globals } );
 has 'autobase_names'           => ( isa => 'ArrayRef[Str]', lazy_build => 1 );
 has 'autoextend_request_path'  => ( isa => 'Bool', default => 1 );
+has 'class_header'             => ( default => '' );
 has 'comp_root'                => ( required => 1, isa => 'Mason::Types::CompRoot', coerce => 1 );
 has 'component_class_prefix'   => ( lazy_build => 1 );
 has 'data_dir'                 => ( lazy_build => 1 );
@@ -125,7 +127,7 @@ method _build_index_names () {
 method _build_pure_perl_regex () {
     my $extensions = $self->pure_perl_extensions;
     if ( !@$extensions ) {
-        return qr/(?!)/;                  # matches nothing
+        return qr/(?!)/;    # matches nothing
     }
     else {
         my $regex = join( '|', @$extensions ) . '$';
@@ -136,7 +138,7 @@ method _build_pure_perl_regex () {
 method _build_top_level_regex () {
     my $extensions = $self->top_level_extensions;
     if ( !@$extensions ) {
-        return qr/./;                     # matches everything
+        return qr/./;       # matches everything
     }
     else {
         my $regex = join( '|', @$extensions );
@@ -391,7 +393,7 @@ method DEMOLISH () {
     $self->flush_code_cache() if defined( $self->{code_cache} );
 }
 
-method _compile ( $source_file, $path ) {
+method _compile ($source_file, $path) {
     my $compilation = $self->compilation_class->new(
         source_file => $source_file,
         path        => $path,
@@ -400,7 +402,7 @@ method _compile ( $source_file, $path ) {
     return $compilation->compile();
 }
 
-method _compile_to_file ( $source_file, $path, $object_file ) {
+method _compile_to_file ($source_file, $path, $object_file) {
 
     # We attempt to handle several cases in which a file already exists
     # and we wish to create a directory, or vice versa.  However, not
@@ -428,7 +430,7 @@ method is_top_level_comp_path ($path) {
     return ( $path =~ $self->top_level_regex ) ? 1 : 0;
 }
 
-method _load_class_from_object_file ( $compc, $object_file, $path, $default_parent_path ) {
+method _load_class_from_object_file ($compc, $object_file, $path, $default_parent_path) {
     my $flags = $self->_extract_flags_from_object_file($object_file);
     my $parent_compc =
          $self->_determine_parent_compc( $path, $flags )
@@ -512,7 +514,7 @@ method _build_match_request_path ($interp:) {
             $interp->_top_level_not_found( $request_path, \@tried_paths ) if $path eq '/';
             my $name = basename($path);
             $path_info =
-                $path_info eq '/' ? "$name/"
+                $path_info eq '/'  ? "$name/"
               : length($path_info) ? "$name/$path_info"
               :                      $name;
             $path           = dirname($path);
@@ -744,7 +746,7 @@ sub _define_class_override_methods {
             "_build_$method_name" => sub {
                 my $self       = shift;
                 my $base_class = $self->$base_method_name;
-                Class::MOP::load_class($base_class);
+                Class::Load::load_class($base_class);
                 return Mason::PluginManager->apply_plugins_to_class( $base_class, $name,
                     $self->plugins );
             }
@@ -767,7 +769,7 @@ __PACKAGE__->meta->make_immutable();
 
 1;
 
-
+__END__
 
 =pod
 
@@ -819,6 +821,28 @@ check in order when determining a component's superclass. Default is C<<
 Whether to automatically add the L<top level extensions|/top_level_extensions>
 (by default ".mp" and ".mc") to the request path when searching for a matching
 page component. Defaults to true.
+
+=item class_header
+
+Perl code to be added at the top of the compiled class for every component,
+e.g. to bring in common features or import common methods. Default is the empty
+string.
+
+    # Add to the top of every component class:
+    #   use Modern::Perl;
+    #   use JSON::XS qw(encode_json decode_json);
+    #
+    my $mason = Mason->new(
+        ...
+        class_header => qq(
+            use Modern::Perl;
+            use JSON::XS qw(encode_json decode_json);
+        ),
+    );
+
+This is used by
+L<Mason::Compilation::output_class_header|Mason::Compilation/output_class_header>.
+For more advanced usage you can override that method in a subclass or plugin.
 
 =item comp_root
 
@@ -1100,7 +1124,3 @@ This is free software; you can redistribute it and/or modify it under
 the same terms as the Perl 5 programming language system itself.
 
 =cut
-
-
-__END__
-

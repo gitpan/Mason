@@ -1,6 +1,6 @@
 package Mason::Plugin::LvalueAttributes::Interp;
-BEGIN {
-  $Mason::Plugin::LvalueAttributes::Interp::VERSION = '2.20';
+{
+  $Mason::Plugin::LvalueAttributes::Interp::VERSION = '2.21';
 }
 use Mason::PluginRole;
 
@@ -18,7 +18,7 @@ sub _add_lvalue_attribute_methods {
             my $name = $attr->name;
             $class->meta->add_method(
                 $name,
-                sub  : lvalue {
+                sub : lvalue {
                     if ( defined( $_[1] ) ) {
                         $_[0]->{$name} = $_[1];
                     }

@@ -1,6 +1,6 @@
 package Mason::CodeCache;
-BEGIN {
-  $Mason::CodeCache::VERSION = '2.20';
+{
+  $Mason::CodeCache::VERSION = '2.21';
 }
 use Devel::GlobalDestruction;
 use Mason::Moose;
@@ -12,7 +12,7 @@ method get ($key) {
     return $self->{datastore}->{$key};
 }
 
-method set ( $key, $data ) {
+method set ($key, $data) {
     $self->{datastore}->{$key} = $data;
 }
 
@@ -36,7 +36,7 @@ __PACKAGE__->meta->make_immutable();
 
 1;
 
-
+__END__
 
 =pod
 
@@ -64,7 +64,3 @@ This is free software; you can redistribute it and/or modify it under
 the same terms as the Perl 5 programming language system itself.
 
 =cut
-
-
-__END__
-

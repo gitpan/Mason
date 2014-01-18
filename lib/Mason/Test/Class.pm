@@ -1,6 +1,6 @@
 package Mason::Test::Class;
-BEGIN {
-  $Mason::Test::Class::VERSION = '2.20';
+{
+  $Mason::Test::Class::VERSION = '2.21';
 }
 use Carp;
 use File::Basename;
@@ -11,6 +11,7 @@ use Mason::Util qw(trim write_file);
 use Method::Signatures::Simple;
 use Test::Class::Most;
 use Test::LongString;
+use Class::Load;
 use strict;
 use warnings;
 
@@ -57,7 +58,7 @@ method create_interp () {
     my (%params) = @_;
     $params{plugins} = $default_plugins if @$default_plugins;
     my $mason_root_class = delete( $params{mason_root_class} ) || 'Mason';
-    Class::MOP::load_class($mason_root_class);
+    Class::Load::load_class($mason_root_class);
     rmtree( $self->data_dir );
     return $mason_root_class->new(
         comp_root => $self->comp_root,
@@ -88,9 +89,9 @@ method remove_comp (%params) {
 }
 
 method _gen_comp_path () {
-    my $caller = ( caller(2) )[3];
+    my $caller        = ( caller(2) )[3];
     my ($caller_base) = ( $caller =~ /([^:]+)$/ );
-    my $path = "/$caller_base" . ( ++$gen_path_count ) . ".mc";
+    my $path          = "/$caller_base" . ( ++$gen_path_count ) . ".mc";
     return $path;
 }
 
@@ -151,12 +152,12 @@ method run_test_in_comp (%params) {
 }
 
 method test_parse (%params) {
-    my $caller = ( caller(1) )[3];
+    my $caller        = ( caller(1) )[3];
     my ($caller_base) = ( $caller =~ /([^:]+)$/ );
-    my $desc = $params{desc};
-    my $source       = $params{src} || croak "must pass src";
-    my $expect_list  = $params{expect};
-    my $expect_error = $params{expect_error};
+    my $desc          = $params{desc};
+    my $source        = $params{src} || croak "must pass src";
+    my $expect_list   = $params{expect};
+    my $expect_error  = $params{expect_error};
     croak "must pass either expect or expect_error" unless $expect_list || $expect_error;
 
     my $path = "/parse/comp" . $parse_count++;
@@ -181,13 +182,13 @@ method test_parse (%params) {
     }
 }
 
-method mkpath_and_write_file ( $source_file, $source ) {
+method mkpath_and_write_file ($source_file, $source) {
     unlink($source_file) if -e $source_file;
     mkpath( dirname($source_file), 0, 0775 );
     write_file( $source_file, $source );
 }
 
-method _validate_keys ( $params, @allowed_keys ) {
+method _validate_keys ($params, @allowed_keys) {
     my %is_allowed = map { ( $_, 1 ) } @allowed_keys;
     if ( my @bad_keys = grep { !$is_allowed{$_} } keys(%$params) ) {
         croak "bad parameters: " . join( ", ", @bad_keys );

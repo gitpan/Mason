@@ -1,6 +1,6 @@
 package Mason::Component::Moose;
-BEGIN {
-  $Mason::Component::Moose::VERSION = '2.20';
+{
+  $Mason::Component::Moose::VERSION = '2.21';
 }    ## no critic (Moose::RequireMakeImmutable)
 use Moose                      ();
 use MooseX::HasDefaults::RW    ();
@@ -25,7 +25,7 @@ sub init_meta {
 
 1;
 
-
+__END__
 
 =pod
 
@@ -81,7 +81,3 @@ This is free software; you can redistribute it and/or modify it under
 the same terms as the Perl 5 programming language system itself.
 
 =cut
-
-
-__END__
-

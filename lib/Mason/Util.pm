@@ -1,10 +1,10 @@
 package Mason::Util;
-BEGIN {
-  $Mason::Util::VERSION = '2.20';
+{
+  $Mason::Util::VERSION = '2.21';
 }
 use Carp;
-use Class::MOP;
 use Class::Unload;
+use Class::Load;
 use Data::Dumper;
 use Fcntl qw( :DEFAULT :seek );
 use File::Find;
@@ -36,7 +36,7 @@ sub can_load {
 
     my $result;
     try {
-        Class::MOP::load_class($class_name);
+        Class::Load::load_class($class_name);
         $result = 1;
     }
     catch {

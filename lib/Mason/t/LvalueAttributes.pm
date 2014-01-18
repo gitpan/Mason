@@ -1,6 +1,6 @@
 package Mason::t::LvalueAttributes;
-BEGIN {
-  $Mason::t::LvalueAttributes::VERSION = '2.20';
+{
+  $Mason::t::LvalueAttributes::VERSION = '2.21';
 }
 use Test::Class::Most parent => 'Mason::Test::Class';
 
