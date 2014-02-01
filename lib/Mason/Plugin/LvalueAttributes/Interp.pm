@@ -1,7 +1,5 @@
 package Mason::Plugin::LvalueAttributes::Interp;
-{
-  $Mason::Plugin::LvalueAttributes::Interp::VERSION = '2.21';
-}
+$Mason::Plugin::LvalueAttributes::Interp::VERSION = '2.22';
 use Mason::PluginRole;
 
 after 'modify_loaded_class' => sub {

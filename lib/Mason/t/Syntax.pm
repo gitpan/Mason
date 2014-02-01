@@ -1,7 +1,5 @@
 package Mason::t::Syntax;
-{
-  $Mason::t::Syntax::VERSION = '2.21';
-}
+$Mason::t::Syntax::VERSION = '2.22';
 use Test::Class::Most parent => 'Mason::Test::Class';
 
 sub test_replace : Tests {

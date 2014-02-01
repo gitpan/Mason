@@ -1,7 +1,5 @@
 package Mason::Test::Plugins::Notify::Request;
-{
-  $Mason::Test::Plugins::Notify::Request::VERSION = '2.21';
-}
+$Mason::Test::Plugins::Notify::Request::VERSION = '2.22';
 use Mason::PluginRole;
 
 before 'run' => sub {

@@ -1,7 +1,5 @@
 package Mason::t::Compilation;
-{
-  $Mason::t::Compilation::VERSION = '2.21';
-}
+$Mason::t::Compilation::VERSION = '2.22';
 use Test::Class::Most parent => 'Mason::Test::Class';
 
 sub test_pure_perl : Tests {

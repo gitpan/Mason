@@ -1,15 +1,10 @@
 package Mason::t::Interp;
-{
-  $Mason::t::Interp::VERSION = '2.21';
-}
+$Mason::t::Interp::VERSION = '2.22';
 use Test::Class::Most parent => 'Mason::Test::Class';
 use Capture::Tiny qw(capture);
 
-{ package MyInterp;
-{
-  $MyInterp::VERSION = '2.21';
-} use Moose; extends 'Mason::Interp'; __PACKAGE__->meta->make_immutable() }
-
+{ package MyInterp; use Moose; extends 'Mason::Interp'; __PACKAGE__->meta->make_immutable() }
+$MyInterp::VERSION = '2.22';
 sub test_base_interp_class : Tests {
     my $self = shift;
     my $interp = $self->create_interp( base_interp_class => 'MyInterp' );

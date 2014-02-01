@@ -1,7 +1,5 @@
 package Mason::Plugin::Defer::Request;
-{
-  $Mason::Plugin::Defer::Request::VERSION = '2.21';
-}
+$Mason::Plugin::Defer::Request::VERSION = '2.22';
 use Mason::PluginRole;
 
 has 'defers' => ( is => 'rw', init_arg => undef, default => sub { [] } );

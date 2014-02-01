@@ -1,7 +1,5 @@
 package Mason::App;
-{
-  $Mason::App::VERSION = '2.21';
-}
+$Mason::App::VERSION = '2.22';
 use Cwd qw(realpath);
 use File::Basename;
 use File::Temp qw(tempdir);

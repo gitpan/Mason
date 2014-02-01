@@ -1,7 +1,5 @@
 package Mason::t::HTMLFilters;
-{
-  $Mason::t::HTMLFilters::VERSION = '2.21';
-}
+$Mason::t::HTMLFilters::VERSION = '2.22';
 use Test::Class::Most parent => 'Mason::Test::Class';
 
 sub test_html_filters : Tests {

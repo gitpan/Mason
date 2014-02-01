@@ -1,7 +1,5 @@
-package Mason::t::Plugins;
-{
-  $Mason::t::Plugins::VERSION = '2.21';
-}    ## no critic (Moose::RequireMakeImmutable)
+package Mason::t::Plugins;    ## no critic (Moose::RequireMakeImmutable)
+$Mason::t::Plugins::VERSION = '2.22';
 use Test::Class::Most parent => 'Mason::Test::Class';
 use Capture::Tiny qw(capture_merged);
 use Mason::Util qw(dump_one_line);
@@ -69,58 +67,67 @@ sub test_strict_plugin : Tests {
     throws_ok { $self->interp->run( '/test_strict_plugin', foo => 5 ) } qr/Found unknown attribute/;
 }
 
-{ package Mason::Test::Plugins::A;
 {
-  $Mason::Test::Plugins::A::VERSION = '2.21';
-} use Moose; with 'Mason::Plugin'; }
-{ package Mason::Plugin::B;
+    package Mason::Test::Plugins::A;
+$Mason::Test::Plugins::A::VERSION = '2.22';
+use Moose;
+    with 'Mason::Plugin';
+}
 {
-  $Mason::Plugin::B::VERSION = '2.21';
-}        use Moose; with 'Mason::Plugin'; }
-{ package Mason::Plugin::C;
+    package Mason::Plugin::B;
+$Mason::Plugin::B::VERSION = '2.22';
+use Moose;
+    with 'Mason::Plugin';
+}
 {
-  $Mason::Plugin::C::VERSION = '2.21';
-}        use Moose; with 'Mason::Plugin'; }
-{ package Mason::Plugin::D;
+    package Mason::Plugin::C;
+$Mason::Plugin::C::VERSION = '2.22';
+
+    use Moose;
+    with 'Mason::Plugin';
+}
 {
-  $Mason::Plugin::D::VERSION = '2.21';
-}        use Moose; with 'Mason::Plugin'; }
-{ package Mason::Plugin::E;
+    package Mason::Plugin::D;
+$Mason::Plugin::D::VERSION = '2.22';
+
+    use Moose;
+    with 'Mason::Plugin';
+}
 {
-  $Mason::Plugin::E::VERSION = '2.21';
-}        use Moose; with 'Mason::Plugin'; }
+    package Mason::Plugin::E;
+$Mason::Plugin::E::VERSION = '2.22';
+
+    use Moose;
+    with 'Mason::Plugin';
+}
 {
     package Mason::PluginBundle::F;
-{
-  $Mason::PluginBundle::F::VERSION = '2.21';
-}
+$Mason::PluginBundle::F::VERSION = '2.22';
+
     use Moose;
     with 'Mason::PluginBundle';
     sub requires_plugins { return qw(C D) }
 }
 {
     package Mason::Test::PluginBundle::G;
-{
-  $Mason::Test::PluginBundle::G::VERSION = '2.21';
-}
+$Mason::Test::PluginBundle::G::VERSION = '2.22';
+
     use Moose;
     with 'Mason::PluginBundle';
     sub requires_plugins { return qw(C E) }
 }
 {
     package Mason::Plugin::H;
-{
-  $Mason::Plugin::H::VERSION = '2.21';
-}
+$Mason::Plugin::H::VERSION = '2.22';
+
     use Moose;
     with 'Mason::Plugin';
     sub requires_plugins { return qw(@F) }
 }
 {
     package Mason::PluginBundle::I;
-{
-  $Mason::PluginBundle::I::VERSION = '2.21';
-}
+$Mason::PluginBundle::I::VERSION = '2.22';
+
     use Moose;
     with 'Mason::PluginBundle';
 
@@ -131,9 +138,8 @@ sub test_strict_plugin : Tests {
 
 {
     package Mason::PluginBundle::J;
-{
-  $Mason::PluginBundle::J::VERSION = '2.21';
-}
+$Mason::PluginBundle::J::VERSION = '2.22';
+
     use Moose;
     with 'Mason::PluginBundle';
 
@@ -170,15 +176,17 @@ sub test_plugin_specs : Tests {
     throws_ok { $test->( ['Y'] ) } qr/could not load 'Mason::Plugin::Y'/;
 }
 
-{ package Mason::Test::Plugins::Upper;
 {
-  $Mason::Test::Plugins::Upper::VERSION = '2.21';
-} use Moose; with 'Mason::Plugin' }
+    package Mason::Test::Plugins::Upper;
+$Mason::Test::Plugins::Upper::VERSION = '2.22';
+
+    use Moose;
+    with 'Mason::Plugin'
+}
 {
     package Mason::Test::Plugins::Upper::Request;
-{
-  $Mason::Test::Plugins::Upper::Request::VERSION = '2.21';
-}
+$Mason::Test::Plugins::Upper::Request::VERSION = '2.22';
+
     use Mason::PluginRole;
     after 'process_output' => sub {
         my ( $self, $bufref ) = @_;

@@ -1,7 +1,5 @@
 package Mason::t::Filters;
-{
-  $Mason::t::Filters::VERSION = '2.21';
-}
+$Mason::t::Filters::VERSION = '2.22';
 use Test::Warn;
 use Test::Class::Most parent => 'Mason::Test::Class';
 

@@ -1,7 +1,5 @@
 package Mason::t::Cache;
-{
-  $Mason::t::Cache::VERSION = '2.21';
-}
+$Mason::t::Cache::VERSION = '2.22';
 use Test::Class::Most parent => 'Mason::Test::Class';
 
 __PACKAGE__->default_plugins( [ '@Default', 'Cache' ] );

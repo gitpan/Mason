@@ -1,7 +1,5 @@
 package Mason::Plugin::DollarDot::Compilation;
-{
-  $Mason::Plugin::DollarDot::Compilation::VERSION = '2.21';
-}
+$Mason::Plugin::DollarDot::Compilation::VERSION = '2.22';
 use Mason::PluginRole;
 
 after 'process_perl_code' => sub {

@@ -1,7 +1,5 @@
 package Mason::Test::RootClass::Compilation;
-{
-  $Mason::Test::RootClass::Compilation::VERSION = '2.21';
-}
+$Mason::Test::RootClass::Compilation::VERSION = '2.22';
 use Moose;
 extends 'Mason::Compilation';
 

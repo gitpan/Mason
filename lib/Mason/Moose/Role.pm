@@ -1,7 +1,5 @@
 package Mason::Moose::Role;
-{
-  $Mason::Moose::Role::VERSION = '2.21';
-}
+$Mason::Moose::Role::VERSION = '2.22';
 use Moose::Role                ();
 use Method::Signatures::Simple ();
 use Moose::Exporter;

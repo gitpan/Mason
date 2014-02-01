@@ -1,7 +1,5 @@
 package Mason::t::Util;
-{
-  $Mason::t::Util::VERSION = '2.21';
-}
+$Mason::t::Util::VERSION = '2.22';
 use Test::Class::Most parent => 'Mason::Test::Class';
 use Mason::Util qw(combine_similar_paths);
 

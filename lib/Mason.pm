@@ -1,7 +1,5 @@
 package Mason;
-{
-  $Mason::VERSION = '2.21';
-}
+$Mason::VERSION = '2.22';
 use Mason::Interp;
 use Mason::PluginManager;
 use Mason::Util qw(can_load uniq);

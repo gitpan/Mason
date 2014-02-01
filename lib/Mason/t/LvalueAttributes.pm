@@ -1,7 +1,5 @@
 package Mason::t::LvalueAttributes;
-{
-  $Mason::t::LvalueAttributes::VERSION = '2.21';
-}
+$Mason::t::LvalueAttributes::VERSION = '2.22';
 use Test::Class::Most parent => 'Mason::Test::Class';
 
 __PACKAGE__->default_plugins( [ '@Default', 'LvalueAttributes' ] );

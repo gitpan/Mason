@@ -1,7 +1,5 @@
 package Mason::t::Errors;
-{
-  $Mason::t::Errors::VERSION = '2.21';
-}
+$Mason::t::Errors::VERSION = '2.22';
 use Test::Class::Most parent => 'Mason::Test::Class';
 
 sub test_comp_errors : Tests {

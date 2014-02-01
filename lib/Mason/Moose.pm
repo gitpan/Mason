@@ -1,7 +1,5 @@
-package Mason::Moose;
-{
-  $Mason::Moose::VERSION = '2.21';
-}    ## no critic (Moose::RequireMakeImmutable)
+package Mason::Moose;    ## no critic (Moose::RequireMakeImmutable)
+$Mason::Moose::VERSION = '2.22';
 use Moose                      ();
 use MooseX::HasDefaults::RO    ();
 use MooseX::StrictConstructor  ();

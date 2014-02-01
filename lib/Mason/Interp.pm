@@ -1,7 +1,5 @@
 package Mason::Interp;
-{
-  $Mason::Interp::VERSION = '2.21';
-}
+$Mason::Interp::VERSION = '2.22';
 use Carp;
 use Devel::GlobalDestruction;
 use File::Basename;

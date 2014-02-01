@@ -1,7 +1,5 @@
 package Mason::Filters::Standard;
-{
-  $Mason::Filters::Standard::VERSION = '2.21';
-}
+$Mason::Filters::Standard::VERSION = '2.22';
 use Mason::DynamicFilter;
 use Mason::Util;
 use Mason::PluginRole;

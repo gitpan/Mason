@@ -1,7 +1,5 @@
 package Mason::Component;
-{
-  $Mason::Component::VERSION = '2.21';
-}
+$Mason::Component::VERSION = '2.22';
 use Moose;    # no Mason::Moose - don't want StrictConstructor
 use MooseX::HasDefaults::RO;
 use Method::Signatures::Simple;
@@ -194,7 +192,7 @@ parent.
 
 This method is called when the request path has a path_info portion, to
 determine whether the path_info is allowed. Default is false. See
-L<Mason::Manual::RequestDispatch/Partial Paths|Mason::Manual::RequestDispatch>.
+L<Mason::Manual::RequestDispatch|Mason::Manual::RequestDispatch/Partial Paths>.
 
     <%class>
     method allow_path_info { 1 }

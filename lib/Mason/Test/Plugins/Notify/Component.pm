@@ -1,7 +1,5 @@
 package Mason::Test::Plugins::Notify::Component;
-{
-  $Mason::Test::Plugins::Notify::Component::VERSION = '2.21';
-}
+$Mason::Test::Plugins::Notify::Component::VERSION = '2.22';
 use Mason::PluginRole;
 
 # This doesn't work - it interrupts the inner() chain. Investigate later.

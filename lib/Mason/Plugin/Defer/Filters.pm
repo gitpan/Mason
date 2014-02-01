@@ -1,7 +1,5 @@
 package Mason::Plugin::Defer::Filters;
-{
-  $Mason::Plugin::Defer::Filters::VERSION = '2.21';
-}
+$Mason::Plugin::Defer::Filters::VERSION = '2.22';
 use Mason::PluginRole;
 
 method Defer () {

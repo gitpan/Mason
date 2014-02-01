@@ -3,9 +3,7 @@
 # under the same terms as Perl itself.
 
 package Mason::Compilation;
-{
-  $Mason::Compilation::VERSION = '2.21';
-}
+$Mason::Compilation::VERSION = '2.22';
 use File::Basename qw(dirname);
 use Guard;
 use Mason::Component::ClassMeta;

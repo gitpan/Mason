@@ -1,7 +1,5 @@
 package Mason::Util;
-{
-  $Mason::Util::VERSION = '2.21';
-}
+$Mason::Util::VERSION = '2.22';
 use Carp;
 use Class::Unload;
 use Class::Load;

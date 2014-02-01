@@ -1,7 +1,5 @@
 package Mason::DynamicFilter;
-{
-  $Mason::DynamicFilter::VERSION = '2.21';
-}
+$Mason::DynamicFilter::VERSION = '2.22';
 use Mason::Moose;
 
 has 'filter' => ( isa => 'CodeRef' );

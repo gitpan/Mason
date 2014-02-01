@@ -1,7 +1,5 @@
 package Mason::Result;
-{
-  $Mason::Result::VERSION = '2.21';
-}
+$Mason::Result::VERSION = '2.22';
 use Mason::Moose;
 
 # Public attributes

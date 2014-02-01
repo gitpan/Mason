@@ -1,7 +1,5 @@
 package Mason::Test::RootClass::Component;
-{
-  $Mason::Test::RootClass::Component::VERSION = '2.21';
-}
+$Mason::Test::RootClass::Component::VERSION = '2.22';
 use Moose;
 extends 'Mason::Component';
 
